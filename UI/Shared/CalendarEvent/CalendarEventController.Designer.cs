@@ -1,0 +1,218 @@
+﻿namespace smpc_dispatching.UI.Shared.CalendarEvent {
+    partial class CalendarEventController {
+        /// <summary> 
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary> 
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing) {
+            if (disposing && (components != null)) {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Component Designer generated code
+
+        /// <summary> 
+        /// Required method for Designer support - do not modify 
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent() {
+            this.MainSplitContainer = new System.Windows.Forms.SplitContainer();
+            this.EventSplitContainer = new System.Windows.Forms.SplitContainer();
+            this.CalendarSplitContainer = new System.Windows.Forms.SplitContainer();
+            this.HeaderFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.CalendarTitleLabel = new System.Windows.Forms.Label();
+            this.HeaderBtnsPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.PrevBtn = new System.Windows.Forms.Button();
+            this.DateLabel = new System.Windows.Forms.Label();
+            this.NextBtn = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.MainSplitContainer)).BeginInit();
+            this.MainSplitContainer.Panel1.SuspendLayout();
+            this.MainSplitContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.EventSplitContainer)).BeginInit();
+            this.EventSplitContainer.Panel1.SuspendLayout();
+            this.EventSplitContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CalendarSplitContainer)).BeginInit();
+            this.CalendarSplitContainer.Panel1.SuspendLayout();
+            this.CalendarSplitContainer.SuspendLayout();
+            this.HeaderFlowLayoutPanel.SuspendLayout();
+            this.HeaderBtnsPanel.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // MainSplitContainer
+            // 
+            this.MainSplitContainer.BackColor = System.Drawing.SystemColors.Control;
+            this.MainSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.MainSplitContainer.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.MainSplitContainer.Location = new System.Drawing.Point(0, 0);
+            this.MainSplitContainer.Name = "MainSplitContainer";
+            // 
+            // MainSplitContainer.Panel1
+            // 
+            this.MainSplitContainer.Panel1.Controls.Add(this.EventSplitContainer);
+            // 
+            // MainSplitContainer.Panel2
+            // 
+            this.MainSplitContainer.Panel2.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.MainSplitContainer.Size = new System.Drawing.Size(1266, 946);
+            this.MainSplitContainer.SplitterDistance = 922;
+            this.MainSplitContainer.SplitterWidth = 2;
+            this.MainSplitContainer.TabIndex = 0;
+            // 
+            // EventSplitContainer
+            // 
+            this.EventSplitContainer.BackColor = System.Drawing.SystemColors.Control;
+            this.EventSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.EventSplitContainer.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.EventSplitContainer.Location = new System.Drawing.Point(0, 0);
+            this.EventSplitContainer.Name = "EventSplitContainer";
+            this.EventSplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // EventSplitContainer.Panel1
+            // 
+            this.EventSplitContainer.Panel1.Controls.Add(this.CalendarSplitContainer);
+            // 
+            // EventSplitContainer.Panel2
+            // 
+            this.EventSplitContainer.Panel2.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.EventSplitContainer.Size = new System.Drawing.Size(922, 946);
+            this.EventSplitContainer.SplitterDistance = 700;
+            this.EventSplitContainer.SplitterWidth = 2;
+            this.EventSplitContainer.TabIndex = 0;
+            // 
+            // CalendarSplitContainer
+            // 
+            this.CalendarSplitContainer.BackColor = System.Drawing.SystemColors.Control;
+            this.CalendarSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CalendarSplitContainer.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.CalendarSplitContainer.Location = new System.Drawing.Point(0, 0);
+            this.CalendarSplitContainer.Name = "CalendarSplitContainer";
+            this.CalendarSplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // CalendarSplitContainer.Panel1
+            // 
+            this.CalendarSplitContainer.Panel1.Controls.Add(this.HeaderFlowLayoutPanel);
+            // 
+            // CalendarSplitContainer.Panel2
+            // 
+            this.CalendarSplitContainer.Panel2.BackColor = System.Drawing.SystemColors.Control;
+            this.CalendarSplitContainer.Size = new System.Drawing.Size(922, 700);
+            this.CalendarSplitContainer.SplitterDistance = 54;
+            this.CalendarSplitContainer.TabIndex = 0;
+            // 
+            // HeaderFlowLayoutPanel
+            // 
+            this.HeaderFlowLayoutPanel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.HeaderFlowLayoutPanel.Controls.Add(this.CalendarTitleLabel);
+            this.HeaderFlowLayoutPanel.Controls.Add(this.HeaderBtnsPanel);
+            this.HeaderFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.HeaderFlowLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this.HeaderFlowLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.HeaderFlowLayoutPanel.Name = "HeaderFlowLayoutPanel";
+            this.HeaderFlowLayoutPanel.Padding = new System.Windows.Forms.Padding(12);
+            this.HeaderFlowLayoutPanel.Size = new System.Drawing.Size(922, 54);
+            this.HeaderFlowLayoutPanel.TabIndex = 1;
+            this.HeaderFlowLayoutPanel.WrapContents = false;
+            // 
+            // CalendarTitleLabel
+            // 
+            this.CalendarTitleLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.CalendarTitleLabel.AutoSize = true;
+            this.CalendarTitleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CalendarTitleLabel.Location = new System.Drawing.Point(15, 27);
+            this.CalendarTitleLabel.Margin = new System.Windows.Forms.Padding(3, 0, 50, 0);
+            this.CalendarTitleLabel.Name = "CalendarTitleLabel";
+            this.CalendarTitleLabel.Size = new System.Drawing.Size(138, 17);
+            this.CalendarTitleLabel.TabIndex = 0;
+            this.CalendarTitleLabel.Text = "CALENDAR TITLE";
+            // 
+            // HeaderBtnsPanel
+            // 
+            this.HeaderBtnsPanel.Controls.Add(this.PrevBtn);
+            this.HeaderBtnsPanel.Controls.Add(this.DateLabel);
+            this.HeaderBtnsPanel.Controls.Add(this.NextBtn);
+            this.HeaderBtnsPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.HeaderBtnsPanel.Location = new System.Drawing.Point(206, 15);
+            this.HeaderBtnsPanel.Name = "HeaderBtnsPanel";
+            this.HeaderBtnsPanel.Size = new System.Drawing.Size(693, 42);
+            this.HeaderBtnsPanel.TabIndex = 1;
+            this.HeaderBtnsPanel.WrapContents = false;
+            // 
+            // PrevBtn
+            // 
+            this.PrevBtn.Image = global::smpc_dispatching.Properties.Resources.icons8_previous_20;
+            this.PrevBtn.Location = new System.Drawing.Point(3, 3);
+            this.PrevBtn.Name = "PrevBtn";
+            this.PrevBtn.Size = new System.Drawing.Size(100, 30);
+            this.PrevBtn.TabIndex = 2;
+            this.PrevBtn.UseVisualStyleBackColor = true;
+            this.PrevBtn.Click += new System.EventHandler(this.PrevBtn_Click);
+            // 
+            // DateLabel
+            // 
+            this.DateLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.DateLabel.AutoSize = true;
+            this.DateLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DateLabel.Location = new System.Drawing.Point(156, 9);
+            this.DateLabel.Margin = new System.Windows.Forms.Padding(50, 0, 50, 0);
+            this.DateLabel.Name = "DateLabel";
+            this.DateLabel.Size = new System.Drawing.Size(49, 17);
+            this.DateLabel.TabIndex = 1;
+            this.DateLabel.Text = "DATE";
+            // 
+            // NextBtn
+            // 
+            this.NextBtn.BackgroundImage = global::smpc_dispatching.Properties.Resources.icons8_next_20;
+            this.NextBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.NextBtn.Location = new System.Drawing.Point(258, 3);
+            this.NextBtn.Name = "NextBtn";
+            this.NextBtn.Size = new System.Drawing.Size(100, 30);
+            this.NextBtn.TabIndex = 3;
+            this.NextBtn.UseVisualStyleBackColor = true;
+            this.NextBtn.Click += new System.EventHandler(this.NextBtn_Click);
+            // 
+            // CalendarEventController
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.Controls.Add(this.MainSplitContainer);
+            this.Name = "CalendarEventController";
+            this.Size = new System.Drawing.Size(1266, 946);
+            this.Load += new System.EventHandler(this.CalendarEventController_Load);
+            this.MainSplitContainer.Panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.MainSplitContainer)).EndInit();
+            this.MainSplitContainer.ResumeLayout(false);
+            this.EventSplitContainer.Panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.EventSplitContainer)).EndInit();
+            this.EventSplitContainer.ResumeLayout(false);
+            this.CalendarSplitContainer.Panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.CalendarSplitContainer)).EndInit();
+            this.CalendarSplitContainer.ResumeLayout(false);
+            this.HeaderFlowLayoutPanel.ResumeLayout(false);
+            this.HeaderFlowLayoutPanel.PerformLayout();
+            this.HeaderBtnsPanel.ResumeLayout(false);
+            this.HeaderBtnsPanel.PerformLayout();
+            this.ResumeLayout(false);
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.SplitContainer MainSplitContainer;
+        private System.Windows.Forms.SplitContainer EventSplitContainer;
+        private System.Windows.Forms.SplitContainer CalendarSplitContainer;
+        private System.Windows.Forms.FlowLayoutPanel HeaderFlowLayoutPanel;
+        private System.Windows.Forms.Label CalendarTitleLabel;
+        private System.Windows.Forms.FlowLayoutPanel HeaderBtnsPanel;
+        private System.Windows.Forms.Button PrevBtn;
+        private System.Windows.Forms.Label DateLabel;
+        private System.Windows.Forms.Button NextBtn;
+    }
+}

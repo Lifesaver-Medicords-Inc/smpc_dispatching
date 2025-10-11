@@ -1,0 +1,23 @@
+2025-10-05 20:02:14.217 +08:00 [INF] ENV: http://127.0.0.1:3000/api/
+2025-10-05 20:03:31.601 +08:00 [INF] ENV: http://127.0.0.1:3000/api/
+2025-10-05 20:03:33.345 +08:00 [ERR] Starting a second message loop on a single thread is not a valid operation. Use Form.ShowDialog instead.
+2025-10-05 20:03:35.467 +08:00 [ERR] Starting a second message loop on a single thread is not a valid operation. Use Form.ShowDialog instead.
+2025-10-05 20:03:36.925 +08:00 [ERR] Starting a second message loop on a single thread is not a valid operation. Use Form.ShowDialog instead.
+2025-10-05 20:03:38.364 +08:00 [ERR] Starting a second message loop on a single thread is not a valid operation. Use Form.ShowDialog instead.
+2025-10-05 20:04:16.838 +08:00 [INF] ENV: http://127.0.0.1:3000/api/
+2025-10-05 20:04:18.173 +08:00 [ERR] Starting a second message loop on a single thread is not a valid operation. Use Form.ShowDialog instead.
+2025-10-05 20:04:20.114 +08:00 [ERR] Starting a second message loop on a single thread is not a valid operation. Use Form.ShowDialog instead.
+2025-10-05 20:04:21.172 +08:00 [ERR] Starting a second message loop on a single thread is not a valid operation. Use Form.ShowDialog instead.
+2025-10-05 20:04:21.946 +08:00 [ERR] Starting a second message loop on a single thread is not a valid operation. Use Form.ShowDialog instead.
+2025-10-05 20:04:22.989 +08:00 [ERR] Starting a second message loop on a single thread is not a valid operation. Use Form.ShowDialog instead.
+2025-10-05 20:04:25.525 +08:00 [ERR] Starting a second message loop on a single thread is not a valid operation. Use Form.ShowDialog instead.
+2025-10-05 20:52:00.294 +08:00 [INF] ENV: http://127.0.0.1:3000/api/
+2025-10-05 20:52:16.144 +08:00 [INF] ENV: http://127.0.0.1:3000/api/
+2025-10-05 20:52:18.196 +08:00 [ERR] Starting a second message loop on a single thread is not a valid operation. Use Form.ShowDialog instead.
+2025-10-05 20:53:03.692 +08:00 [INF] ENV: http://127.0.0.1:3000/api/
+2025-10-05 20:53:13.336 +08:00 [ERR] Starting a second message loop on a single thread is not a valid operation. Use Form.ShowDialog instead.
+2025-10-05 20:53:46.810 +08:00 [INF] ENV: http://127.0.0.1:3000/api/
+2025-10-05 20:53:48.126 +08:00 [ERR] Starting a second message loop on a single thread is not a valid operation. Use Form.ShowDialog instead.
+2025-10-05 20:54:02.326 +08:00 [INF] ENV: http://127.0.0.1:3000/api/
+2025-10-05 20:55:22.024 +08:00 [ERR] Starting a second message loop on a single thread is not a valid operation. Use Form.ShowDialog instead.
+2025-10-05 20:56:25.754 +08:00 [ERR] LOGIN ERROR: Starting a second message loop on a single thread is not a valid operation. Use Form.ShowDialog instead.
