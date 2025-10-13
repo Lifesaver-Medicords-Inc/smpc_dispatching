@@ -1,22 +1,23 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 
 namespace smpc_dispatching.Core.Models {
-    public class CalendarEventModel {
-        public uint Id { get; set; }
+    public class CalendarEventModel : BaseModel {
+
+        [JsonProperty("department_type")]
+        public string DepartmentType { get; set; } // Sales, Engineering, Logistics
+        [JsonProperty("title")]
         public string Title { get; set; }
+        [JsonProperty("description")]
         public string Description { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
-        public string Department { get; set; }  // "Sales", "Engineering", "Logistics"
-        public uint CreatedById { get; set; }
-        public UserModel CreatedBy { get; set; }
-        public string Color { get; set; }
-        public double Cost { get; set; }
-        public string Location { get; set; }
-        public bool IsAllDay { get; set; }
-        public bool IsCancelled { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        [JsonProperty("start_date")]
+        public DateTime StartDate { get; set; }
+        [JsonProperty("end_date")]
+        public DateTime EndDate { get; set; }
+        [JsonProperty("reference_type")]
+        public string ReferenceType { get; set; } // e.g. SalesOrder, DeliveryReceipt
+        [JsonProperty("reference_id")]
+        public uint ReferenceId { get; set; }
     }
 }

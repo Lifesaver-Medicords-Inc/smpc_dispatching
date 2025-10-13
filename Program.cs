@@ -1,17 +1,18 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using smpc_dispatching.Config;
+using smpc_dispatching.Core.Interfaces;
+using smpc_dispatching.Core.Services;
+using smpc_dispatching.UI.Forms;
+using smpc_dispatching.UI.Layout;
+using smpc_dispatching.UI.Shared;
+using smpc_dispatching.UI.Shared.Calendar;
+using smpc_dispatching.UI.Shared.CalendarEvent;
+using smpc_dispatching.UI.Views.Engineering;
+using smpc_dispatching.UI.Views.Logistics;
+using smpc_dispatching.UI.Views.Sales;
 using System;
 using System.Windows.Forms;
-using smpc_dispatching.UI.Layout;
-using smpc_dispatching.Core.Services;
-using smpc_dispatching.Core.Interfaces;
-using smpc_dispatching.UI.Forms;
-using smpc_dispatching.UI.Shared.Calendar;
-using smpc_dispatching.UI.Views.Logistics;
-using smpc_dispatching.UI.Views.Engineering;
-using smpc_dispatching.UI.Shared.CalendarEvent;
-using smpc_dispatching.UI.Views.Sales;
 namespace smpc_dispatching {
     static class Program {
 
@@ -68,20 +69,23 @@ namespace smpc_dispatching {
             services.AddScoped<INavigationService, NavigationService>();
             services.AddScoped<IRouteService, RouteService>();
 
-            services.AddScoped<ICalendarEventService,CalendarEventService>();
-            services.AddScoped<IDeliveryReceiptService,DeliveryReceiptService>();
+            services.AddScoped<ICalendarEventService, CalendarEventService>();
+            services.AddScoped<IDeliveryReceiptService, DeliveryReceiptService>();
             services.AddScoped<IItemReleaseService, ItemReleaseService>();
-            services.AddScoped<ISalesOrderService,SalesOrderService>();
+            services.AddScoped<ISalesOrderService, SalesOrderService>();
+            services.AddScoped<IGeoService, GeoService>();
 
             //Forms
             services.AddTransient<LoginForm>();
             services.AddTransient<MainLayout>();
-            services.AddTransient<EventCalendar>();
-            services.AddTransient<LogisticsView>();
-            services.AddTransient<EngineeringView>();
-            services.AddTransient<CalendarCell>();
-            services.AddTransient<SalesView>();
-            services.AddTransient<CalendarEventController>();
+            services.AddTransient<EventCalendarUserControl>();
+            services.AddTransient<LogisticsViewUserControl>();
+            services.AddTransient<EngineeringViewUserControl>();
+            services.AddTransient<SalesViewUserControl>();
+            services.AddTransient<CalendarEventControllerUserControl>();
+            services.AddTransient<SchedulesUserControl>();
+            services.AddTransient<ScheduleDetailsUserControl>();
+            services.AddTransient<MapPickerForm>();
         }
     }
 }

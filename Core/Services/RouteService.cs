@@ -34,21 +34,21 @@ namespace smpc_dispatching.Core.Services {
                 Code = "SALES_CALENDAR",
                 Parent = "Main",
                 Title = "Sales Calendar",
-                View = _serviceProvider.GetRequiredService<SalesView>(),
-            };
-
-            _pages["LOGISTICS_CALENDAR"] = new ViewControlModel {
-                Code = "LOGISTICS_CALENDAR",
-                Parent = "Main",
-                Title = "Logistics Calendar",
-                View = _serviceProvider.GetRequiredService<LogisticsView>(),
+                View = _serviceProvider.GetRequiredService<SalesViewUserControl>(),
             };
 
             _pages["ENGINEERING_CALENDAR"] = new ViewControlModel {
                 Code = "ENGINEERING_CALENDAR",
                 Parent = "Main",
                 Title = "Engineering Calendar",
-                View = _serviceProvider.GetRequiredService<EngineeringView>(),
+                View = _serviceProvider.GetRequiredService<EngineeringViewUserControl>(),
+            };
+
+            _pages["LOGISTICS_CALENDAR"] = new ViewControlModel {
+                Code = "LOGISTICS_CALENDAR",
+                Parent = "Main",
+                Title = "Logistics Calendar",
+                View = _serviceProvider.GetRequiredService<LogisticsViewUserControl>(),
             };
 
         }
