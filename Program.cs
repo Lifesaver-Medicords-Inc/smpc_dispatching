@@ -85,7 +85,7 @@ namespace smpc_dispatching {
             services.AddTransient<CalendarEventControllerUserControl>();
             services.AddTransient<SchedulesUserControl>();
             services.AddTransient<ScheduleDetailsUserControl>();
-            services.AddTransient<MapPickerForm>();
+            services.AddTransient<MapLocPinForm>();
         }
     }
 }

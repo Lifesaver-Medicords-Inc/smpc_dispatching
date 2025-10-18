@@ -4,22 +4,22 @@ using smpc_dispatching.Core.Interfaces;
 using System.Windows.Forms;
 
 namespace smpc_dispatching.Core.Services {
-        public class NavigationService : INavigationService {
+    public class NavigationService : INavigationService {
 
 
         private readonly IRouteService _routesService;
-        private  TreeView _treeView;
-        private  Panel _contentPanel;
- 
+        private TreeView _treeView;
+        private Control _container;
 
-        public NavigationService( IRouteService routeService) {
+
+        public NavigationService(IRouteService routeService) {
             _routesService = routeService;
         }
 
 
-        public void Initialize(TreeView treeView, Panel contentPanel) {
+        public void Initialize(TreeView treeView, Control container) {
             _treeView = treeView;
-            _contentPanel = contentPanel;
+            _container = container;
 
             BuildNavigation();
         }
@@ -37,16 +37,35 @@ namespace smpc_dispatching.Core.Services {
             _treeView.Nodes.Clear();
 
             foreach (var parent in _routesService.GetParents()) {
-                TreeNode parentNode = new TreeNode(parent);
+                // If parent is null, children will render at root level
+                if (string.IsNullOrEmpty(parent)) {
+                    // Render children with no parent
+                    foreach (var child in _routesService.GetChildren(null)) {
+                        if (!HasAccess()) continue;
 
-                foreach (var child in _routesService.GetChildren(parent)) {
+                        var childNode = new TreeNode(child.Title) {
+                            Tag = child.Code
+                        };
+                        _treeView.Nodes.Add(childNode);
+                    }
 
-                    if (!HasAccess()) continue;
+                    continue;
+                }
 
-                    TreeNode childNode = new TreeNode(child.Title) {
-                        Tag = child.Code
-                    };
-                    parentNode.Nodes.Add(childNode);
+                // Normal parent rendering
+                var parentNode = new TreeNode(parent);
+
+                // Add child nodes
+                var children = _routesService.GetChildren(parent);
+                if (children != null) {
+                    foreach (var child in children) {
+                        if (!HasAccess()) continue;
+
+                        var childNode = new TreeNode(child.Title) {
+                            Tag = child.Code
+                        };
+                        parentNode.Nodes.Add(childNode);
+                    }
                 }
 
                 _treeView.Nodes.Add(parentNode);
@@ -54,10 +73,11 @@ namespace smpc_dispatching.Core.Services {
 
             _treeView.ExpandAll();
 
-            // Hook up event (so MainForm doesn’t need it)
-            _treeView.AfterSelect -= TreeView_AfterSelect; // avoid duplicates
+            // Hook up event (avoid duplicate subscriptions)
+            _treeView.AfterSelect -= TreeView_AfterSelect;
             _treeView.AfterSelect += TreeView_AfterSelect;
         }
+
 
         /// <summary>
         /// Handles when a user clicks a navigation item.
@@ -71,10 +91,18 @@ namespace smpc_dispatching.Core.Services {
             var title = _routesService.GetTitle(code);
 
             if (view != null) {
-                _contentPanel.Controls.Clear();
-                view.Dock = DockStyle.Fill;
-                _contentPanel.Controls.Add(view);
-                //_titleLabel.Text = title;
+
+                if (_container is Panel panel) {
+                    panel.Controls.Clear();
+                    panel.Controls.Add(view);
+                    view.Dock = DockStyle.Fill;
+                } else if (_container is TabControl tabControl) {
+                    var tab = new TabPage(title);
+                    view.Dock = DockStyle.Fill;
+                    tab.Controls.Add(view);
+                    tabControl.TabPages.Add(tab);
+                    tabControl.SelectedTab = tab;
+                }
             } else {
                 MessageBox.Show($"No view found for route '{code}'", "Navigation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }

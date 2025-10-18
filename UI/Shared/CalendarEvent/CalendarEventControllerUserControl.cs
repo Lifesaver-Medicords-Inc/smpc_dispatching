@@ -4,19 +4,32 @@ using smpc_dispatching.UI.Shared.Calendar;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using static smpc_dispatching.UI.Shared.Calendar.EventCalendarUserControl;
 
 namespace smpc_dispatching.UI.Shared.CalendarEvent {
     public partial class CalendarEventControllerUserControl : UserControl {
 
-        private DateTime _currentDate = DateTime.Now;
         private readonly EventCalendarUserControl _eventCalendarUserControl;
         private readonly SchedulesUserControl _schedulesUserControl;
         private readonly ScheduleDetailsUserControl _scheduleDetailsUserControl;
+
+        private CalendarDateRange _dateRange = new CalendarDateRange {
+            StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1),
+            EndDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1)
+                    .AddMonths(1)
+                    .AddDays(-1)
+        };
+
+
+        private Boolean IsMonthView = true;
+
         public CalendarEventControllerUserControl(IServiceProvider serviceProvider) {
             InitializeComponent();
             _eventCalendarUserControl = serviceProvider.GetRequiredService<EventCalendarUserControl>();
             _schedulesUserControl = serviceProvider.GetRequiredService<SchedulesUserControl>();
             _scheduleDetailsUserControl = serviceProvider.GetRequiredService<ScheduleDetailsUserControl>();
+
+            CalendarSwitchViewBtn.Text = !IsMonthView ? "MONTH" : "WEEK";
         }
 
         public string Title {
@@ -29,20 +42,20 @@ namespace smpc_dispatching.UI.Shared.CalendarEvent {
 
         private void CalendarEventController_Load(object sender, EventArgs e) {
             SetDateLabel();
-            LoadCalendar(_currentDate);
+            LoadCalendar();
 
             EventSplitContainer.Panel2.Controls.Clear();
             _schedulesUserControl.Dock = DockStyle.Fill;
             EventSplitContainer.Panel2.Controls.Add(_schedulesUserControl);
 
-            ScheduleDetailsPanel.Controls.Clear();
-            _scheduleDetailsUserControl.Dock = DockStyle.Fill;
-            ScheduleDetailsPanel.Controls.Add(_scheduleDetailsUserControl);
+            MainSplitContainer.Panel2.Controls.Clear();
+            _scheduleDetailsUserControl.Dock = DockStyle.Top;
+            MainSplitContainer.Panel2.Controls.Add(_scheduleDetailsUserControl);
 
 
         }
 
-        private void LoadCalendar(DateTime date) {
+        private void LoadCalendar() {
             if (_eventCalendarUserControl != null) {
 
                 _eventCalendarUserControl.Dock = DockStyle.Fill;
@@ -78,28 +91,73 @@ namespace smpc_dispatching.UI.Shared.CalendarEvent {
                     }
                 };
 
-                _schedulesUserControl.CurrentDate = _currentDate;
-                _eventCalendarUserControl.CurrentDate = date;
+                _eventCalendarUserControl.DateRange = _dateRange;
+                _eventCalendarUserControl.LoadCalendar();
                 _eventCalendarUserControl.LoadEvents(events);
 
             }
         }
 
         private void SetDateLabel() {
-            DateLabel.Text = $"{_currentDate.ToString("MMMMM")} {_currentDate.Year}".ToUpper();
+            DateLabel.Text = $"{_dateRange.StartDate.ToString("MMMMM")}".ToUpper();
         }
 
         private void PrevBtn_Click(object sender, EventArgs e) {
+            if (IsMonthView) {
+                _dateRange.StartDate = _dateRange.StartDate.AddMonths(-1);
+                _dateRange.EndDate = _dateRange.StartDate.AddMonths(1).AddDays(-1);
+            } else {
+                _dateRange.StartDate = _dateRange.StartDate.AddDays(-7);
+                _dateRange.EndDate = _dateRange.StartDate.AddDays(7);
+            }
+
             SetDateLabel();
-            _currentDate = _currentDate.AddMonths(-1);
-            LoadCalendar(_currentDate);
+            LoadCalendar();
         }
 
         private void NextBtn_Click(object sender, EventArgs e) {
+            if (IsMonthView) {
+                _dateRange.StartDate = _dateRange.StartDate.AddMonths(1);
+                _dateRange.EndDate = _dateRange.StartDate.AddMonths(1).AddDays(-1);
+            } else {
+                _dateRange.StartDate = _dateRange.StartDate.AddDays(7);
+                _dateRange.EndDate = _dateRange.StartDate.AddDays(7);
+            }
+
             SetDateLabel();
-            _currentDate = _currentDate.AddMonths(1);
-            LoadCalendar(_currentDate);
+            LoadCalendar();
         }
 
+
+
+        private void CalendarSwitchViewBtn_Click(object sender, EventArgs e) {
+
+            IsMonthView = !IsMonthView;
+
+            if (IsMonthView) {
+                _dateRange = new CalendarDateRange {
+                    StartDate = new DateTime(_dateRange.StartDate.Year, _dateRange.StartDate.Month, 1),
+                    EndDate = new DateTime(_dateRange.StartDate.Year, _dateRange.StartDate.Month, 1)
+                       .AddMonths(1)
+                       .AddDays(-1)
+                };
+
+
+            } else {
+                _dateRange = new CalendarDateRange {
+                    StartDate = new DateTime(_dateRange.StartDate.Year, _dateRange.StartDate.Month, 1),
+                    EndDate = new DateTime(_dateRange.StartDate.Year, _dateRange.StartDate.Month, 7),
+                };
+
+            }
+
+
+            SetDateLabel();
+            _eventCalendarUserControl.DateRange = _dateRange;
+            LoadCalendar();
+            CalendarSwitchViewBtn.Text = !IsMonthView ? "MONTH" : "WEEK";
+
+        }
     }
 }
+

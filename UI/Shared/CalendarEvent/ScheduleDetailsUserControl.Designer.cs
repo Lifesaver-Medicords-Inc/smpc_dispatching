@@ -37,13 +37,13 @@
             this.label4 = new System.Windows.Forms.Label();
             this.DescriptionsRichTextBox = new System.Windows.Forms.RichTextBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.PinMapBtn = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.LocationRichTextBox = new System.Windows.Forms.RichTextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.VehicleComboBox = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.PinMapBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.MainSplitContainer)).BeginInit();
             this.MainSplitContainer.Panel1.SuspendLayout();
             this.MainSplitContainer.Panel2.SuspendLayout();
@@ -229,6 +229,16 @@
             this.panel1.Size = new System.Drawing.Size(363, 33);
             this.panel1.TabIndex = 13;
             // 
+            // PinMapBtn
+            // 
+            this.PinMapBtn.Location = new System.Drawing.Point(75, 5);
+            this.PinMapBtn.Name = "PinMapBtn";
+            this.PinMapBtn.Size = new System.Drawing.Size(75, 23);
+            this.PinMapBtn.TabIndex = 8;
+            this.PinMapBtn.Text = "Pin map";
+            this.PinMapBtn.UseVisualStyleBackColor = true;
+            this.PinMapBtn.Click += new System.EventHandler(this.PinMapBtn_Click);
+            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -297,20 +307,9 @@
             this.richTextBox1.TabIndex = 12;
             this.richTextBox1.Text = "";
             // 
-            // PinMapBtn
-            // 
-            this.PinMapBtn.Location = new System.Drawing.Point(75, 5);
-            this.PinMapBtn.Name = "PinMapBtn";
-            this.PinMapBtn.Size = new System.Drawing.Size(75, 23);
-            this.PinMapBtn.TabIndex = 8;
-            this.PinMapBtn.Text = "Pin map";
-            this.PinMapBtn.UseVisualStyleBackColor = true;
-            this.PinMapBtn.Click += new System.EventHandler(this.PinMapBtn_Click);
-            // 
             // ScheduleDetailsUserControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.Controls.Add(this.MainSplitContainer);
             this.Name = "ScheduleDetailsUserControl";
             this.Padding = new System.Windows.Forms.Padding(4);

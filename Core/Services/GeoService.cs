@@ -9,7 +9,7 @@ namespace smpc_dispatching.Core.Services {
             var placemark = GMapProviders.GoogleMap.GetPlacemark(location, out status);
 
             // If Google fails, try OpenStreetMap
-            if (status != GeoCoderStatusCode.G_GEO_SUCCESS || placemark == null) {
+            if (status != GeoCoderStatusCode.OK || placemark == null) {
                 placemark = GMapProviders.OpenStreetMap.GetPlacemark(location, out status);
             }
 

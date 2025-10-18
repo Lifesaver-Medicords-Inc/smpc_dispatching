@@ -20,7 +20,7 @@ namespace smpc_dispatching.UI.Shared.CalendarEvent {
             }
 
 
-            using (var mapForm = _serviceProvider.GetRequiredService<MapPickerForm>()) {
+            using (var mapForm = _serviceProvider.GetRequiredService<MapLocPinForm>()) {
                 var result = mapForm.ShowDialog();
                 if (result == DialogResult.OK && mapForm.SelectedPoint != null) {
                     LocationRichTextBox.Text = mapForm.SelectedAddress;

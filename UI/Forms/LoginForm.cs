@@ -1,9 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Serilog;
 using smpc_dispatching.Core.Interfaces;
 using smpc_dispatching.UI.Layout;
 using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace smpc_dispatching.UI.Forms {
@@ -18,7 +16,7 @@ namespace smpc_dispatching.UI.Forms {
             _serviceProvider = serviceProvider;
         }
 
-        private  void loginBtn_Click(object sender, EventArgs e) {
+        private void loginBtn_Click(object sender, EventArgs e) {
 
             //try {
             //var employeeId = usernameTextBox.Text;
@@ -50,13 +48,13 @@ namespace smpc_dispatching.UI.Forms {
             //    return;
             //}
 
-                this.Hide();
+            this.Hide();
 
-                var mainLayout = _serviceProvider.GetRequiredService<MainLayout>();
+            var mainLayout = _serviceProvider.GetRequiredService<MainLayout>();
 
-                if (mainLayout != null) { 
-                    mainLayout.Show();
-                }
+            if (mainLayout != null) {
+                mainLayout.Show();
+            }
 
 
 
