@@ -1,6 +1,7 @@
 ﻿using smpc_dispatching.Core.Interfaces;
 using System;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace smpc_dispatching.UI.Layout {
@@ -15,8 +16,9 @@ namespace smpc_dispatching.UI.Layout {
         private void MainLayout_Load(object sender, EventArgs e) {
             SetupnavigationBar();
             TabControl.DrawMode = TabDrawMode.OwnerDrawFixed;
-            TabControl.DrawItem += MainTabControl_DrawItem;
-            TabControl.MouseDown += MainTabControl_MouseDown;
+            TabControl.DrawItem += TabControl_DrawItem;
+            TabControl.MouseDown += TabControl_MouseDown;
+
         }
 
         private void SetupnavigationBar() {
@@ -28,8 +30,10 @@ namespace smpc_dispatching.UI.Layout {
             navbarTreeView.EndUpdate();
         }
 
-        private void MainTabControl_DrawItem(object sender, DrawItemEventArgs e) {
+        private void TabControl_DrawItem(object sender, DrawItemEventArgs e) {
             var tabControl = sender as TabControl;
+            if (tabControl == null) return;
+
             var tabPage = tabControl.TabPages[e.Index];
             var tabRect = tabControl.GetTabRect(e.Index);
 
@@ -39,22 +43,45 @@ namespace smpc_dispatching.UI.Layout {
             // Draw tab title
             string title = tabPage.Text;
             using (var brush = new SolidBrush(Color.Black)) {
-                var textRect = new RectangleF(tabRect.X + 5, tabRect.Y + 4, tabRect.Width - 30, tabRect.Height - 4);
+                var textRect = new RectangleF(tabRect.X + 8, tabRect.Y + 4, tabRect.Width - 30, tabRect.Height - 4);
                 e.Graphics.DrawString(title, e.Font, brush, textRect);
             }
 
-            // Draw close (×)
-            e.Graphics.DrawString("×", e.Font, Brushes.DarkRed,
-                tabRect.Right - 15, tabRect.Top + 4, StringFormat.GenericDefault);
+
+            try {
+                string iconsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Icons");
+                string closeIconPath = Path.Combine(iconsPath, "small_close.png");
+
+                if (File.Exists(closeIconPath)) {
+                    using (var closeImg = Image.FromFile(closeIconPath)) {
+
+                        int iconSize = 12;
+                        int iconX = tabRect.Right - iconSize - 6;
+                        int iconY = tabRect.Top + (tabRect.Height - iconSize) / 2;
+
+                        e.Graphics.DrawImage(closeImg, new Rectangle(iconX, iconY, iconSize, iconSize));
+                    }
+                } else {
+                    // Fallback text if PNG not found
+                    e.Graphics.DrawString("×", e.Font, Brushes.DarkRed,
+                        tabRect.Right - 15, tabRect.Top + 4, StringFormat.GenericDefault);
+                }
+            } catch {
+                // Fallback in case of file error
+                e.Graphics.DrawString("×", e.Font, Brushes.DarkRed,
+                    tabRect.Right - 15, tabRect.Top + 4, StringFormat.GenericDefault);
+            }
+
+            // Ensure focus rectangle is not drawn automatically
+            e.DrawFocusRectangle();
         }
 
-        private void MainTabControl_MouseDown(object sender, MouseEventArgs e) {
+        private void TabControl_MouseDown(object sender, MouseEventArgs e) {
             for (int i = 0; i < TabControl.TabPages.Count; i++) {
                 var tabRect = TabControl.GetTabRect(i);
                 var closeRect = new Rectangle(tabRect.Right - 15, tabRect.Top + 4, 12, 12);
 
                 if (closeRect.Contains(e.Location)) {
-                    // Optional: confirm close
                     var result = MessageBox.Show($"Close tab '{TabControl.TabPages[i].Text}'?",
                         "Close Tab", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 

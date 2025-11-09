@@ -11,8 +11,10 @@ using smpc_dispatching.UI.Shared.CalendarEvent;
 using smpc_dispatching.UI.Views.Engineering;
 using smpc_dispatching.UI.Views.Logistics;
 using smpc_dispatching.UI.Views.Sales;
+using smpc_dispatching.UI.Views.SalesOrder;
 using System;
 using System.Windows.Forms;
+
 namespace smpc_dispatching {
     static class Program {
 
@@ -69,23 +71,26 @@ namespace smpc_dispatching {
             services.AddScoped<INavigationService, NavigationService>();
             services.AddScoped<IRouteService, RouteService>();
 
-            services.AddScoped<ICalendarEventService, CalendarEventService>();
+            services.AddScoped<ICalendarScheduleService, CalendarScheduleService>();
             services.AddScoped<IDeliveryReceiptService, DeliveryReceiptService>();
             services.AddScoped<IItemReleaseService, ItemReleaseService>();
             services.AddScoped<ISalesOrderService, SalesOrderService>();
             services.AddScoped<IGeoService, GeoService>();
+            services.AddScoped(typeof(IDrawFolderTreeService<>), typeof(DrawFolderTreeService<>));
 
             //Forms
             services.AddTransient<LoginForm>();
             services.AddTransient<MainLayout>();
-            services.AddTransient<EventCalendarUserControl>();
+            services.AddTransient<ScheduleCalendarUserControl>();
             services.AddTransient<LogisticsViewUserControl>();
             services.AddTransient<EngineeringViewUserControl>();
             services.AddTransient<SalesViewUserControl>();
-            services.AddTransient<CalendarEventControllerUserControl>();
-            services.AddTransient<SchedulesUserControl>();
+            services.AddTransient<CalendarScheduleControllerUserControl>();
+            services.AddTransient<ScheduleListUserControl>();
             services.AddTransient<ScheduleDetailsUserControl>();
             services.AddTransient<MapLocPinForm>();
+            services.AddTransient<SalesOrderViewUserControl>();
+            services.AddTransient<SalesOrderListForm>();
         }
     }
 }

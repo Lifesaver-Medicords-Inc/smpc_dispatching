@@ -5,7 +5,7 @@ namespace smpc_dispatching.Core.Models {
     public class DeliveryItemModel : BaseModel {
 
         [JsonProperty("sales_order_id")]
-        public int SalesOrderId { get; set; }
+        public int SalesOrderID { get; set; }
         [JsonProperty("item_code")]
         public string ItemCode { get; set; }
         [JsonProperty("description")]

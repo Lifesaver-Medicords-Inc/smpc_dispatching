@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace smpc_dispatching.Core.Services {
-   public class ItemReleaseService : IItemReleaseService {
+    public class ItemReleaseService : IItemReleaseService {
         private readonly IHttpService _httpService;
 
         public ItemReleaseService(IHttpService httpService) {

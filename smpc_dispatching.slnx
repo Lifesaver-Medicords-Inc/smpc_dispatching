@@ -1,3 +1,9 @@
 <Solution>
-  <Project Path="smpc_dispatching.csproj" Id="430cab43-3b40-417e-97a6-bb33ee4c09e3" />
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="smpc_dispatching.csproj" Id="430cab43-3b40-417e-97a6-bb33ee4c09e3">
+    <Platform Solution="*|x64" Project="x64" />
+  </Project>
 </Solution>

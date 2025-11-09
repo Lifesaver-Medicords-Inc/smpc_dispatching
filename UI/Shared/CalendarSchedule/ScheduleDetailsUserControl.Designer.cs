@@ -69,7 +69,7 @@
             // 
             this.MainSplitContainer.Panel2.Controls.Add(this.flowLayoutPanel1);
             this.MainSplitContainer.Panel2.Controls.Add(this.flowLayoutPanel3);
-            this.MainSplitContainer.Size = new System.Drawing.Size(383, 649);
+            this.MainSplitContainer.Size = new System.Drawing.Size(383, 597);
             this.MainSplitContainer.SplitterDistance = 44;
             this.MainSplitContainer.TabIndex = 0;
             // 
@@ -88,7 +88,7 @@
             this.flowLayoutPanel1.Controls.Add(this.CancelBtn);
             this.flowLayoutPanel1.Controls.Add(this.SaveBtn);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 563);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 511);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.flowLayoutPanel1.Size = new System.Drawing.Size(383, 38);
@@ -143,7 +143,7 @@
             this.flowLayoutPanel3.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
             this.flowLayoutPanel3.Padding = new System.Windows.Forms.Padding(4);
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(383, 601);
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(383, 549);
             this.flowLayoutPanel3.TabIndex = 0;
             this.flowLayoutPanel3.WrapContents = false;
             // 
@@ -160,27 +160,27 @@
             // StartDateTimePicker
             // 
             this.StartDateTimePicker.Dock = System.Windows.Forms.DockStyle.Left;
-            this.StartDateTimePicker.Location = new System.Drawing.Point(7, 27);
-            this.StartDateTimePicker.Margin = new System.Windows.Forms.Padding(3, 10, 3, 3);
+            this.StartDateTimePicker.Location = new System.Drawing.Point(7, 22);
+            this.StartDateTimePicker.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
             this.StartDateTimePicker.Name = "StartDateTimePicker";
-            this.StartDateTimePicker.Size = new System.Drawing.Size(363, 20);
+            this.StartDateTimePicker.Size = new System.Drawing.Size(373, 20);
             this.StartDateTimePicker.TabIndex = 1;
             // 
             // EndDateDateTimePicker
             // 
             this.EndDateDateTimePicker.Dock = System.Windows.Forms.DockStyle.Left;
             this.EndDateDateTimePicker.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.EndDateDateTimePicker.Location = new System.Drawing.Point(7, 53);
+            this.EndDateDateTimePicker.Location = new System.Drawing.Point(7, 48);
             this.EndDateDateTimePicker.Name = "EndDateDateTimePicker";
-            this.EndDateDateTimePicker.Size = new System.Drawing.Size(363, 21);
+            this.EndDateDateTimePicker.Size = new System.Drawing.Size(373, 21);
             this.EndDateDateTimePicker.TabIndex = 2;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(7, 87);
-            this.label3.Margin = new System.Windows.Forms.Padding(3, 10, 3, 0);
+            this.label3.Location = new System.Drawing.Point(7, 77);
+            this.label3.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(74, 13);
             this.label3.TabIndex = 3;
@@ -191,18 +191,18 @@
             this.CategoryComboBox.Dock = System.Windows.Forms.DockStyle.Left;
             this.CategoryComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CategoryComboBox.FormattingEnabled = true;
-            this.CategoryComboBox.Location = new System.Drawing.Point(7, 110);
-            this.CategoryComboBox.Margin = new System.Windows.Forms.Padding(3, 10, 3, 3);
+            this.CategoryComboBox.Location = new System.Drawing.Point(7, 95);
+            this.CategoryComboBox.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
             this.CategoryComboBox.Name = "CategoryComboBox";
-            this.CategoryComboBox.Size = new System.Drawing.Size(363, 23);
+            this.CategoryComboBox.Size = new System.Drawing.Size(373, 23);
             this.CategoryComboBox.TabIndex = 4;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(7, 146);
-            this.label4.Margin = new System.Windows.Forms.Padding(3, 10, 3, 0);
+            this.label4.Location = new System.Drawing.Point(7, 126);
+            this.label4.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(99, 13);
             this.label4.TabIndex = 5;
@@ -213,10 +213,10 @@
             this.DescriptionsRichTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.DescriptionsRichTextBox.Dock = System.Windows.Forms.DockStyle.Left;
             this.DescriptionsRichTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DescriptionsRichTextBox.Location = new System.Drawing.Point(7, 169);
-            this.DescriptionsRichTextBox.Margin = new System.Windows.Forms.Padding(3, 10, 3, 3);
+            this.DescriptionsRichTextBox.Location = new System.Drawing.Point(7, 144);
+            this.DescriptionsRichTextBox.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
             this.DescriptionsRichTextBox.Name = "DescriptionsRichTextBox";
-            this.DescriptionsRichTextBox.Size = new System.Drawing.Size(363, 103);
+            this.DescriptionsRichTextBox.Size = new System.Drawing.Size(373, 103);
             this.DescriptionsRichTextBox.TabIndex = 6;
             this.DescriptionsRichTextBox.Text = "";
             // 
@@ -224,9 +224,9 @@
             // 
             this.panel1.Controls.Add(this.PinMapBtn);
             this.panel1.Controls.Add(this.label5);
-            this.panel1.Location = new System.Drawing.Point(7, 278);
+            this.panel1.Location = new System.Drawing.Point(7, 253);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(363, 33);
+            this.panel1.Size = new System.Drawing.Size(373, 33);
             this.panel1.TabIndex = 13;
             // 
             // PinMapBtn
@@ -255,10 +255,10 @@
             this.LocationRichTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.LocationRichTextBox.Dock = System.Windows.Forms.DockStyle.Left;
             this.LocationRichTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LocationRichTextBox.Location = new System.Drawing.Point(7, 324);
-            this.LocationRichTextBox.Margin = new System.Windows.Forms.Padding(3, 10, 3, 3);
+            this.LocationRichTextBox.Location = new System.Drawing.Point(7, 289);
+            this.LocationRichTextBox.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.LocationRichTextBox.Name = "LocationRichTextBox";
-            this.LocationRichTextBox.Size = new System.Drawing.Size(363, 47);
+            this.LocationRichTextBox.Size = new System.Drawing.Size(373, 47);
             this.LocationRichTextBox.TabIndex = 8;
             this.LocationRichTextBox.Text = "";
             // 
@@ -266,8 +266,8 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(7, 384);
-            this.label6.Margin = new System.Windows.Forms.Padding(3, 10, 3, 0);
+            this.label6.Location = new System.Drawing.Point(7, 344);
+            this.label6.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(59, 13);
             this.label6.TabIndex = 9;
@@ -278,18 +278,18 @@
             this.VehicleComboBox.Dock = System.Windows.Forms.DockStyle.Left;
             this.VehicleComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.VehicleComboBox.FormattingEnabled = true;
-            this.VehicleComboBox.Location = new System.Drawing.Point(7, 407);
-            this.VehicleComboBox.Margin = new System.Windows.Forms.Padding(3, 10, 3, 3);
+            this.VehicleComboBox.Location = new System.Drawing.Point(7, 362);
+            this.VehicleComboBox.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
             this.VehicleComboBox.Name = "VehicleComboBox";
-            this.VehicleComboBox.Size = new System.Drawing.Size(363, 23);
+            this.VehicleComboBox.Size = new System.Drawing.Size(373, 23);
             this.VehicleComboBox.TabIndex = 10;
             // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(7, 443);
-            this.label7.Margin = new System.Windows.Forms.Padding(3, 10, 3, 0);
+            this.label7.Location = new System.Drawing.Point(7, 393);
+            this.label7.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(49, 13);
             this.label7.TabIndex = 11;
@@ -300,10 +300,10 @@
             this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Left;
             this.richTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBox1.Location = new System.Drawing.Point(7, 466);
-            this.richTextBox1.Margin = new System.Windows.Forms.Padding(3, 10, 3, 3);
+            this.richTextBox1.Location = new System.Drawing.Point(7, 411);
+            this.richTextBox1.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(363, 92);
+            this.richTextBox1.Size = new System.Drawing.Size(373, 92);
             this.richTextBox1.TabIndex = 12;
             this.richTextBox1.Text = "";
             // 
@@ -313,7 +313,7 @@
             this.Controls.Add(this.MainSplitContainer);
             this.Name = "ScheduleDetailsUserControl";
             this.Padding = new System.Windows.Forms.Padding(4);
-            this.Size = new System.Drawing.Size(391, 657);
+            this.Size = new System.Drawing.Size(391, 605);
             this.MainSplitContainer.Panel1.ResumeLayout(false);
             this.MainSplitContainer.Panel1.PerformLayout();
             this.MainSplitContainer.Panel2.ResumeLayout(false);

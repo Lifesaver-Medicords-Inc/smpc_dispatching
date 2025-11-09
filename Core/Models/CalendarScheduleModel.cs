@@ -3,7 +3,7 @@ using System;
 
 
 namespace smpc_dispatching.Core.Models {
-    public class CalendarEventModel : BaseModel {
+    public class CalendarScheduleModel : BaseModel {
 
         [JsonProperty("department_type")]
         public string DepartmentType { get; set; } // Sales, Engineering, Logistics
@@ -18,6 +18,6 @@ namespace smpc_dispatching.Core.Models {
         [JsonProperty("reference_type")]
         public string ReferenceType { get; set; } // e.g. SalesOrder, DeliveryReceipt
         [JsonProperty("reference_id")]
-        public uint ReferenceId { get; set; }
+        public uint ReferenceID { get; set; }
     }
 }

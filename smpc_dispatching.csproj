@@ -218,10 +218,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Config\LoggerConfig.cs" />
+    <Compile Include="Core\Config\SmoothScrollUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Core\Interfaces\IDeliveryReceiptService.cs" />
     <Compile Include="Core\Interfaces\IApiService.cs" />
     <Compile Include="Core\Interfaces\IAuthService.cs" />
-    <Compile Include="Core\Interfaces\ICalendarEventService.cs" />
+    <Compile Include="Core\Interfaces\ICalendarScheduleService.cs" />
+    <Compile Include="Core\Interfaces\IDrawFolderTreeService.cs" />
     <Compile Include="Core\Interfaces\IGeoService.cs" />
     <Compile Include="Core\Interfaces\IHttpService.cs" />
     <Compile Include="Core\Interfaces\IItemReleaseService.cs" />
@@ -229,17 +233,22 @@
     <Compile Include="Core\Interfaces\IRouteService.cs" />
     <Compile Include="Core\Interfaces\ISalesOrderService.cs" />
     <Compile Include="Core\Models\BaseModel.cs" />
-    <Compile Include="Core\Models\CalendarEventModel.cs" />
+    <Compile Include="Core\Models\CalendarScheduleModel.cs" />
     <Compile Include="Core\Models\DeliveryItemModel.cs" />
     <Compile Include="Core\Models\DeliveryReceiptModel.cs" />
+    <Compile Include="Core\Models\FileModel.cs" />
+    <Compile Include="Core\Models\FolderTreeModel.cs" />
     <Compile Include="Core\Models\HttpResponseModel.cs" />
+    <Compile Include="Core\Models\ItemModel.cs" />
     <Compile Include="Core\Models\ItemReleaseModel.cs" />
     <Compile Include="Core\Models\SalesOrderModel.cs" />
+    <Compile Include="Core\Models\VehicleModel.cs" />
     <Compile Include="Core\Models\ViewControlModel.cs" />
     <Compile Include="Core\Models\UserModel.cs" />
     <Compile Include="Core\Services\AuthService.cs" />
-    <Compile Include="Core\Services\CalendarEventService.cs" />
+    <Compile Include="Core\Services\CalendarScheduleService.cs" />
     <Compile Include="Core\Services\DeliveryReceiptService.cs" />
+    <Compile Include="Core\Services\DrawFolderTreeService.cs" />
     <Compile Include="Core\Services\GeoService.cs" />
     <Compile Include="Core\Services\HttpService.cs" />
     <Compile Include="Core\Services\ItemReleaseService.cs" />
@@ -260,29 +269,35 @@
     <Compile Include="UI\Layout\MainLayout.Designer.cs">
       <DependentUpon>MainLayout.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Shared\CalendarEvent\CalendarEventControllerUserControl.cs">
+    <Compile Include="UI\Shared\CalendarSchedule\CalendarScheduleControllerUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\Shared\CalendarEvent\CalendarEventControllerUserControl.Designer.cs">
-      <DependentUpon>CalendarEventControllerUserControl.cs</DependentUpon>
+    <Compile Include="UI\Shared\CalendarSchedule\CalendarScheduleControllerUserControl.Designer.cs">
+      <DependentUpon>CalendarScheduleControllerUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Shared\CalendarEvent\ScheduleDetailsUserControl.cs">
+    <Compile Include="UI\Shared\CalendarSchedule\ScheduleDetailsUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\Shared\CalendarEvent\ScheduleDetailsUserControl.Designer.cs">
+    <Compile Include="UI\Shared\CalendarSchedule\ScheduleDetailsUserControl.Designer.cs">
       <DependentUpon>ScheduleDetailsUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Shared\CalendarEvent\SchedulesUserControl.cs">
+    <Compile Include="UI\Shared\CalendarSchedule\ScheduleItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\Shared\CalendarEvent\SchedulesUserControl.Designer.cs">
-      <DependentUpon>SchedulesUserControl.cs</DependentUpon>
+    <Compile Include="UI\Shared\CalendarSchedule\ScheduleItem.Designer.cs">
+      <DependentUpon>ScheduleItem.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Shared\Calendar\EventCalendarUserControl.cs">
+    <Compile Include="UI\Shared\CalendarSchedule\ScheduleListUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\Shared\Calendar\EventCalendarUserControl.Designer.cs">
-      <DependentUpon>EventCalendarUserControl.cs</DependentUpon>
+    <Compile Include="UI\Shared\CalendarSchedule\ScheduleListUserControl.Designer.cs">
+      <DependentUpon>ScheduleListUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Shared\Calendar\ScheduleCalendarUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Shared\Calendar\ScheduleCalendarUserControl.Designer.cs">
+      <DependentUpon>ScheduleCalendarUserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Shared\MapLocPinForm.cs">
       <SubType>Form</SubType>
@@ -302,12 +317,27 @@
     <Compile Include="UI\Views\Logistics\LogisticsViewUserControl.Designer.cs">
       <DependentUpon>LogisticsViewUserControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Views\SalesOrder\SalesOrderListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Views\SalesOrder\SalesOrderListForm.Designer.cs">
+      <DependentUpon>SalesOrderListForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Views\SalesOrder\SalesOrderViewUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Views\SalesOrder\SalesOrderViewUserControl.Designer.cs">
+      <DependentUpon>SalesOrderViewUserControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Views\Sales\SalesViewUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UI\Views\Sales\SalesViewUserControl.Designer.cs">
       <DependentUpon>SalesViewUserControl.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Core\Config\SmoothScrollUserControl.resx">
+      <DependentUpon>SmoothScrollUserControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -324,17 +354,20 @@
     <EmbeddedResource Include="UI\Layout\MainLayout.resx">
       <DependentUpon>MainLayout.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Shared\CalendarEvent\CalendarEventControllerUserControl.resx">
-      <DependentUpon>CalendarEventControllerUserControl.cs</DependentUpon>
+    <EmbeddedResource Include="UI\Shared\CalendarSchedule\CalendarScheduleControllerUserControl.resx">
+      <DependentUpon>CalendarScheduleControllerUserControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Shared\CalendarEvent\ScheduleDetailsUserControl.resx">
+    <EmbeddedResource Include="UI\Shared\CalendarSchedule\ScheduleDetailsUserControl.resx">
       <DependentUpon>ScheduleDetailsUserControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Shared\CalendarEvent\SchedulesUserControl.resx">
-      <DependentUpon>SchedulesUserControl.cs</DependentUpon>
+    <EmbeddedResource Include="UI\Shared\CalendarSchedule\ScheduleItem.resx">
+      <DependentUpon>ScheduleItem.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Shared\Calendar\EventCalendarUserControl.resx">
-      <DependentUpon>EventCalendarUserControl.cs</DependentUpon>
+    <EmbeddedResource Include="UI\Shared\CalendarSchedule\ScheduleListUserControl.resx">
+      <DependentUpon>ScheduleListUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Shared\Calendar\ScheduleCalendarUserControl.resx">
+      <DependentUpon>ScheduleCalendarUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Shared\MapLocPinForm.resx">
       <DependentUpon>MapLocPinForm.cs</DependentUpon>
@@ -344,6 +377,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Views\Logistics\LogisticsViewUserControl.resx">
       <DependentUpon>LogisticsViewUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Views\SalesOrder\SalesOrderListForm.resx">
+      <DependentUpon>SalesOrderListForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Views\SalesOrder\SalesOrderViewUserControl.resx">
+      <DependentUpon>SalesOrderViewUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Views\Sales\SalesViewUserControl.resx">
       <DependentUpon>SalesViewUserControl.cs</DependentUpon>
@@ -389,6 +428,36 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-search-30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-search-20.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Icons\big_file.png" />
+    <Content Include="Icons\file.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Icons\folder.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Icons\next.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Icons\folder_open.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Icons\previous.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Icons\search.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Icons\small_close.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets" Condition="Exists('packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" />

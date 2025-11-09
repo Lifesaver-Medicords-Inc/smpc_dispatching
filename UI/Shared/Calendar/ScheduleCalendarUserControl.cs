@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace smpc_dispatching.UI.Shared.Calendar {
-    public partial class EventCalendarUserControl : UserControl {
+    public partial class ScheduleCalendarUserControl : UserControl {
 
         public class CalendarDateRange {
             public DateTime StartDate { get; set; }
@@ -18,9 +18,9 @@ namespace smpc_dispatching.UI.Shared.Calendar {
                     .AddDays(-1)
         };
 
-        public event Action<CalendarEventModel> OnEventClick;
+        public event Action<CalendarScheduleModel> OnEventClick;
 
-        public EventCalendarUserControl() {
+        public ScheduleCalendarUserControl() {
             InitializeComponent();
             LoadCalendar();
         }
@@ -39,7 +39,7 @@ namespace smpc_dispatching.UI.Shared.Calendar {
             CalendarHarness.Refresh();
         }
 
-        public void LoadEvents(IEnumerable<CalendarEventModel> events) {
+        public void LoadEvents(IEnumerable<CalendarScheduleModel> events) {
             CalendarHarness.BeginInvoke(new Action(() => {
                 CalendarHarness.Items.Clear();
 

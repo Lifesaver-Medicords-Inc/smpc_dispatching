@@ -2,13 +2,13 @@
 
 using smpc_dispatching.Core.Interfaces;
 using smpc_dispatching.Core.Models;
-using System.Collections.Generic;
 using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace smpc_dispatching.Core.Services {
-   public class SalesOrderService : ISalesOrderService {
+    public class SalesOrderService : ISalesOrderService {
 
         private readonly IHttpService _httpService;
 
@@ -18,7 +18,7 @@ namespace smpc_dispatching.Core.Services {
 
 
         public async Task<HttpResponseModel<SalesOrderModel>> CreateAsync(SalesOrderModel entity) {
-            var res = await _httpService.Post<HttpResponseModel<SalesOrderModel>>("sales-order", entity);
+            var res = await _httpService.Post<HttpResponseModel<SalesOrderModel>>("sales-orders", entity);
             return res;
         }
 
@@ -31,22 +31,22 @@ namespace smpc_dispatching.Core.Services {
                     .Select(kv => $"{Uri.EscapeDataString(kv.Key)}={Uri.EscapeDataString(kv.Value)}"));
             }
 
-            var res = await _httpService.Get<HttpResponseModel<IEnumerable<SalesOrderModel>>>($"sales-order{queryParams}");
+            var res = await _httpService.Get<HttpResponseModel<IEnumerable<SalesOrderModel>>>($"sales-orders{queryParams}");
             return res;
         }
 
         public async Task<HttpResponseModel<SalesOrderModel>> GetAsync(int Id) {
-            var res = await _httpService.Get<HttpResponseModel<SalesOrderModel>>($"sales-order/{Id}");
+            var res = await _httpService.Get<HttpResponseModel<SalesOrderModel>>($"sales-orders/{Id}");
             return res;
         }
 
         public async Task<HttpResponseModel<SalesOrderModel>> RemoveAsync(int Id) {
-            var res = await _httpService.Delete<HttpResponseModel<SalesOrderModel>>($"sales-order/{Id}");
+            var res = await _httpService.Delete<HttpResponseModel<SalesOrderModel>>($"sales-orders/{Id}");
             return res;
         }
 
         public async Task<HttpResponseModel<SalesOrderModel>> UpdateAsync(SalesOrderModel entity) {
-            var res = await _httpService.Put<HttpResponseModel<SalesOrderModel>>($"sales-order/{entity.Id}", entity);
+            var res = await _httpService.Put<HttpResponseModel<SalesOrderModel>>($"sales-orders/{entity.Id}", entity);
             return res;
         }
     }

@@ -1,44 +1,79 @@
 ﻿
 
 using Newtonsoft.Json;
-using System.Collections.Generic;
+using System;
 
 namespace smpc_dispatching.Core.Models {
     public class ItemReleaseModel : BaseModel {
 
-        [JsonProperty("sales_order_id")]
-        public int SalesOrderId { get; set; }
-        [JsonProperty("request_number")]
-        public string RequestNumber { get; set; }
-        [JsonProperty("requested_by")]
-        public string RequestedBy { get; set; }
-        [JsonProperty("approved_by")]
-        public string ApprovedBy { get; set; }
+        [JsonProperty("requested_by_id")]
+        public uint RequestedById { get; set; }
+
+        [JsonProperty("requested_by_name")]
+        public string RequestedByName { get; set; }
+
+        [JsonProperty("approved_by_id")]
+        public uint? ApprovedById { get; set; }
+
+        [JsonProperty("approved_by_name")]
+        public string ApprovedByName { get; set; }
+
+        [JsonProperty("release_by_id")]
+        public string ReleaseById { get; set; }
+
+        [JsonProperty("release_by_name")]
+        public string ReleaseByName { get; set; }
+
+        [JsonProperty("order_id")]
+        public uint OrderID { get; set; }
+
+        [JsonProperty("delivery_receipt_id")]
+        public uint DeliveryReceiptId { get; set; }
+
+        [JsonProperty("quantity_released")]
+        public double QuantityReleased { get; set; }
+
+        [JsonProperty("serial_number")]
+        public string SerialNumber { get; set; }
+
+        [JsonProperty("departed_at")]
+        public DateTime? DepartedAt { get; set; }
+
+        [JsonProperty("arrived_at")]
+        public DateTime? ArrivedAt { get; set; }
+
+        [JsonProperty("returned_at")]
+        public DateTime? ReturnedAt { get; set; }
+
         [JsonProperty("status")]
         public string Status { get; set; }
+
         [JsonProperty("remarks")]
         public string Remarks { get; set; }
-        [JsonProperty("release_items")]
-        public List<ItemReleaseDetail> ReleaseItems { get; set; } = new List<ItemReleaseDetail>();
+
+        [JsonProperty("peoples")]
+        public string Peoples { get; set; }
+
+        [JsonProperty("created_at")]
+        public DateTime CreatedAt { get; set; }
+
+        [JsonProperty("updated_at")]
+        public DateTime UpdatedAt { get; set; }
+
+        [JsonProperty("deleted_at")]
+        public DateTime? DeletedAt { get; set; }
+
+        [JsonProperty("vehicle_id")]
+        public uint VehicleId { get; set; }
+
+        [JsonProperty("order")]
+        public SalesOrderDetailsModel Order { get; set; }
+
+        [JsonProperty("delivery_receipt")]
+        public DeliveryReceiptModel DeliveryReceipt { get; set; }
+
+        [JsonProperty("vehicle")]
+        public VehicleModel Vehicle { get; set; }
     }
 
-    public class ItemReleaseDetail : BaseModel {
-
-        [JsonProperty("item_release_id")]
-        public int ItemReleaseId { get; set; }
-        [JsonProperty("item_code")]
-        public string ItemCode { get; set; }
-        [JsonProperty("description")]
-        public string Description { get; set; }
-        [JsonProperty("requested_qty")]
-        public double RequestedQty { get; set; }
-        [JsonProperty("requested_qty")]
-        public double ReleasedQty { get; set; }
-        [JsonProperty("unit")]
-        public string Unit { get; set; }
-        [JsonProperty("remarks")]
-        public string Remarks { get; set; }
-        [JsonProperty("status")]
-        public string Status { get; set; }
-    }
 }

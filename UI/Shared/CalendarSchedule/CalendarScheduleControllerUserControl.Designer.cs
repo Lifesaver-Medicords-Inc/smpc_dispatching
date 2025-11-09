@@ -1,5 +1,5 @@
 ﻿namespace smpc_dispatching.UI.Shared.CalendarEvent {
-    partial class CalendarEventControllerUserControl {
+    partial class CalendarScheduleControllerUserControl {
         /// <summary> 
         /// Required designer variable.
         /// </summary>
@@ -69,7 +69,7 @@
             this.MainSplitContainer.Panel2.Controls.Add(this.ScheduleDetailsPanel);
             this.MainSplitContainer.Panel2MinSize = 300;
             this.MainSplitContainer.Size = new System.Drawing.Size(1242, 946);
-            this.MainSplitContainer.SplitterDistance = 861;
+            this.MainSplitContainer.SplitterDistance = 846;
             this.MainSplitContainer.SplitterWidth = 2;
             this.MainSplitContainer.TabIndex = 0;
             // 
@@ -90,7 +90,7 @@
             // EventSplitContainer.Panel2
             // 
             this.EventSplitContainer.Panel2.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.EventSplitContainer.Size = new System.Drawing.Size(861, 946);
+            this.EventSplitContainer.Size = new System.Drawing.Size(846, 946);
             this.EventSplitContainer.SplitterDistance = 677;
             this.EventSplitContainer.SplitterWidth = 1;
             this.EventSplitContainer.TabIndex = 0;
@@ -113,8 +113,8 @@
             // CalendarSplitContainer.Panel2
             // 
             this.CalendarSplitContainer.Panel2.BackColor = System.Drawing.SystemColors.Control;
-            this.CalendarSplitContainer.Size = new System.Drawing.Size(861, 677);
-            this.CalendarSplitContainer.SplitterDistance = 58;
+            this.CalendarSplitContainer.Size = new System.Drawing.Size(846, 677);
+            this.CalendarSplitContainer.SplitterDistance = 61;
             this.CalendarSplitContainer.SplitterWidth = 1;
             this.CalendarSplitContainer.TabIndex = 0;
             // 
@@ -128,7 +128,7 @@
             this.HeaderFlowLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             this.HeaderFlowLayoutPanel.Name = "HeaderFlowLayoutPanel";
             this.HeaderFlowLayoutPanel.Padding = new System.Windows.Forms.Padding(4);
-            this.HeaderFlowLayoutPanel.Size = new System.Drawing.Size(859, 56);
+            this.HeaderFlowLayoutPanel.Size = new System.Drawing.Size(844, 59);
             this.HeaderFlowLayoutPanel.TabIndex = 1;
             this.HeaderFlowLayoutPanel.WrapContents = false;
             // 
@@ -200,14 +200,14 @@
             this.label1.Location = new System.Drawing.Point(341, 9);
             this.label1.Margin = new System.Windows.Forms.Padding(40, 0, 10, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(65, 17);
+            this.label1.Size = new System.Drawing.Size(46, 17);
             this.label1.TabIndex = 5;
-            this.label1.Text = "SWITCH:";
+            this.label1.Text = "VIEW:";
             // 
             // CalendarSwitchViewBtn
             // 
             this.CalendarSwitchViewBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CalendarSwitchViewBtn.Location = new System.Drawing.Point(419, 3);
+            this.CalendarSwitchViewBtn.Location = new System.Drawing.Point(400, 3);
             this.CalendarSwitchViewBtn.Name = "CalendarSwitchViewBtn";
             this.CalendarSwitchViewBtn.Size = new System.Drawing.Size(80, 30);
             this.CalendarSwitchViewBtn.TabIndex = 4;
@@ -220,7 +220,7 @@
             this.ScheduleDetailsPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.ScheduleDetailsPanel.Location = new System.Drawing.Point(0, 0);
             this.ScheduleDetailsPanel.Name = "ScheduleDetailsPanel";
-            this.ScheduleDetailsPanel.Size = new System.Drawing.Size(377, 664);
+            this.ScheduleDetailsPanel.Size = new System.Drawing.Size(392, 664);
             this.ScheduleDetailsPanel.TabIndex = 0;
             // 
             // CalendarEventControllerUserControl

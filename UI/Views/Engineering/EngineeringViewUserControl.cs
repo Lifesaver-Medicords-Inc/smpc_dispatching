@@ -13,7 +13,7 @@ namespace smpc_dispatching.UI.Views.Engineering {
         }
 
         private void EngineeringView_Load(object sender, EventArgs e) {
-            var eventCalendar = _serviceProvider.GetRequiredService<CalendarEventControllerUserControl>();
+            var eventCalendar = _serviceProvider.GetRequiredService<CalendarScheduleControllerUserControl>();
             if (eventCalendar != null) {
                 eventCalendar.Dock = DockStyle.Fill;
                 eventCalendar.Title = "ENGINEERING CALENDAR";

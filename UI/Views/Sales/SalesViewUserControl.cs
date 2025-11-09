@@ -13,7 +13,7 @@ namespace smpc_dispatching.UI.Views.Sales {
         }
 
         private void SalesView_Load(object sender, EventArgs e) {
-            var eventCalendar = _serviceProvider.GetRequiredService<CalendarEventControllerUserControl>();
+            var eventCalendar = _serviceProvider.GetRequiredService<CalendarScheduleControllerUserControl>();
             if (eventCalendar != null) {
                 eventCalendar.Dock = DockStyle.Fill;
                 eventCalendar.Title = "SALES CALENDAR";

@@ -1,5 +1,5 @@
 ﻿namespace smpc_dispatching.UI.Shared.Calendar {
-    partial class EventCalendarUserControl {
+    partial class ScheduleCalendarUserControl {
         /// <summary> 
         /// Required designer variable.
         /// </summary>

@@ -4,14 +4,42 @@ using smpc_dispatching.UI.Shared.Calendar;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using static smpc_dispatching.UI.Shared.Calendar.EventCalendarUserControl;
+using static smpc_dispatching.UI.Shared.Calendar.ScheduleCalendarUserControl;
 
 namespace smpc_dispatching.UI.Shared.CalendarEvent {
-    public partial class CalendarEventControllerUserControl : UserControl {
+    public partial class CalendarScheduleControllerUserControl : UserControl {
 
-        private readonly EventCalendarUserControl _eventCalendarUserControl;
-        private readonly SchedulesUserControl _schedulesUserControl;
+        private readonly ScheduleCalendarUserControl _scheduleCalendarUserControl;
+        private readonly ScheduleListUserControl _scheduleListUserControl;
         private readonly ScheduleDetailsUserControl _scheduleDetailsUserControl;
+
+
+        private List<CalendarScheduleModel> _schedules = new List<CalendarScheduleModel> {
+                    new CalendarScheduleModel {
+                        DepartmentType = "Logistics",
+                        Title = "Truck Delivery #SO1001",
+                        StartDate = new DateTime(2025, 10, 10),
+                        EndDate = new DateTime(2025, 10, 13)
+                    },
+                    new CalendarScheduleModel {
+                        DepartmentType = "Sales",
+                        Title = "Client Visit - Manila",
+                        StartDate = new DateTime(2025, 5, 15),
+                        EndDate = new DateTime(2025, 10, 15)
+                    },
+                                 new CalendarScheduleModel {
+                        DepartmentType = " ",
+                        Title = "Client Visit - Manila",
+                        StartDate = new DateTime(2025, 10, 15),
+                        EndDate = new DateTime(2025, 10, 18)
+                    },
+                                              new CalendarScheduleModel {
+                        DepartmentType = "Engineering",
+                        Title = "Client Visit - Manila",
+                        StartDate = new DateTime(2025, 10, 10),
+                        EndDate = new DateTime(2025, 10, 28)
+                    }
+                };
 
         private CalendarDateRange _dateRange = new CalendarDateRange {
             StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1),
@@ -23,10 +51,10 @@ namespace smpc_dispatching.UI.Shared.CalendarEvent {
 
         private Boolean IsMonthView = true;
 
-        public CalendarEventControllerUserControl(IServiceProvider serviceProvider) {
+        public CalendarScheduleControllerUserControl(IServiceProvider serviceProvider) {
             InitializeComponent();
-            _eventCalendarUserControl = serviceProvider.GetRequiredService<EventCalendarUserControl>();
-            _schedulesUserControl = serviceProvider.GetRequiredService<SchedulesUserControl>();
+            _scheduleCalendarUserControl = serviceProvider.GetRequiredService<ScheduleCalendarUserControl>();
+            _scheduleListUserControl = serviceProvider.GetRequiredService<ScheduleListUserControl>();
             _scheduleDetailsUserControl = serviceProvider.GetRequiredService<ScheduleDetailsUserControl>();
 
             CalendarSwitchViewBtn.Text = !IsMonthView ? "MONTH" : "WEEK";
@@ -41,65 +69,41 @@ namespace smpc_dispatching.UI.Shared.CalendarEvent {
 
 
         private void CalendarEventController_Load(object sender, EventArgs e) {
-            SetDateLabel();
-            LoadCalendar();
 
             EventSplitContainer.Panel2.Controls.Clear();
-            _schedulesUserControl.Dock = DockStyle.Fill;
-            EventSplitContainer.Panel2.Controls.Add(_schedulesUserControl);
+            _scheduleListUserControl.Dock = DockStyle.Fill;
+            EventSplitContainer.Panel2.Controls.Add(_scheduleListUserControl);
 
             MainSplitContainer.Panel2.Controls.Clear();
             _scheduleDetailsUserControl.Dock = DockStyle.Top;
             MainSplitContainer.Panel2.Controls.Add(_scheduleDetailsUserControl);
 
+            SetDateLabel();
+            LoadCalendar();
+            LoadScheduleList();
+
 
         }
 
         private void LoadCalendar() {
-            if (_eventCalendarUserControl != null) {
+            if (_scheduleCalendarUserControl != null) {
 
-                _eventCalendarUserControl.Dock = DockStyle.Fill;
+                _scheduleCalendarUserControl.Dock = DockStyle.Fill;
                 CalendarSplitContainer.Panel2.Controls.Clear();
-                CalendarSplitContainer.Panel2.Controls.Add(_eventCalendarUserControl);
+                CalendarSplitContainer.Panel2.Controls.Add(_scheduleCalendarUserControl);
 
 
 
-                var events = new List<CalendarEventModel> {
-                    new CalendarEventModel {
-                        DepartmentType = "Logistics",
-                        Title = "Truck Delivery #SO1001",
-                        StartDate = new DateTime(2025, 10, 10),
-                        EndDate = new DateTime(2025, 10, 13)
-                    },
-                    new CalendarEventModel {
-                        DepartmentType = "Sales",
-                        Title = "Client Visit - Manila",
-                        StartDate = new DateTime(2025, 5, 15),
-                        EndDate = new DateTime(2025, 10, 15)
-                    },
-                                 new CalendarEventModel {
-                        DepartmentType = " ",
-                        Title = "Client Visit - Manila",
-                        StartDate = new DateTime(2025, 10, 15),
-                        EndDate = new DateTime(2025, 10, 18)
-                    },
-                                              new CalendarEventModel {
-                        DepartmentType = "Engineering",
-                        Title = "Client Visit - Manila",
-                        StartDate = new DateTime(2025, 10, 10),
-                        EndDate = new DateTime(2025, 10, 28)
-                    }
-                };
 
-                _eventCalendarUserControl.DateRange = _dateRange;
-                _eventCalendarUserControl.LoadCalendar();
-                _eventCalendarUserControl.LoadEvents(events);
+                _scheduleCalendarUserControl.DateRange = _dateRange;
+                _scheduleCalendarUserControl.LoadCalendar();
+                _scheduleCalendarUserControl.LoadEvents(_schedules);
 
             }
         }
 
         private void SetDateLabel() {
-            DateLabel.Text = $"{_dateRange.StartDate.ToString("MMMMM")}".ToUpper();
+            DateLabel.Text = $"{_dateRange.StartDate.ToString("MMMMM yyyy")}".ToUpper();
         }
 
         private void PrevBtn_Click(object sender, EventArgs e) {
@@ -153,10 +157,14 @@ namespace smpc_dispatching.UI.Shared.CalendarEvent {
 
 
             SetDateLabel();
-            _eventCalendarUserControl.DateRange = _dateRange;
+            _scheduleCalendarUserControl.DateRange = _dateRange;
             LoadCalendar();
             CalendarSwitchViewBtn.Text = !IsMonthView ? "MONTH" : "WEEK";
 
+        }
+
+        private void LoadScheduleList() {
+            _scheduleListUserControl.LoadSchedules(_schedules);
         }
     }
 }

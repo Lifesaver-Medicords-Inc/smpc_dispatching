@@ -1,13 +1,13 @@
 ﻿
-using System;
 using smpc_dispatching.Core.Interfaces;
 using smpc_dispatching.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace smpc_dispatching.Core.Services {
-  public class DeliveryReceiptService : IDeliveryReceiptService{
+    public class DeliveryReceiptService : IDeliveryReceiptService {
         private readonly IHttpService _httpService;
 
         public DeliveryReceiptService(IHttpService httpService) {
@@ -15,7 +15,7 @@ namespace smpc_dispatching.Core.Services {
         }
 
         public async Task<HttpResponseModel<DeliveryReceiptModel>> CreateAsync(DeliveryReceiptModel entity) {
-            var res = await _httpService.Post<HttpResponseModel<DeliveryReceiptModel>>("delivery-receipt", entity);
+            var res = await _httpService.Post<HttpResponseModel<DeliveryReceiptModel>>("delivery-receipts", entity);
             return res;
         }
 
@@ -29,22 +29,22 @@ namespace smpc_dispatching.Core.Services {
                     .Select(kv => $"{Uri.EscapeDataString(kv.Key)}={Uri.EscapeDataString(kv.Value)}"));
             }
 
-            var res = await _httpService.Get<HttpResponseModel<IEnumerable<DeliveryReceiptModel>>>($"delivery-receipt{queryParams}");
+            var res = await _httpService.Get<HttpResponseModel<IEnumerable<DeliveryReceiptModel>>>($"delivery-receipts{queryParams}");
             return res;
         }
 
         public async Task<HttpResponseModel<DeliveryReceiptModel>> GetAsync(int Id) {
-            var res = await _httpService.Get<HttpResponseModel<DeliveryReceiptModel>>($"delivery-receipt/{Id}");
+            var res = await _httpService.Get<HttpResponseModel<DeliveryReceiptModel>>($"delivery-receipts/{Id}");
             return res;
         }
         public async Task<HttpResponseModel<DeliveryReceiptModel>> UpdateAsync(DeliveryReceiptModel entity) {
-            var res = await _httpService.Put<HttpResponseModel<DeliveryReceiptModel>>($"delivery-receipt/{entity.Id}", entity);
+            var res = await _httpService.Put<HttpResponseModel<DeliveryReceiptModel>>($"delivery-receipts/{entity.Id}", entity);
             return res;
         }
 
 
         public async Task<HttpResponseModel<DeliveryReceiptModel>> RemoveAsync(int Id) {
-            var res = await _httpService.Delete<HttpResponseModel<DeliveryReceiptModel>>($"delivery-receipt/{Id}");
+            var res = await _httpService.Delete<HttpResponseModel<DeliveryReceiptModel>>($"delivery-receipts/{Id}");
             return res;
         }
 

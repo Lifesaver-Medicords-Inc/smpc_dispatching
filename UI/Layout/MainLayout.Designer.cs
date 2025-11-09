@@ -26,8 +26,8 @@
             this.mainContainer = new System.Windows.Forms.SplitContainer();
             this.navbarTreeView = new System.Windows.Forms.TreeView();
             this.innerContainer = new System.Windows.Forms.SplitContainer();
-            this.TabControl = new System.Windows.Forms.TabControl();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.TabControl = new System.Windows.Forms.TabControl();
             ((System.ComponentModel.ISupportInitialize)(this.mainContainer)).BeginInit();
             this.mainContainer.Panel1.SuspendLayout();
             this.mainContainer.Panel2.SuspendLayout();
@@ -85,23 +85,9 @@
             this.innerContainer.Panel2.AutoScroll = true;
             this.innerContainer.Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.innerContainer.Size = new System.Drawing.Size(1016, 838);
-            this.innerContainer.SplitterDistance = 703;
+            this.innerContainer.SplitterDistance = 680;
             this.innerContainer.SplitterWidth = 1;
             this.innerContainer.TabIndex = 0;
-            // 
-            // TabControl
-            // 
-            this.TabControl.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
-            this.TabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TabControl.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.TabControl.ItemSize = new System.Drawing.Size(150, 20);
-            this.TabControl.Location = new System.Drawing.Point(2, 2);
-            this.TabControl.Name = "TabControl";
-            this.TabControl.SelectedIndex = 0;
-            this.TabControl.ShowToolTips = true;
-            this.TabControl.Size = new System.Drawing.Size(697, 832);
-            this.TabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
-            this.TabControl.TabIndex = 0;
             // 
             // panel1
             // 
@@ -110,9 +96,24 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Padding = new System.Windows.Forms.Padding(2);
-            this.panel1.Size = new System.Drawing.Size(703, 838);
+            this.panel1.Size = new System.Drawing.Size(680, 838);
             this.panel1.TabIndex = 0;
+            // 
+            // TabControl
+            // 
+            this.TabControl.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
+            this.TabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TabControl.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.TabControl.ItemSize = new System.Drawing.Size(150, 20);
+            this.TabControl.Location = new System.Drawing.Point(0, 0);
+            this.TabControl.Margin = new System.Windows.Forms.Padding(0);
+            this.TabControl.Name = "TabControl";
+            this.TabControl.Padding = new System.Drawing.Point(0, 0);
+            this.TabControl.SelectedIndex = 0;
+            this.TabControl.ShowToolTips = true;
+            this.TabControl.Size = new System.Drawing.Size(678, 836);
+            this.TabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
+            this.TabControl.TabIndex = 0;
             // 
             // MainLayout
             // 

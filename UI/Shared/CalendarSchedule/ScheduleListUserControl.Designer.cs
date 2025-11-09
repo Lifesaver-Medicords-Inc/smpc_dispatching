@@ -1,5 +1,5 @@
 ﻿namespace smpc_dispatching.UI.Shared.CalendarEvent {
-    partial class SchedulesUserControl {
+    partial class ScheduleListUserControl {
         /// <summary> 
         /// Required designer variable.
         /// </summary>
@@ -31,11 +31,6 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.SearchTextBox = new System.Windows.Forms.TextBox();
-            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.Monthlabel = new System.Windows.Forms.Label();
-            this.panel6 = new System.Windows.Forms.Panel();
-            this.YearLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.MainSplitContainer)).BeginInit();
             this.MainSplitContainer.Panel1.SuspendLayout();
             this.MainSplitContainer.SuspendLayout();
@@ -43,9 +38,6 @@
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.panel2.SuspendLayout();
-            this.flowLayoutPanel3.SuspendLayout();
-            this.panel4.SuspendLayout();
-            this.panel6.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainSplitContainer
@@ -87,7 +79,6 @@
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Controls.Add(this.flowLayoutPanel2);
-            this.flowLayoutPanel1.Controls.Add(this.flowLayoutPanel3);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 36);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -99,7 +90,7 @@
             // 
             this.flowLayoutPanel2.Controls.Add(this.panel2);
             this.flowLayoutPanel2.Controls.Add(this.SearchTextBox);
-            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Left;
+            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(510, 34);
@@ -124,7 +115,6 @@
             this.label2.Size = new System.Drawing.Size(75, 17);
             this.label2.TabIndex = 0;
             this.label2.Text = "SEARCH:";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // SearchTextBox
             // 
@@ -136,63 +126,12 @@
             this.SearchTextBox.Size = new System.Drawing.Size(410, 26);
             this.SearchTextBox.TabIndex = 1;
             // 
-            // flowLayoutPanel3
-            // 
-            this.flowLayoutPanel3.Controls.Add(this.panel4);
-            this.flowLayoutPanel3.Controls.Add(this.panel6);
-            this.flowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(519, 3);
-            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(725, 34);
-            this.flowLayoutPanel3.TabIndex = 1;
-            this.flowLayoutPanel3.WrapContents = false;
-            // 
-            // panel4
-            // 
-            this.panel4.Controls.Add(this.Monthlabel);
-            this.panel4.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel4.Location = new System.Drawing.Point(3, 3);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(199, 29);
-            this.panel4.TabIndex = 4;
-            // 
-            // Monthlabel
-            // 
-            this.Monthlabel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.Monthlabel.AutoSize = true;
-            this.Monthlabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Monthlabel.Location = new System.Drawing.Point(9, 5);
-            this.Monthlabel.Name = "Monthlabel";
-            this.Monthlabel.Size = new System.Drawing.Size(64, 17);
-            this.Monthlabel.TabIndex = 2;
-            this.Monthlabel.Text = "MONTH";
-            // 
-            // panel6
-            // 
-            this.panel6.Controls.Add(this.YearLabel);
-            this.panel6.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel6.Location = new System.Drawing.Point(208, 3);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(144, 29);
-            this.panel6.TabIndex = 6;
-            // 
-            // YearLabel
-            // 
-            this.YearLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.YearLabel.AutoSize = true;
-            this.YearLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.YearLabel.Location = new System.Drawing.Point(3, 5);
-            this.YearLabel.Name = "YearLabel";
-            this.YearLabel.Size = new System.Drawing.Size(49, 17);
-            this.YearLabel.TabIndex = 3;
-            this.YearLabel.Text = "YEAR";
-            // 
-            // SchedulesUserControl
+            // ScheduleListUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.MainSplitContainer);
-            this.Name = "SchedulesUserControl";
+            this.Name = "ScheduleListUserControl";
             this.Padding = new System.Windows.Forms.Padding(4);
             this.Size = new System.Drawing.Size(1255, 608);
             this.MainSplitContainer.Panel1.ResumeLayout(false);
@@ -205,11 +144,6 @@
             this.flowLayoutPanel2.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            this.flowLayoutPanel3.ResumeLayout(false);
-            this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
-            this.panel6.ResumeLayout(false);
-            this.panel6.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -221,13 +155,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox SearchTextBox;
-        private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.Label Monthlabel;
-        private System.Windows.Forms.Panel panel6;
-        private System.Windows.Forms.Label YearLabel;
     }
 }
