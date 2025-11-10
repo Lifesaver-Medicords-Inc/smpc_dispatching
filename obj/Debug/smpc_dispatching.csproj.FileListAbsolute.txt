@@ -101,3 +101,4 @@ D:\PROJECTS\smpc\smpc_dispatching\obj\Debug\smpc_dispatching.csproj.CoreCompileI
 D:\PROJECTS\smpc\smpc_dispatching\obj\Debug\smpc_dis.EDB011AA.Up2Date
 D:\PROJECTS\smpc\smpc_dispatching\obj\Debug\smpc_dispatching.exe
 D:\PROJECTS\smpc\smpc_dispatching\obj\Debug\smpc_dispatching.pdb
+D:\PROJECTS\smpc\smpc_dispatching\obj\Debug\smpc_dispatching.UI.Views.ItemRelease.ItemReleaseViewUserControl.resources

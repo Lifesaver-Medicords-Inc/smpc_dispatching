@@ -31,16 +31,16 @@
             this.EngineeringViewPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.EngineeringViewPanel.Location = new System.Drawing.Point(0, 0);
             this.EngineeringViewPanel.Name = "EngineeringViewPanel";
-            this.EngineeringViewPanel.Size = new System.Drawing.Size(1223, 895);
+            this.EngineeringViewPanel.Size = new System.Drawing.Size(431, 280);
             this.EngineeringViewPanel.TabIndex = 0;
             // 
-            // EngineeringView
+            // EngineeringViewUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.EngineeringViewPanel);
-            this.Name = "EngineeringView";
-            this.Size = new System.Drawing.Size(1223, 895);
+            this.Name = "EngineeringViewUserControl";
+            this.Size = new System.Drawing.Size(431, 280);
             this.Load += new System.EventHandler(this.EngineeringView_Load);
             this.ResumeLayout(false);
 

@@ -9,6 +9,7 @@ using smpc_dispatching.UI.Shared;
 using smpc_dispatching.UI.Shared.Calendar;
 using smpc_dispatching.UI.Shared.CalendarEvent;
 using smpc_dispatching.UI.Views.Engineering;
+using smpc_dispatching.UI.Views.ItemRelease;
 using smpc_dispatching.UI.Views.Logistics;
 using smpc_dispatching.UI.Views.Sales;
 using smpc_dispatching.UI.Views.SalesOrder;
@@ -91,6 +92,8 @@ namespace smpc_dispatching {
             services.AddTransient<MapLocPinForm>();
             services.AddTransient<SalesOrderViewUserControl>();
             services.AddTransient<SalesOrderListForm>();
+            services.AddTransient<ItemReleaseViewUserControl>();
+
         }
     }
 }

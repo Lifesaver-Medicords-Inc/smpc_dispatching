@@ -31,16 +31,16 @@
             this.LegisticsViewPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LegisticsViewPanel.Location = new System.Drawing.Point(0, 0);
             this.LegisticsViewPanel.Name = "LegisticsViewPanel";
-            this.LegisticsViewPanel.Size = new System.Drawing.Size(1227, 898);
+            this.LegisticsViewPanel.Size = new System.Drawing.Size(363, 319);
             this.LegisticsViewPanel.TabIndex = 0;
             // 
-            // LogisticsView
+            // LogisticsViewUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.LegisticsViewPanel);
-            this.Name = "LogisticsView";
-            this.Size = new System.Drawing.Size(1227, 898);
+            this.Name = "LogisticsViewUserControl";
+            this.Size = new System.Drawing.Size(363, 319);
             this.Load += new System.EventHandler(this.LogisticsView_Load);
             this.ResumeLayout(false);
 

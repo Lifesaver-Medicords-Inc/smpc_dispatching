@@ -31,16 +31,16 @@
             this.SalesViewPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SalesViewPanel.Location = new System.Drawing.Point(0, 0);
             this.SalesViewPanel.Name = "SalesViewPanel";
-            this.SalesViewPanel.Size = new System.Drawing.Size(1164, 908);
+            this.SalesViewPanel.Size = new System.Drawing.Size(360, 288);
             this.SalesViewPanel.TabIndex = 0;
             // 
-            // SalesView
+            // SalesViewUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.SalesViewPanel);
-            this.Name = "SalesView";
-            this.Size = new System.Drawing.Size(1164, 908);
+            this.Name = "SalesViewUserControl";
+            this.Size = new System.Drawing.Size(360, 288);
             this.Load += new System.EventHandler(this.SalesView_Load);
             this.ResumeLayout(false);
 

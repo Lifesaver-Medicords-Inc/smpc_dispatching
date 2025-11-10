@@ -224,7 +224,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Config\LoggerConfig.cs" />
-    <Compile Include="Core\Config\SmoothScrollUserControl.cs">
+    <Compile Include="UI\Shared\SmoothScrollUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Core\Interfaces\IDeliveryReceiptService.cs" />
@@ -317,6 +317,12 @@
     <Compile Include="UI\Views\Engineering\EngineeringViewUserControl.Designer.cs">
       <DependentUpon>EngineeringViewUserControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Views\ItemRelease\ItemReleaseViewUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Views\ItemRelease\ItemReleaseViewUserControl.Designer.cs">
+      <DependentUpon>ItemReleaseViewUserControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Views\Logistics\LogisticsViewUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -341,7 +347,7 @@
     <Compile Include="UI\Views\Sales\SalesViewUserControl.Designer.cs">
       <DependentUpon>SalesViewUserControl.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Core\Config\SmoothScrollUserControl.resx">
+    <EmbeddedResource Include="UI\Shared\SmoothScrollUserControl.resx">
       <DependentUpon>SmoothScrollUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -381,6 +387,9 @@
     <EmbeddedResource Include="UI\Views\Engineering\EngineeringViewUserControl.resx">
       <DependentUpon>EngineeringViewUserControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Views\ItemRelease\ItemReleaseViewUserControl.resx">
+      <DependentUpon>ItemReleaseViewUserControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Views\Logistics\LogisticsViewUserControl.resx">
       <DependentUpon>LogisticsViewUserControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -415,7 +424,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Core\Logs\" />
-    <Folder Include="UI\Views\Engineering\Components\Schedules\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icons8-next-20.png" />

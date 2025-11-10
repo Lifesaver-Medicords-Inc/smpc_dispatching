@@ -2,6 +2,7 @@
 using smpc_dispatching.Core.Interfaces;
 using smpc_dispatching.Core.Models;
 using smpc_dispatching.UI.Views.Engineering;
+using smpc_dispatching.UI.Views.ItemRelease;
 using smpc_dispatching.UI.Views.Logistics;
 using smpc_dispatching.UI.Views.Sales;
 using smpc_dispatching.UI.Views.SalesOrder;
@@ -53,6 +54,12 @@ namespace smpc_dispatching.Core.Services {
                 Parent = null,
                 Title = "Sales Order",
                 ViewFactory = () => _serviceProvider.GetRequiredService<SalesOrderViewUserControl>()
+            };
+            _pages["ITEM_RELEASE"] = new ViewControlModel {
+                Code = "ITEM_RELEASE",
+                Parent = null,
+                Title = "Item Release",
+                ViewFactory = () => _serviceProvider.GetRequiredService<ItemReleaseViewUserControl>()
             };
         }
 

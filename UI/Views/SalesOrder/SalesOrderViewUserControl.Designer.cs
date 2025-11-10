@@ -810,10 +810,11 @@
             // 
             // PrevBtn
             // 
-            this.PrevBtn.Location = new System.Drawing.Point(123, 7);
+            this.PrevBtn.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.PrevBtn.Location = new System.Drawing.Point(123, 12);
             this.PrevBtn.Margin = new System.Windows.Forms.Padding(20, 3, 3, 3);
             this.PrevBtn.Name = "PrevBtn";
-            this.PrevBtn.Size = new System.Drawing.Size(80, 30);
+            this.PrevBtn.Size = new System.Drawing.Size(80, 24);
             this.PrevBtn.TabIndex = 2;
             this.PrevBtn.Text = "PREV";
             this.PrevBtn.UseVisualStyleBackColor = true;
@@ -821,9 +822,10 @@
             // 
             // NextBtn
             // 
-            this.NextBtn.Location = new System.Drawing.Point(209, 7);
+            this.NextBtn.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.NextBtn.Location = new System.Drawing.Point(209, 12);
             this.NextBtn.Name = "NextBtn";
-            this.NextBtn.Size = new System.Drawing.Size(80, 30);
+            this.NextBtn.Size = new System.Drawing.Size(80, 24);
             this.NextBtn.TabIndex = 3;
             this.NextBtn.Text = "NEXT";
             this.NextBtn.UseVisualStyleBackColor = true;
