@@ -10,6 +10,7 @@ D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Icons\small_close.png
 D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\smpc_dispatching.exe.config
 D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\smpc_dispatching.exe
 D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\smpc_dispatching.pdb
+D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\AjaxMin.dll
 D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\EntityFramework.dll
 D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\EntityFramework.SqlServer.dll
 D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\GMap.NET.Core.dll
@@ -34,6 +35,7 @@ D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Serilog.Sinks.Debug.dll
 D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Serilog.Sinks.File.dll
 D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Buffers.dll
 D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Data.SqlClient.dll
+D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Data.SQLite.dll
 D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Diagnostics.DiagnosticSource.dll
 D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.IO.Pipelines.dll
 D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Memory.dll
@@ -67,6 +69,7 @@ D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Serilog.Sinks.Debug.xml
 D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Serilog.Sinks.File.xml
 D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Buffers.xml
 D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Data.SqlClient.xml
+D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Data.SQLite.xml
 D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Diagnostics.DiagnosticSource.xml
 D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.IO.Pipelines.xml
 D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Memory.xml

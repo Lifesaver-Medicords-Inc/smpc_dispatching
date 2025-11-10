@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Windows.Forms;
 
 namespace smpc_dispatching.UI.Shared.CalendarEvent {
@@ -13,19 +14,19 @@ namespace smpc_dispatching.UI.Shared.CalendarEvent {
         }
 
         private void PinMapBtn_Click(object sender, EventArgs e) {
-            //if (InvokeRequired) {
-            //    BeginInvoke((Action)(() => PinMapBtn_Click(sender, e)));
-            //    return;
-            //}
+            if (InvokeRequired) {
+                BeginInvoke((Action)(() => PinMapBtn_Click(sender, e)));
+                return;
+            }
 
 
-            //using (var mapForm = _serviceProvider.GetRequiredService<MapLocPinForm>()) {
-            //    var result = mapForm.ShowDialog();
-            //    if (result == DialogResult.OK && mapForm.SelectedPoint != null) {
-            //        LocationRichTextBox.Text = mapForm.SelectedAddress;
-            //    }
+            using (var mapForm = _serviceProvider.GetRequiredService<MapLocPinForm>()) {
+                var result = mapForm.ShowDialog();
+                if (result == DialogResult.OK && mapForm.SelectedPoint != null) {
+                    LocationRichTextBox.Text = mapForm.SelectedAddress;
+                }
 
-            //}
+            }
         }
 
     }

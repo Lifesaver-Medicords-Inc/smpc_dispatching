@@ -88,10 +88,10 @@
             this.flowLayoutPanel1.Controls.Add(this.CancelBtn);
             this.flowLayoutPanel1.Controls.Add(this.SaveBtn);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 511);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 509);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(383, 38);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(383, 40);
             this.flowLayoutPanel1.TabIndex = 1;
             this.flowLayoutPanel1.WrapContents = false;
             // 
@@ -100,11 +100,11 @@
             this.CancelBtn.BackColor = System.Drawing.Color.Red;
             this.CancelBtn.FlatAppearance.BorderSize = 0;
             this.CancelBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CancelBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CancelBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CancelBtn.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.CancelBtn.Location = new System.Drawing.Point(280, 3);
             this.CancelBtn.Name = "CancelBtn";
-            this.CancelBtn.Size = new System.Drawing.Size(100, 30);
+            this.CancelBtn.Size = new System.Drawing.Size(100, 25);
             this.CancelBtn.TabIndex = 2;
             this.CancelBtn.Text = "CANCEL";
             this.CancelBtn.UseVisualStyleBackColor = false;
@@ -114,11 +114,11 @@
             this.SaveBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.SaveBtn.FlatAppearance.BorderSize = 0;
             this.SaveBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SaveBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SaveBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SaveBtn.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.SaveBtn.Location = new System.Drawing.Point(174, 3);
             this.SaveBtn.Name = "SaveBtn";
-            this.SaveBtn.Size = new System.Drawing.Size(100, 30);
+            this.SaveBtn.Size = new System.Drawing.Size(100, 25);
             this.SaveBtn.TabIndex = 3;
             this.SaveBtn.Text = "SAVE";
             this.SaveBtn.UseVisualStyleBackColor = false;
