@@ -31,6 +31,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Name = "ScheduleItem";
             this.Size = new System.Drawing.Size(1193, 124);
+            this.Load += new System.EventHandler(this.ScheduleItem_Load);
             this.ResumeLayout(false);
 
         }

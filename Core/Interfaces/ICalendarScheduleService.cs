@@ -2,4 +2,5 @@
 namespace smpc_dispatching.Core.Interfaces {
     public interface ICalendarScheduleService : IApiService<CalendarScheduleModel> {
     }
+    
 }

@@ -85,7 +85,7 @@
             this.innerContainer.Panel2.AutoScroll = true;
             this.innerContainer.Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.innerContainer.Size = new System.Drawing.Size(1016, 838);
-            this.innerContainer.SplitterDistance = 680;
+            this.innerContainer.SplitterDistance = 683;
             this.innerContainer.SplitterWidth = 1;
             this.innerContainer.TabIndex = 0;
             // 
@@ -96,7 +96,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(680, 838);
+            this.panel1.Size = new System.Drawing.Size(683, 838);
             this.panel1.TabIndex = 0;
             // 
             // TabControl
@@ -111,7 +111,7 @@
             this.TabControl.Padding = new System.Drawing.Point(0, 0);
             this.TabControl.SelectedIndex = 0;
             this.TabControl.ShowToolTips = true;
-            this.TabControl.Size = new System.Drawing.Size(678, 836);
+            this.TabControl.Size = new System.Drawing.Size(681, 836);
             this.TabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.TabControl.TabIndex = 0;
             // 
@@ -127,6 +127,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MainLayout";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainLayout_FormClosing);
             this.Load += new System.EventHandler(this.MainLayout_Load);
             this.mainContainer.Panel1.ResumeLayout(false);
             this.mainContainer.Panel2.ResumeLayout(false);

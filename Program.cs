@@ -73,6 +73,7 @@ namespace smpc_dispatching {
             services.AddScoped<IRouteService, RouteService>();
 
             services.AddScoped<ICalendarScheduleService, CalendarScheduleService>();
+            services.AddScoped<ICalendarCategoryService, CalendarCategoryService>();
             services.AddScoped<IDeliveryReceiptService, DeliveryReceiptService>();
             services.AddScoped<IItemReleaseService, ItemReleaseService>();
             services.AddScoped<ISalesOrderService, SalesOrderService>();

@@ -18,6 +18,7 @@ namespace smpc_dispatching.UI.Layout {
             TabControl.DrawMode = TabDrawMode.OwnerDrawFixed;
             TabControl.DrawItem += TabControl_DrawItem;
             TabControl.MouseDown += TabControl_MouseDown;
+            
 
         }
 
@@ -93,6 +94,10 @@ namespace smpc_dispatching.UI.Layout {
             }
         }
 
-
+        private void MainLayout_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }
+

@@ -1,40 +1,58 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
-public class SmoothScrollUserControl : UserControl {
-    public SmoothScrollUserControl() {
+public class SmoothScrollUserControl : UserControl
+{
+    public SmoothScrollUserControl()
+    {
+        if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
+            return;
+
         this.AutoScroll = true;
+
+        // Subscribe to events safely at runtime only
         this.ControlAdded += SmoothScrollUserControl_ControlAdded;
         this.Load += SmoothScrollUserControl_Load;
     }
 
-    // Attach Enter event to all children on load
-    private void SmoothScrollUserControl_Load(object sender, EventArgs e) {
+    private void SmoothScrollUserControl_Load(object sender, EventArgs e)
+    {
+        if (LicenseManager.UsageMode == LicenseUsageMode.Designtime) return;
         AttachEnterEventsRecursive(this);
     }
 
-    // Attach events dynamically when controls are added
-    private void SmoothScrollUserControl_ControlAdded(object sender, ControlEventArgs e) {
+    private void SmoothScrollUserControl_ControlAdded(object sender, ControlEventArgs e)
+    {
+        if (LicenseManager.UsageMode == LicenseUsageMode.Designtime) return;
         AttachEnterEventsRecursive(e.Control);
     }
 
-    // Recursively attach Enter events to all child controls
-    private void AttachEnterEventsRecursive(Control ctrl) {
-        ctrl.Enter += Child_Enter;
-
-        foreach (Control child in ctrl.Controls) {
-            AttachEnterEventsRecursive(child);
+    private void AttachEnterEventsRecursive(Control parent)
+    {
+        foreach (Control ctrl in parent.Controls)
+        {
+            ctrl.Enter += (s, e) => ScrollControlIntoView((Control)s);
+            if (ctrl.HasChildren)
+                AttachEnterEventsRecursive(ctrl);
         }
     }
 
-    // Restore scroll position whenever a child gains focus
-    private void Child_Enter(object sender, EventArgs e) {
-        Point scrollPos = this.AutoScrollPosition;
+    protected override Point ScrollToControl(Control activeControl)
+    {
+        if (activeControl != null)
+        {
+            Rectangle visible = new Rectangle(
+                -this.AutoScrollPosition.X,
+                -this.AutoScrollPosition.Y,
+                this.ClientSize.Width,
+                this.ClientSize.Height);
 
-        // Use BeginInvoke to restore scroll after the focus event finishes
-        this.BeginInvoke(new Action(() => {
-            this.AutoScrollPosition = new Point(-scrollPos.X, -scrollPos.Y);
-        }));
+            if (visible.Contains(activeControl.Bounds))
+                return this.AutoScrollPosition;
+        }
+
+        return base.ScrollToControl(activeControl);
     }
 }

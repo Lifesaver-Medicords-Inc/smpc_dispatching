@@ -24,8 +24,8 @@ namespace smpc_dispatching.UI.Forms {
                 //var employeeId = usernameTextBox.Text;
                 //var password = passwordTextBox.Text;
 
-                var employeeId = "IT--4";
-                var password = "Igie";
+                var employeeId = "PURCH-PO-8";
+                var password = "PURCH-PO-8";
 
                 if (string.IsNullOrWhiteSpace(employeeId)) {
                     MessageBox.Show("Employee ID is required.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -52,7 +52,7 @@ namespace smpc_dispatching.UI.Forms {
 
                 this.Hide();
 
-                var mainLayout = _serviceProvider.GetRequiredService<MainLayout>();
+                var mainLayout = _serviceProvider.GetRequiredService <MainLayout>();
 
                 if (mainLayout != null) {
                     mainLayout.Show();

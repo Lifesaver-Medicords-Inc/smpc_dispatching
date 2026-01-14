@@ -9,37 +9,38 @@ using static smpc_dispatching.UI.Shared.Calendar.ScheduleCalendarUserControl;
 namespace smpc_dispatching.UI.Shared.CalendarEvent {
     public partial class CalendarScheduleControllerUserControl : UserControl {
 
+        public string DepartmentType { get; private set; }
         private readonly ScheduleCalendarUserControl _scheduleCalendarUserControl;
         private readonly ScheduleListUserControl _scheduleListUserControl;
         private readonly ScheduleDetailsUserControl _scheduleDetailsUserControl;
 
 
         private List<CalendarScheduleModel> _schedules = new List<CalendarScheduleModel> {
-                    new CalendarScheduleModel {
-                        DepartmentType = "Logistics",
-                        Title = "Truck Delivery #SO1001",
-                        StartDate = new DateTime(2025, 10, 10),
-                        EndDate = new DateTime(2025, 10, 13)
-                    },
-                    new CalendarScheduleModel {
-                        DepartmentType = "Sales",
-                        Title = "Client Visit - Manila",
-                        StartDate = new DateTime(2025, 5, 15),
-                        EndDate = new DateTime(2025, 10, 15)
-                    },
-                                 new CalendarScheduleModel {
-                        DepartmentType = " ",
-                        Title = "Client Visit - Manila",
-                        StartDate = new DateTime(2025, 10, 15),
-                        EndDate = new DateTime(2025, 10, 18)
-                    },
-                                              new CalendarScheduleModel {
-                        DepartmentType = "Engineering",
-                        Title = "Client Visit - Manila",
-                        StartDate = new DateTime(2025, 10, 10),
-                        EndDate = new DateTime(2025, 10, 28)
-                    }
-                };
+            new CalendarScheduleModel {
+                DepartmentType = "Logistics",
+                Title = "Truck Delivery #SO1001",
+                StartDate = new DateTime(2025, 10, 10),
+                EndDate = new DateTime(2025, 10, 13)
+            },
+            new CalendarScheduleModel {
+                DepartmentType = "Sales",
+                Title = "Client Visit - Manila",
+                StartDate = new DateTime(2025, 5, 15),
+                EndDate = new DateTime(2025, 10, 15)
+            },
+            new CalendarScheduleModel {
+                DepartmentType = " ",
+                Title = "Client Visit - Manila",
+                StartDate = new DateTime(2025, 10, 15),
+                EndDate = new DateTime(2025, 10, 18)
+            },
+            new CalendarScheduleModel {
+                DepartmentType = "Engineering",
+                Title = "Client Visit - Manila",
+                StartDate = new DateTime(2025, 10, 10),
+                EndDate = new DateTime(2025, 10, 28)
+            }
+        };
 
         private CalendarDateRange _dateRange = new CalendarDateRange {
             StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1),
@@ -53,6 +54,8 @@ namespace smpc_dispatching.UI.Shared.CalendarEvent {
 
         public CalendarScheduleControllerUserControl(IServiceProvider serviceProvider) {
             InitializeComponent();
+
+            DepartmentType = departmentType;
             _scheduleCalendarUserControl = serviceProvider.GetRequiredService<ScheduleCalendarUserControl>();
             _scheduleListUserControl = serviceProvider.GetRequiredService<ScheduleListUserControl>();
             _scheduleDetailsUserControl = serviceProvider.GetRequiredService<ScheduleDetailsUserControl>();
@@ -91,7 +94,6 @@ namespace smpc_dispatching.UI.Shared.CalendarEvent {
                 _scheduleCalendarUserControl.Dock = DockStyle.Fill;
                 CalendarSplitContainer.Panel2.Controls.Clear();
                 CalendarSplitContainer.Panel2.Controls.Add(_scheduleCalendarUserControl);
-
 
 
 

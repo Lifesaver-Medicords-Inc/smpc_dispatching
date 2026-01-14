@@ -7,9 +7,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using System.ComponentModel;
 
 namespace smpc_dispatching.UI.Views.SalesOrder {
-    public partial class SalesOrderViewUserControl : SmoothScrollUserControl {
+    public partial class SalesOrderViewUserControl : UserControl {
 
         private readonly ISalesOrderService _salesOrderService;
         private List<SalesOrderModel> _salesOrders;
@@ -22,23 +23,25 @@ namespace smpc_dispatching.UI.Views.SalesOrder {
 
         public SalesOrderViewUserControl(ISalesOrderService salesOrderService, IServiceProvider serviceProvider, IDrawFolderTreeService<FileModel> drawFolderTreeService) {
 
-            this.AutoScroll = true;
-
-            _drawFolderTreeService = drawFolderTreeService;
-            _salesOrderService = salesOrderService;
-
-            _salesOrderListForm = serviceProvider.GetRequiredService<SalesOrderListForm>();
+            if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
+            {
+                InitializeComponent();
+                return;
+            }
 
             InitializeComponent();
+
+            this.AutoScroll = true;
+            _drawFolderTreeService = drawFolderTreeService;
+            _salesOrderService = salesOrderService;
+            _salesOrderListForm = serviceProvider.GetRequiredService<SalesOrderListForm>();
+
             LoadSalesOrders();
 
             ShowOrderListFormPanel.Cursor = Cursors.Hand;
             ShowOrderListFormPanel.Click += ShowOrderListFormPanel_Click;
 
-
-            _salesOrderListForm.SetCurrentOrderID = value => {
-                SetCurrentOrder(value);
-            };
+            _salesOrderListForm.SetCurrentOrderID = value => SetCurrentOrder(value);
 
             DrawTreeView();
         }

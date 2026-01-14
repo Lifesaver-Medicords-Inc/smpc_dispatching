@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="packages\EntityFramework.6.5.1\build\EntityFramework.props" Condition="Exists('packages\EntityFramework.6.5.1\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -167,6 +167,9 @@
     <Reference Include="System.Buffers, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll</HintPath>
     </Reference>
+    <Reference Include="System.CodeDom, Version=10.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.CodeDom.10.0.2\lib\net462\System.CodeDom.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.SqlClient, Version=4.6.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -181,6 +184,7 @@
     <Reference Include="System.IO.Pipelines, Version=9.0.0.10, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.IO.Pipelines.9.0.10\lib\net462\System.IO.Pipelines.dll</HintPath>
     </Reference>
+    <Reference Include="System.Management" />
     <Reference Include="System.Memory, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Memory.4.6.3\lib\net462\System.Memory.dll</HintPath>
     </Reference>
@@ -227,6 +231,8 @@
     <Compile Include="UI\Shared\SmoothScrollUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Core\Helpers\Helpers.cs" />
+    <Compile Include="Core\Interfaces\ICalendarCategoryService.cs" />
     <Compile Include="Core\Interfaces\IDeliveryReceiptService.cs" />
     <Compile Include="Core\Interfaces\IApiService.cs" />
     <Compile Include="Core\Interfaces\IAuthService.cs" />
@@ -239,6 +245,7 @@
     <Compile Include="Core\Interfaces\IRouteService.cs" />
     <Compile Include="Core\Interfaces\ISalesOrderService.cs" />
     <Compile Include="Core\Models\BaseModel.cs" />
+    <Compile Include="Core\Models\CalendarCategoryModel.cs" />
     <Compile Include="Core\Models\CalendarScheduleModel.cs" />
     <Compile Include="Core\Models\DeliveryItemModel.cs" />
     <Compile Include="Core\Models\DeliveryReceiptModel.cs" />
@@ -248,13 +255,16 @@
     <Compile Include="Core\Models\ItemModel.cs" />
     <Compile Include="Core\Models\ItemReleaseModel.cs" />
     <Compile Include="Core\Models\SalesOrderModel.cs" />
+    <Compile Include="Core\Models\SetupModel.cs" />
     <Compile Include="Core\Models\VehicleModel.cs" />
     <Compile Include="Core\Models\ViewControlModel.cs" />
     <Compile Include="Core\Models\UserModel.cs" />
     <Compile Include="Core\Services\AuthService.cs" />
+    <Compile Include="Core\Services\CalendarCategoryService.cs" />
     <Compile Include="Core\Services\CalendarScheduleService.cs" />
     <Compile Include="Core\Services\DeliveryReceiptService.cs" />
     <Compile Include="Core\Services\DrawFolderTreeService.cs" />
+    <Compile Include="Core\Services\GeneralSetupService.cs" />
     <Compile Include="Core\Services\GeoService.cs" />
     <Compile Include="Core\Services\HttpService.cs" />
     <Compile Include="Core\Services\ItemReleaseService.cs" />
@@ -310,6 +320,12 @@
     </Compile>
     <Compile Include="UI\Shared\MapLocPinForm.Designer.cs">
       <DependentUpon>MapLocPinForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Shared\SetupModal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Shared\SetupModal.Designer.cs">
+      <DependentUpon>SetupModal.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Views\Engineering\EngineeringViewUserControl.cs">
       <SubType>UserControl</SubType>
@@ -383,6 +399,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Shared\MapLocPinForm.resx">
       <DependentUpon>MapLocPinForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Shared\SetupModal.resx">
+      <DependentUpon>SetupModal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Views\Engineering\EngineeringViewUserControl.resx">
       <DependentUpon>EngineeringViewUserControl.cs</DependentUpon>

@@ -13,5 +13,10 @@ namespace smpc_dispatching.UI.Shared.CalendarSchedule {
         public ScheduleItem() {
             InitializeComponent();
         }
+
+        private void ScheduleItem_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

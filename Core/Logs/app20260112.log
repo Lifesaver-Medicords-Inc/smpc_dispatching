@@ -1,0 +1,358 @@
+2026-01-12 16:39:38.019 +08:00 [ERR] Error getting all sales order: 
+2026-01-12 17:14:02.199 +08:00 [ERR] Error getting calendar categories: 
+2026-01-12 17:14:03.766 +08:00 [ERR] Error getting calendar categories: 
+2026-01-12 17:14:07.743 +08:00 [ERR] Error getting all sales order: 
+2026-01-12 17:14:17.796 +08:00 [ERR] Error getting calendar categories: 
+2026-01-12 17:19:30.604 +08:00 [ERR] Exception during API request: login
+System.Net.Http.HttpRequestException: An error occurred while sending the request. ---> System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond 192.168.1.244:3000
+   at System.Net.Sockets.Socket.InternalEndConnect(IAsyncResult asyncResult)
+   at System.Net.Sockets.Socket.EndConnect(IAsyncResult asyncResult)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.EndGetRequestStream(IAsyncResult asyncResult, TransportContext& context)
+   at System.Net.Http.HttpClientHandler.GetRequestStreamCallback(IAsyncResult ar)
+   --- End of inner exception stack trace ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at smpc_dispatching.Core.Services.HttpService.<SendRequestAsync>d__7`1.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\HttpService.cs:line 59
+2026-01-12 17:19:30.759 +08:00 [ERR] Exception during API request: login
+System.Net.Http.HttpRequestException: An error occurred while sending the request. ---> System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond 192.168.1.244:3000
+   at System.Net.Sockets.Socket.InternalEndConnect(IAsyncResult asyncResult)
+   at System.Net.Sockets.Socket.EndConnect(IAsyncResult asyncResult)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.EndGetRequestStream(IAsyncResult asyncResult, TransportContext& context)
+   at System.Net.Http.HttpClientHandler.GetRequestStreamCallback(IAsyncResult ar)
+   --- End of inner exception stack trace ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at smpc_dispatching.Core.Services.HttpService.<SendRequestAsync>d__7`1.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\HttpService.cs:line 59
+2026-01-12 17:20:55.868 +08:00 [ERR] Exception during API request: login
+System.Net.Http.HttpRequestException: An error occurred while sending the request. ---> System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: An established connection was aborted by the software in your host machine 192.168.1.244:3000
+   at System.Net.Sockets.Socket.InternalEndConnect(IAsyncResult asyncResult)
+   at System.Net.Sockets.Socket.EndConnect(IAsyncResult asyncResult)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.EndGetRequestStream(IAsyncResult asyncResult, TransportContext& context)
+   at System.Net.Http.HttpClientHandler.GetRequestStreamCallback(IAsyncResult ar)
+   --- End of inner exception stack trace ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at smpc_dispatching.Core.Services.HttpService.<SendRequestAsync>d__7`1.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\HttpService.cs:line 59
+2026-01-12 17:20:56.009 +08:00 [ERR] Exception during API request: login
+System.Net.Http.HttpRequestException: An error occurred while sending the request. ---> System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: An established connection was aborted by the software in your host machine 192.168.1.244:3000
+   at System.Net.Sockets.Socket.InternalEndConnect(IAsyncResult asyncResult)
+   at System.Net.Sockets.Socket.EndConnect(IAsyncResult asyncResult)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.EndGetRequestStream(IAsyncResult asyncResult, TransportContext& context)
+   at System.Net.Http.HttpClientHandler.GetRequestStreamCallback(IAsyncResult ar)
+   --- End of inner exception stack trace ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at smpc_dispatching.Core.Services.HttpService.<SendRequestAsync>d__7`1.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\HttpService.cs:line 59
+2026-01-12 17:20:57.846 +08:00 [ERR] Exception during API request: login
+System.Net.Http.HttpRequestException: An error occurred while sending the request. ---> System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: No connection could be made because the target machine actively refused it 192.168.1.244:3000
+   at System.Net.Sockets.Socket.InternalEndConnect(IAsyncResult asyncResult)
+   at System.Net.Sockets.Socket.EndConnect(IAsyncResult asyncResult)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.EndGetRequestStream(IAsyncResult asyncResult, TransportContext& context)
+   at System.Net.Http.HttpClientHandler.GetRequestStreamCallback(IAsyncResult ar)
+   --- End of inner exception stack trace ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at smpc_dispatching.Core.Services.HttpService.<SendRequestAsync>d__7`1.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\HttpService.cs:line 59
+2026-01-12 17:20:58.028 +08:00 [ERR] Exception during API request: login
+System.Net.Http.HttpRequestException: An error occurred while sending the request. ---> System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: No connection could be made because the target machine actively refused it 192.168.1.244:3000
+   at System.Net.Sockets.Socket.InternalEndConnect(IAsyncResult asyncResult)
+   at System.Net.Sockets.Socket.EndConnect(IAsyncResult asyncResult)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.EndGetRequestStream(IAsyncResult asyncResult, TransportContext& context)
+   at System.Net.Http.HttpClientHandler.GetRequestStreamCallback(IAsyncResult ar)
+   --- End of inner exception stack trace ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at smpc_dispatching.Core.Services.HttpService.<SendRequestAsync>d__7`1.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\HttpService.cs:line 59
+2026-01-12 17:20:59.960 +08:00 [ERR] Exception during API request: login
+System.Net.Http.HttpRequestException: An error occurred while sending the request. ---> System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: No connection could be made because the target machine actively refused it 192.168.1.244:3000
+   at System.Net.Sockets.Socket.InternalEndConnect(IAsyncResult asyncResult)
+   at System.Net.Sockets.Socket.EndConnect(IAsyncResult asyncResult)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.EndGetRequestStream(IAsyncResult asyncResult, TransportContext& context)
+   at System.Net.Http.HttpClientHandler.GetRequestStreamCallback(IAsyncResult ar)
+   --- End of inner exception stack trace ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at smpc_dispatching.Core.Services.HttpService.<SendRequestAsync>d__7`1.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\HttpService.cs:line 59
+2026-01-12 17:21:00.173 +08:00 [ERR] Exception during API request: login
+System.Net.Http.HttpRequestException: An error occurred while sending the request. ---> System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: No connection could be made because the target machine actively refused it 192.168.1.244:3000
+   at System.Net.Sockets.Socket.InternalEndConnect(IAsyncResult asyncResult)
+   at System.Net.Sockets.Socket.EndConnect(IAsyncResult asyncResult)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.EndGetRequestStream(IAsyncResult asyncResult, TransportContext& context)
+   at System.Net.Http.HttpClientHandler.GetRequestStreamCallback(IAsyncResult ar)
+   --- End of inner exception stack trace ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at smpc_dispatching.Core.Services.HttpService.<SendRequestAsync>d__7`1.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\HttpService.cs:line 59
+2026-01-12 17:21:02.081 +08:00 [ERR] Exception during API request: login
+System.Net.Http.HttpRequestException: An error occurred while sending the request. ---> System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: No connection could be made because the target machine actively refused it 192.168.1.244:3000
+   at System.Net.Sockets.Socket.InternalEndConnect(IAsyncResult asyncResult)
+   at System.Net.Sockets.Socket.EndConnect(IAsyncResult asyncResult)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.EndGetRequestStream(IAsyncResult asyncResult, TransportContext& context)
+   at System.Net.Http.HttpClientHandler.GetRequestStreamCallback(IAsyncResult ar)
+   --- End of inner exception stack trace ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at smpc_dispatching.Core.Services.HttpService.<SendRequestAsync>d__7`1.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\HttpService.cs:line 59
+2026-01-12 17:21:02.378 +08:00 [ERR] Exception during API request: login
+System.Net.Http.HttpRequestException: An error occurred while sending the request. ---> System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: No connection could be made because the target machine actively refused it 192.168.1.244:3000
+   at System.Net.Sockets.Socket.InternalEndConnect(IAsyncResult asyncResult)
+   at System.Net.Sockets.Socket.EndConnect(IAsyncResult asyncResult)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.EndGetRequestStream(IAsyncResult asyncResult, TransportContext& context)
+   at System.Net.Http.HttpClientHandler.GetRequestStreamCallback(IAsyncResult ar)
+   --- End of inner exception stack trace ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at smpc_dispatching.Core.Services.HttpService.<SendRequestAsync>d__7`1.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\HttpService.cs:line 59
+2026-01-12 17:21:04.176 +08:00 [ERR] Exception during API request: login
+System.Net.Http.HttpRequestException: An error occurred while sending the request. ---> System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: No connection could be made because the target machine actively refused it 192.168.1.244:3000
+   at System.Net.Sockets.Socket.InternalEndConnect(IAsyncResult asyncResult)
+   at System.Net.Sockets.Socket.EndConnect(IAsyncResult asyncResult)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.EndGetRequestStream(IAsyncResult asyncResult, TransportContext& context)
+   at System.Net.Http.HttpClientHandler.GetRequestStreamCallback(IAsyncResult ar)
+   --- End of inner exception stack trace ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at smpc_dispatching.Core.Services.HttpService.<SendRequestAsync>d__7`1.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\HttpService.cs:line 59
+2026-01-12 17:21:04.534 +08:00 [ERR] Exception during API request: login
+System.Net.Http.HttpRequestException: An error occurred while sending the request. ---> System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: No connection could be made because the target machine actively refused it 192.168.1.244:3000
+   at System.Net.Sockets.Socket.InternalEndConnect(IAsyncResult asyncResult)
+   at System.Net.Sockets.Socket.EndConnect(IAsyncResult asyncResult)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.EndGetRequestStream(IAsyncResult asyncResult, TransportContext& context)
+   at System.Net.Http.HttpClientHandler.GetRequestStreamCallback(IAsyncResult ar)
+   --- End of inner exception stack trace ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at smpc_dispatching.Core.Services.HttpService.<SendRequestAsync>d__7`1.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\HttpService.cs:line 59
+2026-01-12 17:21:11.467 +08:00 [ERR] Exception during API request: login
+System.Net.Http.HttpRequestException: An error occurred while sending the request. ---> System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: No connection could be made because the target machine actively refused it 192.168.1.244:3000
+   at System.Net.Sockets.Socket.InternalEndConnect(IAsyncResult asyncResult)
+   at System.Net.Sockets.Socket.EndConnect(IAsyncResult asyncResult)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.EndGetRequestStream(IAsyncResult asyncResult, TransportContext& context)
+   at System.Net.Http.HttpClientHandler.GetRequestStreamCallback(IAsyncResult ar)
+   --- End of inner exception stack trace ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at smpc_dispatching.Core.Services.HttpService.<SendRequestAsync>d__7`1.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\HttpService.cs:line 59
+2026-01-12 17:35:26.584 +08:00 [ERR] Error getting calendar categories
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at smpc_dispatching.Core.Services.CalendarCategoryService.<GetAllAsync>d__2.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\CalendarCategoryService.cs:line 31
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at smpc_dispatching.UI.Shared.CalendarEvent.ScheduleDetailsUserControl.<LoadCategoriesAsync>d__7.MoveNext() in D:\LEM\Source Tree\Dispatching\UI\Shared\CalendarSchedule\ScheduleDetailsUserControl.cs:line 57
+2026-01-12 17:35:27.880 +08:00 [ERR] Error getting calendar categories
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at smpc_dispatching.Core.Services.CalendarCategoryService.<GetAllAsync>d__2.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\CalendarCategoryService.cs:line 31
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at smpc_dispatching.UI.Shared.CalendarEvent.ScheduleDetailsUserControl.<LoadCategoriesAsync>d__7.MoveNext() in D:\LEM\Source Tree\Dispatching\UI\Shared\CalendarSchedule\ScheduleDetailsUserControl.cs:line 57
+2026-01-12 17:35:45.531 +08:00 [ERR] Error getting calendar categories
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at smpc_dispatching.Core.Services.CalendarCategoryService.<GetAllAsync>d__2.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\CalendarCategoryService.cs:line 31
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at smpc_dispatching.UI.Shared.CalendarEvent.ScheduleDetailsUserControl.<LoadCategoriesAsync>d__7.MoveNext() in D:\LEM\Source Tree\Dispatching\UI\Shared\CalendarSchedule\ScheduleDetailsUserControl.cs:line 57
+2026-01-12 17:35:50.910 +08:00 [ERR] Error getting calendar categories
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at smpc_dispatching.Core.Services.CalendarCategoryService.<GetAllAsync>d__2.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\CalendarCategoryService.cs:line 31
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at smpc_dispatching.UI.Shared.CalendarEvent.ScheduleDetailsUserControl.<LoadCategoriesAsync>d__7.MoveNext() in D:\LEM\Source Tree\Dispatching\UI\Shared\CalendarSchedule\ScheduleDetailsUserControl.cs:line 57
+2026-01-12 17:41:31.672 +08:00 [ERR] Error getting calendar categories
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at smpc_dispatching.Core.Services.CalendarCategoryService.<GetAllAsync>d__2.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\CalendarCategoryService.cs:line 31
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at smpc_dispatching.UI.Shared.CalendarEvent.ScheduleDetailsUserControl.<LoadCategoriesAsync>d__7.MoveNext() in D:\LEM\Source Tree\Dispatching\UI\Shared\CalendarSchedule\ScheduleDetailsUserControl.cs:line 57
+2026-01-12 17:41:33.047 +08:00 [ERR] Error getting calendar categories
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at smpc_dispatching.Core.Services.CalendarCategoryService.<GetAllAsync>d__2.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\CalendarCategoryService.cs:line 31
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at smpc_dispatching.UI.Shared.CalendarEvent.ScheduleDetailsUserControl.<LoadCategoriesAsync>d__7.MoveNext() in D:\LEM\Source Tree\Dispatching\UI\Shared\CalendarSchedule\ScheduleDetailsUserControl.cs:line 57
+2026-01-12 17:41:43.568 +08:00 [ERR] Error getting calendar categories
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at smpc_dispatching.Core.Services.CalendarCategoryService.<GetAllAsync>d__2.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\CalendarCategoryService.cs:line 31
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at smpc_dispatching.UI.Shared.CalendarEvent.ScheduleDetailsUserControl.<LoadCategoriesAsync>d__7.MoveNext() in D:\LEM\Source Tree\Dispatching\UI\Shared\CalendarSchedule\ScheduleDetailsUserControl.cs:line 57
+2026-01-12 17:41:51.390 +08:00 [ERR] Error getting calendar categories
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at smpc_dispatching.Core.Services.CalendarCategoryService.<GetAllAsync>d__2.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\CalendarCategoryService.cs:line 31
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at smpc_dispatching.UI.Shared.CalendarEvent.ScheduleDetailsUserControl.<LoadCategoriesAsync>d__7.MoveNext() in D:\LEM\Source Tree\Dispatching\UI\Shared\CalendarSchedule\ScheduleDetailsUserControl.cs:line 57
+2026-01-12 17:42:00.100 +08:00 [ERR] Error getting calendar categories
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at smpc_dispatching.Core.Services.CalendarCategoryService.<GetAllAsync>d__2.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\CalendarCategoryService.cs:line 31
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at smpc_dispatching.UI.Shared.CalendarEvent.ScheduleDetailsUserControl.<LoadCategoriesAsync>d__7.MoveNext() in D:\LEM\Source Tree\Dispatching\UI\Shared\CalendarSchedule\ScheduleDetailsUserControl.cs:line 57
+2026-01-12 17:42:12.645 +08:00 [ERR] Error getting calendar categories
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at smpc_dispatching.Core.Services.CalendarCategoryService.<GetAllAsync>d__2.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\CalendarCategoryService.cs:line 31
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at smpc_dispatching.UI.Shared.CalendarEvent.ScheduleDetailsUserControl.<LoadCategoriesAsync>d__7.MoveNext() in D:\LEM\Source Tree\Dispatching\UI\Shared\CalendarSchedule\ScheduleDetailsUserControl.cs:line 57
+2026-01-12 17:42:29.019 +08:00 [ERR] Error getting calendar categories
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at smpc_dispatching.Core.Services.CalendarCategoryService.<GetAllAsync>d__2.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\CalendarCategoryService.cs:line 31
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at smpc_dispatching.UI.Shared.CalendarEvent.ScheduleDetailsUserControl.<LoadCategoriesAsync>d__7.MoveNext() in D:\LEM\Source Tree\Dispatching\UI\Shared\CalendarSchedule\ScheduleDetailsUserControl.cs:line 57
+2026-01-12 18:04:56.310 +08:00 [ERR] Exception during API request: login
+System.Net.Http.HttpRequestException: An error occurred while sending the request. ---> System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: An established connection was aborted by the software in your host machine 192.168.1.244:3000
+   at System.Net.Sockets.Socket.InternalEndConnect(IAsyncResult asyncResult)
+   at System.Net.Sockets.Socket.EndConnect(IAsyncResult asyncResult)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.EndGetRequestStream(IAsyncResult asyncResult, TransportContext& context)
+   at System.Net.Http.HttpClientHandler.GetRequestStreamCallback(IAsyncResult ar)
+   --- End of inner exception stack trace ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at smpc_dispatching.Core.Services.HttpService.<SendRequestAsync>d__7`1.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\HttpService.cs:line 59
+2026-01-12 18:04:56.461 +08:00 [ERR] Exception during API request: login
+System.Net.Http.HttpRequestException: An error occurred while sending the request. ---> System.Net.WebException: Unable to connect to the remote server ---> System.Net.Sockets.SocketException: An established connection was aborted by the software in your host machine 192.168.1.244:3000
+   at System.Net.Sockets.Socket.InternalEndConnect(IAsyncResult asyncResult)
+   at System.Net.Sockets.Socket.EndConnect(IAsyncResult asyncResult)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.EndGetRequestStream(IAsyncResult asyncResult, TransportContext& context)
+   at System.Net.Http.HttpClientHandler.GetRequestStreamCallback(IAsyncResult ar)
+   --- End of inner exception stack trace ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at smpc_dispatching.Core.Services.HttpService.<SendRequestAsync>d__7`1.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\HttpService.cs:line 59
+2026-01-12 18:05:00.505 +08:00 [WRN] API request failed: calendar-categories, StatusCode: "NotFound", Response: Cannot GET /api/calendar-categories
+2026-01-12 18:05:00.606 +08:00 [ERR] Exception during API request: calendar-categories
+Newtonsoft.Json.JsonReaderException: Unexpected character encountered while parsing value: C. Path '', line 0, position 0.
+   at Newtonsoft.Json.JsonTextReader.ParseValue()
+   at Newtonsoft.Json.JsonReader.ReadForType(JsonContract contract, Boolean hasConverter)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   at smpc_dispatching.Core.Services.HttpService.<SendRequestAsync>d__7`1.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\HttpService.cs:line 75
+2026-01-12 18:05:00.620 +08:00 [WRN] API request failed: calendar-categories, StatusCode: "NotFound", Response: Cannot GET /api/calendar-categories
+2026-01-12 18:05:00.717 +08:00 [ERR] Exception during API request: calendar-categories
+Newtonsoft.Json.JsonReaderException: Unexpected character encountered while parsing value: C. Path '', line 0, position 0.
+   at Newtonsoft.Json.JsonTextReader.ParseValue()
+   at Newtonsoft.Json.JsonReader.ReadForType(JsonContract contract, Boolean hasConverter)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   at smpc_dispatching.Core.Services.HttpService.<SendRequestAsync>d__7`1.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\HttpService.cs:line 75
+2026-01-12 18:05:23.558 +08:00 [WRN] API request failed: calendar-categories, StatusCode: "NotFound", Response: Cannot GET /api/calendar-categories
+2026-01-12 18:05:23.630 +08:00 [ERR] Exception during API request: calendar-categories
+Newtonsoft.Json.JsonReaderException: Unexpected character encountered while parsing value: C. Path '', line 0, position 0.
+   at Newtonsoft.Json.JsonTextReader.ParseValue()
+   at Newtonsoft.Json.JsonReader.ReadForType(JsonContract contract, Boolean hasConverter)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   at smpc_dispatching.Core.Services.HttpService.<SendRequestAsync>d__7`1.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\HttpService.cs:line 75
+2026-01-12 18:05:23.650 +08:00 [WRN] API request failed: calendar-categories, StatusCode: "NotFound", Response: Cannot GET /api/calendar-categories
+2026-01-12 18:05:23.674 +08:00 [ERR] Exception during API request: calendar-categories
+Newtonsoft.Json.JsonReaderException: Unexpected character encountered while parsing value: C. Path '', line 0, position 0.
+   at Newtonsoft.Json.JsonTextReader.ParseValue()
+   at Newtonsoft.Json.JsonReader.ReadForType(JsonContract contract, Boolean hasConverter)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   at smpc_dispatching.Core.Services.HttpService.<SendRequestAsync>d__7`1.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\HttpService.cs:line 75
+2026-01-12 18:05:46.833 +08:00 [WRN] API request failed: calendar-categories, StatusCode: "NotFound", Response: Cannot GET /api/calendar-categories
+2026-01-12 18:05:46.897 +08:00 [ERR] Exception during API request: calendar-categories
+Newtonsoft.Json.JsonReaderException: Unexpected character encountered while parsing value: C. Path '', line 0, position 0.
+   at Newtonsoft.Json.JsonTextReader.ParseValue()
+   at Newtonsoft.Json.JsonReader.ReadForType(JsonContract contract, Boolean hasConverter)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   at smpc_dispatching.Core.Services.HttpService.<SendRequestAsync>d__7`1.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\HttpService.cs:line 75
+2026-01-12 18:10:39.012 +08:00 [WRN] API request failed: calendar-categories, StatusCode: "NotFound", Response: Cannot GET /api/calendar-categories
+2026-01-12 18:10:39.078 +08:00 [ERR] Exception during API request: calendar-categories
+Newtonsoft.Json.JsonReaderException: Unexpected character encountered while parsing value: C. Path '', line 0, position 0.
+   at Newtonsoft.Json.JsonTextReader.ParseValue()
+   at Newtonsoft.Json.JsonReader.ReadForType(JsonContract contract, Boolean hasConverter)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   at smpc_dispatching.Core.Services.HttpService.<SendRequestAsync>d__7`1.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\HttpService.cs:line 75
+2026-01-12 18:10:39.094 +08:00 [WRN] API request failed: calendar-categories, StatusCode: "NotFound", Response: Cannot GET /api/calendar-categories
+2026-01-12 18:10:39.121 +08:00 [ERR] Exception during API request: calendar-categories
+Newtonsoft.Json.JsonReaderException: Unexpected character encountered while parsing value: C. Path '', line 0, position 0.
+   at Newtonsoft.Json.JsonTextReader.ParseValue()
+   at Newtonsoft.Json.JsonReader.ReadForType(JsonContract contract, Boolean hasConverter)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   at smpc_dispatching.Core.Services.HttpService.<SendRequestAsync>d__7`1.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\HttpService.cs:line 75
