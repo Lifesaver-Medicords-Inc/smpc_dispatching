@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace smpc_dispatching.Core.Interfaces {
-    public interface IRouteService {
+namespace smpc_dispatching.Core.Interfaces
+{
+    public interface IRouteService
+    {
 
-       Dictionary<string, ViewControlModel> GetAllRoutes();
+        Dictionary<string, ViewControlModel> GetAllRoutes();
 
         Control GetForm(string code);
 
@@ -13,11 +15,13 @@ namespace smpc_dispatching.Core.Interfaces {
 
         IEnumerable<string> GetParents();
 
-       IEnumerable<ViewControlModel> GetChildren(string parent);
+        IEnumerable<ViewControlModel> GetChildren(string parent);
 
         void SelectRoute(string code);
         string GetTitle();
 
         Control GetForm();
+
+        string GetSelectedRoute();
     }
 }

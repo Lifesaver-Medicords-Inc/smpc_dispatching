@@ -1,109 +1,3 @@
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\appsettings.Development.json
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\appsettings.Production.json
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Icons\file.png
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Icons\folder.png
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Icons\next.png
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Icons\folder_open.png
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Icons\previous.png
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Icons\search.png
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Icons\small_close.png
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\smpc_dispatching.exe.config
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\smpc_dispatching.exe
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\smpc_dispatching.pdb
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\AjaxMin.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\EntityFramework.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\EntityFramework.SqlServer.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\GMap.NET.Core.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\GMap.NET.WindowsForms.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Microsoft.Extensions.Configuration.Abstractions.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Microsoft.Extensions.Configuration.Binder.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Microsoft.Extensions.Configuration.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Microsoft.Extensions.Configuration.EnvironmentVariables.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Microsoft.Extensions.Configuration.FileExtensions.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Microsoft.Extensions.Configuration.Json.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Microsoft.Extensions.DependencyInjection.Abstractions.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Microsoft.Extensions.DependencyInjection.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Microsoft.Extensions.FileProviders.Abstractions.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Microsoft.Extensions.FileProviders.Physical.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Microsoft.Extensions.FileSystemGlobbing.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Microsoft.Extensions.Primitives.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Newtonsoft.Json.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Serilog.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Serilog.Sinks.Console.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Serilog.Sinks.Debug.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Serilog.Sinks.File.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Buffers.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Data.SqlClient.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Data.SQLite.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Diagnostics.DiagnosticSource.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.IO.Pipelines.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Memory.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Numerics.Vectors.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Security.Principal.Windows.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Text.Encodings.Web.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Text.Json.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Threading.Channels.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Threading.Tasks.Extensions.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\WindowsFormsCalendar.dll
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\EntityFramework.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\EntityFramework.SqlServer.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Microsoft.Extensions.Configuration.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Microsoft.Extensions.Configuration.Abstractions.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Microsoft.Extensions.Configuration.Binder.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Microsoft.Extensions.Configuration.EnvironmentVariables.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Microsoft.Extensions.Configuration.FileExtensions.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Microsoft.Extensions.Configuration.Json.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Microsoft.Extensions.DependencyInjection.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Microsoft.Extensions.DependencyInjection.Abstractions.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Microsoft.Extensions.FileProviders.Abstractions.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Microsoft.Extensions.FileProviders.Physical.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Microsoft.Extensions.FileSystemGlobbing.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Microsoft.Extensions.Primitives.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Newtonsoft.Json.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Serilog.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Serilog.Sinks.Console.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Serilog.Sinks.Debug.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\Serilog.Sinks.File.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Buffers.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Data.SqlClient.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Data.SQLite.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Diagnostics.DiagnosticSource.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.IO.Pipelines.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Memory.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Numerics.Vectors.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Security.Principal.Windows.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Text.Encodings.Web.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Text.Json.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Threading.Channels.xml
-D:\PROJECTS\smpc\smpc_dispatching\bin\Debug\System.Threading.Tasks.Extensions.xml
-D:\PROJECTS\smpc\smpc_dispatching\obj\Debug\smpc_dispatching.csproj.AssemblyReference.cache
-D:\PROJECTS\smpc\smpc_dispatching\obj\Debug\SmoothScrollUserControl.resources
-D:\PROJECTS\smpc\smpc_dispatching\obj\Debug\smpc_dispatching.Properties.Resources.resources
-D:\PROJECTS\smpc\smpc_dispatching\obj\Debug\smpc_dispatching.UI.Forms.LoginForm.resources
-D:\PROJECTS\smpc\smpc_dispatching\obj\Debug\smpc_dispatching.UI.Layout.MainLayout.resources
-D:\PROJECTS\smpc\smpc_dispatching\obj\Debug\smpc_dispatching.UI.Shared.CalendarEvent.CalendarScheduleControllerUserControl.resources
-D:\PROJECTS\smpc\smpc_dispatching\obj\Debug\smpc_dispatching.UI.Shared.CalendarEvent.ScheduleDetailsUserControl.resources
-D:\PROJECTS\smpc\smpc_dispatching\obj\Debug\smpc_dispatching.UI.Shared.CalendarSchedule.ScheduleItem.resources
-D:\PROJECTS\smpc\smpc_dispatching\obj\Debug\smpc_dispatching.UI.Shared.CalendarEvent.ScheduleListUserControl.resources
-D:\PROJECTS\smpc\smpc_dispatching\obj\Debug\smpc_dispatching.UI.Shared.Calendar.ScheduleCalendarUserControl.resources
-D:\PROJECTS\smpc\smpc_dispatching\obj\Debug\smpc_dispatching.UI.Shared.MapLocPinForm.resources
-D:\PROJECTS\smpc\smpc_dispatching\obj\Debug\smpc_dispatching.UI.Views.Engineering.EngineeringViewUserControl.resources
-D:\PROJECTS\smpc\smpc_dispatching\obj\Debug\smpc_dispatching.UI.Views.Logistics.LogisticsViewUserControl.resources
-D:\PROJECTS\smpc\smpc_dispatching\obj\Debug\smpc_dispatching.UI.Views.SalesOrder.SalesOrderListForm.resources
-D:\PROJECTS\smpc\smpc_dispatching\obj\Debug\smpc_dispatching.UI.Views.SalesOrder.SalesOrderViewUserControl.resources
-D:\PROJECTS\smpc\smpc_dispatching\obj\Debug\smpc_dispatching.UI.Views.Sales.SalesViewUserControl.resources
-D:\PROJECTS\smpc\smpc_dispatching\obj\Debug\smpc_dispatching.csproj.GenerateResource.cache
-D:\PROJECTS\smpc\smpc_dispatching\obj\Debug\smpc_dispatching.csproj.CoreCompileInputs.cache
-D:\PROJECTS\smpc\smpc_dispatching\obj\Debug\smpc_dis.EDB011AA.Up2Date
-D:\PROJECTS\smpc\smpc_dispatching\obj\Debug\smpc_dispatching.exe
-D:\PROJECTS\smpc\smpc_dispatching\obj\Debug\smpc_dispatching.pdb
-<<<<<<< HEAD
-D:\PROJECTS\smpc\smpc_dispatching\obj\Debug\smpc_dispatching.UI.Views.ItemRelease.ItemReleaseViewUserControl.resources
-=======
 D:\LEM\Source Tree\Dispatching\bin\Debug\appsettings.Development.json
 D:\LEM\Source Tree\Dispatching\bin\Debug\appsettings.Production.json
 D:\LEM\Source Tree\Dispatching\bin\Debug\Icons\file.png
@@ -140,6 +34,7 @@ D:\LEM\Source Tree\Dispatching\bin\Debug\Serilog.Sinks.Console.dll
 D:\LEM\Source Tree\Dispatching\bin\Debug\Serilog.Sinks.Debug.dll
 D:\LEM\Source Tree\Dispatching\bin\Debug\Serilog.Sinks.File.dll
 D:\LEM\Source Tree\Dispatching\bin\Debug\System.Buffers.dll
+D:\LEM\Source Tree\Dispatching\bin\Debug\System.CodeDom.dll
 D:\LEM\Source Tree\Dispatching\bin\Debug\System.Data.SqlClient.dll
 D:\LEM\Source Tree\Dispatching\bin\Debug\System.Data.SQLite.dll
 D:\LEM\Source Tree\Dispatching\bin\Debug\System.Diagnostics.DiagnosticSource.dll
@@ -152,6 +47,7 @@ D:\LEM\Source Tree\Dispatching\bin\Debug\System.Text.Encodings.Web.dll
 D:\LEM\Source Tree\Dispatching\bin\Debug\System.Text.Json.dll
 D:\LEM\Source Tree\Dispatching\bin\Debug\System.Threading.Channels.dll
 D:\LEM\Source Tree\Dispatching\bin\Debug\System.Threading.Tasks.Extensions.dll
+D:\LEM\Source Tree\Dispatching\bin\Debug\WindowsFormsCalendar.dll
 D:\LEM\Source Tree\Dispatching\bin\Debug\System.ValueTuple.dll
 D:\LEM\Source Tree\Dispatching\bin\Debug\EntityFramework.xml
 D:\LEM\Source Tree\Dispatching\bin\Debug\EntityFramework.SqlServer.xml
@@ -174,6 +70,7 @@ D:\LEM\Source Tree\Dispatching\bin\Debug\Serilog.Sinks.Console.xml
 D:\LEM\Source Tree\Dispatching\bin\Debug\Serilog.Sinks.Debug.xml
 D:\LEM\Source Tree\Dispatching\bin\Debug\Serilog.Sinks.File.xml
 D:\LEM\Source Tree\Dispatching\bin\Debug\System.Buffers.xml
+D:\LEM\Source Tree\Dispatching\bin\Debug\System.CodeDom.xml
 D:\LEM\Source Tree\Dispatching\bin\Debug\System.Data.SqlClient.xml
 D:\LEM\Source Tree\Dispatching\bin\Debug\System.Data.SQLite.xml
 D:\LEM\Source Tree\Dispatching\bin\Debug\System.Diagnostics.DiagnosticSource.xml
@@ -186,28 +83,30 @@ D:\LEM\Source Tree\Dispatching\bin\Debug\System.Text.Encodings.Web.xml
 D:\LEM\Source Tree\Dispatching\bin\Debug\System.Text.Json.xml
 D:\LEM\Source Tree\Dispatching\bin\Debug\System.Threading.Channels.xml
 D:\LEM\Source Tree\Dispatching\bin\Debug\System.Threading.Tasks.Extensions.xml
+D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.csproj.AssemblyReference.cache
 D:\LEM\Source Tree\Dispatching\obj\Debug\SmoothScrollUserControl.resources
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.Properties.Resources.resources
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Forms.LoginForm.resources
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Layout.MainLayout.resources
-D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Shared.CalendarEvent.CalendarScheduleControllerUserControl.resources
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Shared.CalendarEvent.ScheduleDetailsUserControl.resources
-D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Shared.CalendarSchedule.ScheduleItem.resources
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Shared.CalendarEvent.ScheduleListUserControl.resources
-D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Shared.Calendar.ScheduleCalendarUserControl.resources
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Shared.MapLocPinForm.resources
-D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Views.Engineering.EngineeringViewUserControl.resources
-D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Views.Logistics.LogisticsViewUserControl.resources
+D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Shared.SetupModal.resources
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Views.SalesOrder.SalesOrderListForm.resources
-D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Views.SalesOrder.SalesOrderViewUserControl.resources
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Views.Sales.SalesViewUserControl.resources
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.csproj.GenerateResource.cache
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.csproj.CoreCompileInputs.cache
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.csproj.CopyComplete
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.exe
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.pdb
-D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.csproj.AssemblyReference.cache
-D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Shared.SetupModal.resources
-D:\LEM\Source Tree\Dispatching\bin\Debug\System.CodeDom.dll
-D:\LEM\Source Tree\Dispatching\bin\Debug\System.CodeDom.xml
->>>>>>> f8e4bf1 (refactor(Calendar): add service for calendar category and schedules)
+D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Shared.CalendarSchedule.ScheduleItemUC.resources
+D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Shared.Calendar.ScheduleCalendarUC.resources
+D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Views.Engineering.EngineeringScheduleCalendarDetailsUC.resources
+D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Views.Engineering.EngineeringViewUC.resources
+D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Views.ItemRelease.ItemReleaseViewUC.resources
+D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Views.Logistics.LogisticsCalendarScheduleDetailsUC.resources
+D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Views.Logistics.LogisticsViewUC.resources
+D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Views.Sales.SalesCalendarScheduleDetailsUC.resources
+D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Views.SalesOrder.SalesOrderViewUC.resources
+D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Shared.CalendarEvent.CalendarScheduleControllerUC.resources
+D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Views.Logistics.LogisticsRouteDetailsUC.resources

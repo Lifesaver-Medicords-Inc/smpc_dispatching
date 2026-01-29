@@ -31,13 +31,16 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.SearchTextBox = new System.Windows.Forms.TextBox();
+            this.dg_schedule = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.MainSplitContainer)).BeginInit();
             this.MainSplitContainer.Panel1.SuspendLayout();
+            this.MainSplitContainer.Panel2.SuspendLayout();
             this.MainSplitContainer.SuspendLayout();
             this.panel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dg_schedule)).BeginInit();
             this.SuspendLayout();
             // 
             // MainSplitContainer
@@ -52,6 +55,10 @@
             // 
             this.MainSplitContainer.Panel1.Controls.Add(this.panel1);
             this.MainSplitContainer.Panel1.Controls.Add(this.flowLayoutPanel1);
+            // 
+            // MainSplitContainer.Panel2
+            // 
+            this.MainSplitContainer.Panel2.Controls.Add(this.dg_schedule);
             this.MainSplitContainer.Size = new System.Drawing.Size(1247, 600);
             this.MainSplitContainer.SplitterDistance = 76;
             this.MainSplitContainer.TabIndex = 0;
@@ -126,6 +133,17 @@
             this.SearchTextBox.Size = new System.Drawing.Size(410, 26);
             this.SearchTextBox.TabIndex = 1;
             // 
+            // dg_schedule
+            // 
+            this.dg_schedule.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dg_schedule.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dg_schedule.Location = new System.Drawing.Point(0, 0);
+            this.dg_schedule.Name = "dg_schedule";
+            this.dg_schedule.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dg_schedule.Size = new System.Drawing.Size(1247, 520);
+            this.dg_schedule.TabIndex = 0;
+            this.dg_schedule.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dg_schedule_CellClick);
+            // 
             // ScheduleListUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -135,6 +153,7 @@
             this.Padding = new System.Windows.Forms.Padding(4);
             this.Size = new System.Drawing.Size(1255, 608);
             this.MainSplitContainer.Panel1.ResumeLayout(false);
+            this.MainSplitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.MainSplitContainer)).EndInit();
             this.MainSplitContainer.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
@@ -144,6 +163,7 @@
             this.flowLayoutPanel2.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dg_schedule)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -158,5 +178,6 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox SearchTextBox;
+        private System.Windows.Forms.DataGridView dg_schedule;
     }
 }

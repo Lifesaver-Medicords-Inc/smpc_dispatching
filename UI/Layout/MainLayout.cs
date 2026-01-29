@@ -21,7 +21,7 @@ namespace smpc_dispatching.UI.Layout {
             
 
         }
-
+        // LOAD TREE VIEW
         private void SetupnavigationBar() {
             navbarTreeView.BeginUpdate();
             navbarTreeView.Nodes.Clear();
@@ -30,7 +30,7 @@ namespace smpc_dispatching.UI.Layout {
             navbarTreeView.ExpandAll();
             navbarTreeView.EndUpdate();
         }
-
+        // LOAD TABS
         private void TabControl_DrawItem(object sender, DrawItemEventArgs e) {
             var tabControl = sender as TabControl;
             if (tabControl == null) return;
@@ -76,7 +76,7 @@ namespace smpc_dispatching.UI.Layout {
             // Ensure focus rectangle is not drawn automatically
             e.DrawFocusRectangle();
         }
-
+        // SELECT NAVIGATION FROM TREEVIEW
         private void TabControl_MouseDown(object sender, MouseEventArgs e) {
             for (int i = 0; i < TabControl.TabPages.Count; i++) {
                 var tabRect = TabControl.GetTabRect(i);
@@ -93,7 +93,7 @@ namespace smpc_dispatching.UI.Layout {
                 }
             }
         }
-
+        // CLOSE WINDOW
         private void MainLayout_FormClosing(object sender, FormClosingEventArgs e)
         {
             Application.Exit();

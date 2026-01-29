@@ -4,7 +4,7 @@ using System;
 using System.Windows.Forms;
 
 namespace smpc_dispatching.UI.Views.Sales {
-    public partial class SalesViewUserControl : UserControl {
+    public partial class SalesViewUserControl  : UserControl {
 
         private readonly IServiceProvider _serviceProvider;
         public SalesViewUserControl(IServiceProvider serviceProvider) {
@@ -13,12 +13,14 @@ namespace smpc_dispatching.UI.Views.Sales {
         }
 
         private void SalesView_Load(object sender, EventArgs e) {
-            var eventCalendar = _serviceProvider.GetRequiredService<CalendarScheduleControllerUserControl>();
+            var eventCalendar = _serviceProvider.GetRequiredService<CalendarScheduleControllerUC>();
             if (eventCalendar != null) {
+
                 eventCalendar.Dock = DockStyle.Fill;
                 eventCalendar.Title = "SALES CALENDAR";
                 SalesViewPanel.Controls.Clear();
                 SalesViewPanel.Controls.Add(eventCalendar);
+                
             }
         }
     }

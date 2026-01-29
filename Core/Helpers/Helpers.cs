@@ -838,6 +838,15 @@ namespace smpc_dispatching.Core.Helpers
                         string val = String.Format("'{0}'", numericUpDown.Value);
                         values.Add(key, val);
                     }
+
+                    if (control is RichTextBox richTextBox)
+                    {
+                        string key = richTextBox.Name.Replace("rtxt_", "");
+                        dynamic val = richTextBox.Text.ToString();
+
+                        values[key] = val;
+
+                    }
                 }
             }
             return values;
@@ -1041,6 +1050,146 @@ namespace smpc_dispatching.Core.Helpers
         }
 
         public static void BindControls(Panel[] pnl_list, DataTable dt, int selectedIndex = 0)
+        {
+            Dictionary<string, dynamic> values = new Dictionary<string, dynamic>();
+
+            foreach (var col_name in dt.Columns)
+            {
+                foreach (var pnl in pnl_list)
+                {
+                    foreach (Control control in pnl.Controls)
+                    {
+                        if (control.Name.Contains(col_name.ToString()))
+                        {
+                            string column_name = col_name.ToString();
+                            Console.WriteLine(column_name);
+
+                            // Check if the control is a TextBox 
+                            if (control is TextBox textBox && textBox.Name.Replace("txt_", "") == column_name)
+                            {
+                                string key = textBox.Name.Replace("txt_", "");
+                                object rawValue = dt.Rows[selectedIndex][column_name];
+
+                                if (textBox.Tag?.ToString() == "MONEY")
+                                {
+                                    if (decimal.TryParse(rawValue.ToString(), out decimal moneyVal))
+                                    {
+                                        textBox.Text = moneyVal.ToString("C2", System.Globalization.CultureInfo.GetCultureInfo("en-PH"));
+                                        textBox.AccessibleDescription = moneyVal.ToString(); // Store full precise value
+                                    }
+                                    else
+                                    {
+                                        textBox.Text = "₱0.00";
+                                        textBox.AccessibleDescription = "0";
+                                    }
+                                }
+                                else if (textBox.Tag is List<int> ids && ids.Count > 0)
+                                {
+                                    // If you're still handling MULTI-tagged list items here (you may want to adjust this based on how you store MULTI values)
+                                    textBox.Text = string.Join(", ", ids);
+                                }
+                                else
+                                {
+                                    //to hand outofbound rows
+                                    if (selectedIndex < 0 || selectedIndex >= dt.Rows.Count)
+                                    {
+                                        Console.WriteLine("IndexOutOfRangeException selectedIndex");
+                                        return;
+                                    }
+                                    textBox.Text = (string)dt.Rows[selectedIndex][column_name].ToString();
+                                    //textBox.Text = rawValue?.ToString() ?? "";
+
+                                }
+                            }
+
+                            // Check if the control is a Combobox
+                            if (control is ComboBox comboBox)
+                            {
+                                Console.WriteLine($"This is a  combobox: {comboBox.Name} ");
+                                string key = comboBox.Name.Replace("cmb_", "") + "_id";
+
+                                if (comboBox.Tag == "DYNAMIC")
+                                {
+                                    Console.WriteLine("DYNAMICS:", comboBox.Name);
+                                    comboBox.SelectedValue = (string)dt.Rows[selectedIndex][key].ToString();
+                                }
+                                // Check multiple values
+                                else if (comboBox.Tag == "MULTIVALUE")
+                                {
+                                    string rawValue = dt.Rows[selectedIndex][column_name].ToString();
+                                    var multiValues = rawValue.Split(',')
+                                                         .Select(v => v.Trim())
+                                                         .Where(v => !string.IsNullOrEmpty(v))
+                                                         .ToList();
+
+                                    // Set the first value as the display text (optional behavior)
+                                    comboBox.Text = multiValues.FirstOrDefault() ?? string.Empty;
+
+                                    // Populate the ComboBox with all values
+                                    //comboBox.Items.Clear();
+                                    foreach (var val in multiValues)
+                                    {
+                                        comboBox.Items.Add(val);
+                                    }
+
+                                    // Optionally set the first item as selected (you could change this logic)
+                                    if (multiValues.Count > 0)
+                                    {
+                                        comboBox.SelectedIndex = 0;  // Select the first item (if needed)
+                                    }
+                                }
+                                else
+                                {
+                                    string keys = comboBox.Name.Replace("cmb_", "");
+                                    comboBox.Text = (string)dt.Rows[selectedIndex][column_name].ToString();
+                                }
+
+                            }
+                            // Check if the control is a Checkbox
+                            if (control is CheckBox checkbox)
+                            {
+                                //to hand outofbound rows
+                                if (selectedIndex < 0 || selectedIndex >= dt.Rows.Count)
+                                {
+                                    Console.WriteLine("IndexOutOfRangeException  ");
+                                    return;
+                                }
+                                string key = checkbox.Name.Replace("chk_", "");
+                                checkbox.Checked = (string)dt.Rows[selectedIndex][column_name].ToString() == "1" ||
+                                    (string)dt.Rows[selectedIndex][column_name].ToString().ToLower() == "true"
+                                    ? true : false;
+                            }
+
+                            // Check if the control is a DATETIME PICKER
+                            if (control is DateTimePicker dateTimePicker)
+                            {
+                                if (selectedIndex < 0 || selectedIndex >= dt.Rows.Count)
+                                    return;
+
+                                object rawValue = dt.Rows[selectedIndex][column_name];
+
+                                if (rawValue != DBNull.Value &&
+                                    DateTime.TryParse(rawValue.ToString(), out DateTime parsedDate))
+                                {
+                                    dateTimePicker.Value = parsedDate;
+                                }
+                                else
+                                {
+                                    dateTimePicker.Value = DateTime.Now; // or MinDate if you prefer
+                                }
+                            }
+                            // Check if the control is a NUMERIC
+                            if (control is NumericUpDown numericUpDown)
+                            {
+                                string key = numericUpDown.Name.Replace("txt_", "");
+                                numericUpDown.Text = (string)dt.Rows[selectedIndex][column_name].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        public static void BindControls(FlowLayoutPanel[] pnl_list, DataTable dt, int selectedIndex = 0)
         {
             Dictionary<string, dynamic> values = new Dictionary<string, dynamic>();
 

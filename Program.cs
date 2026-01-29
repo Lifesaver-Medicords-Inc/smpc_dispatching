@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using smpc_dispatching.Config;
 using smpc_dispatching.Core.Interfaces;
+using smpc_dispatching.Core.Models;
 using smpc_dispatching.Core.Services;
 using smpc_dispatching.UI.Forms;
 using smpc_dispatching.UI.Layout;
@@ -72,8 +73,9 @@ namespace smpc_dispatching {
             services.AddScoped<INavigationService, NavigationService>();
             services.AddScoped<IRouteService, RouteService>();
 
-            services.AddScoped<ICalendarScheduleService, CalendarScheduleService>();
+            services.AddScoped<ICalendarScheduleService<SalesCalendarScheduleContent>, CalendarScheduleService<SalesCalendarScheduleContent>>();
             services.AddScoped<ICalendarCategoryService, CalendarCategoryService>();
+            services.AddScoped<IVehicleService, VehicleService>();
             services.AddScoped<IDeliveryReceiptService, DeliveryReceiptService>();
             services.AddScoped<IItemReleaseService, ItemReleaseService>();
             services.AddScoped<ISalesOrderService, SalesOrderService>();
@@ -83,17 +85,20 @@ namespace smpc_dispatching {
             //Forms
             services.AddTransient<LoginForm>();
             services.AddTransient<MainLayout>();
-            services.AddTransient<ScheduleCalendarUserControl>();
-            services.AddTransient<LogisticsViewUserControl>();
-            services.AddTransient<EngineeringViewUserControl>();
+            services.AddTransient<ScheduleCalendarUC>();
+            services.AddTransient<LogisticsViewUC>();
+            services.AddTransient<EngineeringViewUC>();
             services.AddTransient<SalesViewUserControl>();
-            services.AddTransient<CalendarScheduleControllerUserControl>();
+            services.AddTransient<CalendarScheduleControllerUC>();
             services.AddTransient<ScheduleListUserControl>();
             services.AddTransient<ScheduleDetailsUserControl>();
+            services.AddTransient<SalesCalendarScheduleDetailsUC>();
+            services.AddTransient<EngineeringScheduleCalendarDetailsUC>();
+            services.AddTransient<LogisticsCalendarScheduleDetailsUC>();
             services.AddTransient<MapLocPinForm>();
-            services.AddTransient<SalesOrderViewUserControl>();
+            services.AddTransient<SalesOrderViewUC>();
             services.AddTransient<SalesOrderListForm>();
-            services.AddTransient<ItemReleaseViewUserControl>();
+            services.AddTransient<ItemReleaseViewUC>();
 
         }
     }
