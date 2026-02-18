@@ -11,6 +11,7 @@ using smpc_dispatching.UI.Shared.Calendar;
 using smpc_dispatching.UI.Shared.CalendarEvent;
 using smpc_dispatching.UI.Views.Engineering;
 using smpc_dispatching.UI.Views.ItemRelease;
+using smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals;
 using smpc_dispatching.UI.Views.Logistics;
 using smpc_dispatching.UI.Views.Sales;
 using smpc_dispatching.UI.Views.SalesOrder;
@@ -78,6 +79,8 @@ namespace smpc_dispatching {
             services.AddScoped<IVehicleService, VehicleService>();
             services.AddScoped<IDeliveryReceiptService, DeliveryReceiptService>();
             services.AddScoped<IItemReleaseService, ItemReleaseService>();
+            services.AddScoped<IItemListService<ItemListModel>, ItemListService>();
+            services.AddScoped<ISalesOrderIRViewService<SalesOrderViewModel>, SalesOrderIRViewService>();
             services.AddScoped<ISalesOrderService, SalesOrderService>();
             services.AddScoped<IGeoService, GeoService>();
             services.AddScoped(typeof(IDrawFolderTreeService<>), typeof(DrawFolderTreeService<>));
@@ -98,7 +101,8 @@ namespace smpc_dispatching {
             services.AddTransient<MapLocPinForm>();
             services.AddTransient<SalesOrderViewUC>();
             services.AddTransient<SalesOrderListForm>();
-            services.AddTransient<ItemReleaseViewUC>();
+            services.AddTransient<ItemReleaseUC>();
+            services.AddTransient<ItemReleaseItems>();
 
         }
     }

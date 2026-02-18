@@ -231,8 +231,15 @@
     <Compile Include="Core\Interfaces\ICalendarScheduleDetails.cs" />
     <Compile Include="Core\Interfaces\ICalendarScheduleModel.cs" />
     <Compile Include="Core\Interfaces\IDepartmentApiService.cs" />
+    <Compile Include="Core\Interfaces\IGetViewService.cs" />
+    <Compile Include="Core\Interfaces\IItemListService.cs" />
+    <Compile Include="Core\Interfaces\ISalesOrderIRView.cs" />
+    <Compile Include="Core\Interfaces\ISalesOrderIRViewService.cs" />
     <Compile Include="Core\Interfaces\IVehicleService.cs" />
+    <Compile Include="Core\Models\ItemListModel.cs" />
     <Compile Include="Core\Models\SalesCalendarScheduleModel.cs" />
+    <Compile Include="Core\Services\ItemListService.cs" />
+    <Compile Include="Core\Services\SalesOrderIRViewService.cs" />
     <Compile Include="Core\Services\VehicleService.cs" />
     <Compile Include="UI\Shared\SmoothScrollUC.cs">
       <SubType>UserControl</SubType>
@@ -345,11 +352,17 @@
     <Compile Include="UI\Views\Engineering\EngineeringViewUC.Designer.cs">
       <DependentUpon>EngineeringViewUC.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Views\ItemRelease\ItemReleaseViewUC.cs">
+    <Compile Include="UI\Views\ItemRelease\ItemReleaseModals\ItemReleaseItems.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Views\ItemRelease\ItemReleaseModals\ItemReleaseItems.Designer.cs">
+      <DependentUpon>ItemReleaseItems.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Views\ItemRelease\ItemReleaseUC.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\Views\ItemRelease\ItemReleaseViewUC.Designer.cs">
-      <DependentUpon>ItemReleaseViewUC.cs</DependentUpon>
+    <Compile Include="UI\Views\ItemRelease\ItemReleaseUC.Designer.cs">
+      <DependentUpon>ItemReleaseUC.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Views\Logistics\LogisticsCalendarScheduleDetailsUC.cs">
       <SubType>UserControl</SubType>
@@ -439,8 +452,11 @@
     <EmbeddedResource Include="UI\Views\Engineering\EngineeringViewUC.resx">
       <DependentUpon>EngineeringViewUC.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Views\ItemRelease\ItemReleaseViewUC.resx">
-      <DependentUpon>ItemReleaseViewUC.cs</DependentUpon>
+    <EmbeddedResource Include="UI\Views\ItemRelease\ItemReleaseModals\ItemReleaseItems.resx">
+      <DependentUpon>ItemReleaseItems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Views\ItemRelease\ItemReleaseUC.resx">
+      <DependentUpon>ItemReleaseUC.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Views\Logistics\LogisticsCalendarScheduleDetailsUC.resx">
       <DependentUpon>LogisticsCalendarScheduleDetailsUC.cs</DependentUpon>

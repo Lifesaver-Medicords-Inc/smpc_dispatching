@@ -7,25 +7,31 @@ public class SmoothScrollUserControl : UserControl
 {
     public SmoothScrollUserControl()
     {
-        if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
-            return;
+        if (IsInDesignMode()) return;
 
-        this.AutoScroll = true;
+        AutoScroll = true;
 
         // Subscribe to events safely at runtime only
-        this.ControlAdded += SmoothScrollUserControl_ControlAdded;
-        this.Load += SmoothScrollUserControl_Load;
+        ControlAdded += SmoothScrollUserControl_ControlAdded;
+        Load += SmoothScrollUserControl_Load;
+    }
+
+    private bool IsInDesignMode()
+    {
+        return LicenseManager.UsageMode == LicenseUsageMode.Designtime
+               || DesignMode
+               || (Site?.DesignMode ?? false);
     }
 
     private void SmoothScrollUserControl_Load(object sender, EventArgs e)
     {
-        if (LicenseManager.UsageMode == LicenseUsageMode.Designtime) return;
+        if (IsInDesignMode()) return;
         AttachEnterEventsRecursive(this);
     }
 
     private void SmoothScrollUserControl_ControlAdded(object sender, ControlEventArgs e)
     {
-        if (LicenseManager.UsageMode == LicenseUsageMode.Designtime) return;
+        if (IsInDesignMode()) return;
         AttachEnterEventsRecursive(e.Control);
     }
 
@@ -44,13 +50,13 @@ public class SmoothScrollUserControl : UserControl
         if (activeControl != null)
         {
             Rectangle visible = new Rectangle(
-                -this.AutoScrollPosition.X,
-                -this.AutoScrollPosition.Y,
-                this.ClientSize.Width,
-                this.ClientSize.Height);
+                -AutoScrollPosition.X,
+                -AutoScrollPosition.Y,
+                ClientSize.Width,
+                ClientSize.Height);
 
             if (visible.Contains(activeControl.Bounds))
-                return this.AutoScrollPosition;
+                return AutoScrollPosition;
         }
 
         return base.ScrollToControl(activeControl);

@@ -37,12 +37,15 @@ namespace smpc_dispatching.UI.Views.Logistics
             this.txt_Id = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.dtp_StartDate = new System.Windows.Forms.DateTimePicker();
+            this.lbl_People = new System.Windows.Forms.Label();
+            this.txt_People = new System.Windows.Forms.TextBox();
             this.lbl_Vehicle = new System.Windows.Forms.Label();
             this.pnl_vehicle = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
             this.cmb_Vehicle = new System.Windows.Forms.ComboBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
+            this.lbl_Departed = new System.Windows.Forms.Label();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btn_new = new System.Windows.Forms.ToolStripButton();
             this.btn_edit = new System.Windows.Forms.ToolStripButton();
@@ -50,9 +53,6 @@ namespace smpc_dispatching.UI.Views.Logistics
             this.btn_save = new System.Windows.Forms.ToolStripButton();
             this.btn_close = new System.Windows.Forms.ToolStripButton();
             this.btn_toggle = new System.Windows.Forms.ToolStripButton();
-            this.lbl_People = new System.Windows.Forms.Label();
-            this.txt_People = new System.Windows.Forms.TextBox();
-            this.lbl_Departed = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.MainSplitContainer)).BeginInit();
             this.MainSplitContainer.Panel1.SuspendLayout();
             this.MainSplitContainer.Panel2.SuspendLayout();
@@ -150,6 +150,24 @@ namespace smpc_dispatching.UI.Views.Logistics
             this.dtp_StartDate.Size = new System.Drawing.Size(373, 20);
             this.dtp_StartDate.TabIndex = 1;
             // 
+            // lbl_People
+            // 
+            this.lbl_People.AutoSize = true;
+            this.lbl_People.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_People.Location = new System.Drawing.Point(7, 89);
+            this.lbl_People.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
+            this.lbl_People.Name = "lbl_People";
+            this.lbl_People.Size = new System.Drawing.Size(55, 13);
+            this.lbl_People.TabIndex = 29;
+            this.lbl_People.Text = "PEOPLE";
+            // 
+            // txt_People
+            // 
+            this.txt_People.Location = new System.Drawing.Point(7, 105);
+            this.txt_People.Name = "txt_People";
+            this.txt_People.Size = new System.Drawing.Size(370, 20);
+            this.txt_People.TabIndex = 30;
+            // 
             // lbl_Vehicle
             // 
             this.lbl_Vehicle.AutoSize = true;
@@ -207,6 +225,16 @@ namespace smpc_dispatching.UI.Views.Logistics
             this.toolStrip2.Size = new System.Drawing.Size(379, 25);
             this.toolStrip2.TabIndex = 27;
             this.toolStrip2.Text = "toolStrip2";
+            // 
+            // lbl_Departed
+            // 
+            this.lbl_Departed.AutoSize = true;
+            this.lbl_Departed.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Departed.Location = new System.Drawing.Point(7, 642);
+            this.lbl_Departed.Name = "lbl_Departed";
+            this.lbl_Departed.Size = new System.Drawing.Size(78, 13);
+            this.lbl_Departed.TabIndex = 31;
+            this.lbl_Departed.Text = "DEPARTED:";
             // 
             // toolStrip1
             // 
@@ -273,34 +301,6 @@ namespace smpc_dispatching.UI.Views.Logistics
             this.btn_toggle.Name = "btn_toggle";
             this.btn_toggle.Size = new System.Drawing.Size(62, 22);
             this.btn_toggle.Text = "Toggle";
-            // 
-            // lbl_People
-            // 
-            this.lbl_People.AutoSize = true;
-            this.lbl_People.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_People.Location = new System.Drawing.Point(7, 89);
-            this.lbl_People.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
-            this.lbl_People.Name = "lbl_People";
-            this.lbl_People.Size = new System.Drawing.Size(55, 13);
-            this.lbl_People.TabIndex = 29;
-            this.lbl_People.Text = "PEOPLE";
-            // 
-            // txt_People
-            // 
-            this.txt_People.Location = new System.Drawing.Point(7, 105);
-            this.txt_People.Name = "txt_People";
-            this.txt_People.Size = new System.Drawing.Size(370, 20);
-            this.txt_People.TabIndex = 30;
-            // 
-            // lbl_Departed
-            // 
-            this.lbl_Departed.AutoSize = true;
-            this.lbl_Departed.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_Departed.Location = new System.Drawing.Point(7, 642);
-            this.lbl_Departed.Name = "lbl_Departed";
-            this.lbl_Departed.Size = new System.Drawing.Size(78, 13);
-            this.lbl_Departed.TabIndex = 31;
-            this.lbl_Departed.Text = "DEPARTED:";
             // 
             // LogisticsCalendarScheduleDetailsUC
             // 

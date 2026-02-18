@@ -12,6 +12,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Management;
+using System.Reflection;
+using System.ComponentModel;
 
 namespace smpc_dispatching.Core.Helpers
 {
@@ -633,6 +635,30 @@ namespace smpc_dispatching.Core.Helpers
                 else if (control is ComboBox combobox)
                 {
                     combobox.SelectedIndex = -1;
+                }
+            }
+        }
+        public static void ResetControls(Panel[] pnls)
+        {
+            foreach (Panel pnl in pnls)
+            {
+                foreach (Control control in pnl.Controls)
+                {
+                    // Check if the control is a TextBox
+                    if (control is TextBox textBox)
+                    {
+                        // Reset the TextBox's text
+                        textBox.Text = "";
+                    }
+                    else if (control is ComboBox combobox)
+                    {
+                        combobox.SelectedIndex = -1;
+                    }
+                    // Reset DateTimePicker to current date
+                    else if (control is DateTimePicker datePicker)
+                    {
+                        datePicker.Value = DateTime.Now;   // or DateTime.Today
+                    }
                 }
             }
         }
@@ -1576,5 +1602,314 @@ namespace smpc_dispatching.Core.Helpers
                 grid.Rows.Clear();
             }
         }
+        public static async Task<bool> ValidateDataGridViewCells(DataGridView dgv, string[] columnsToCheck, bool showError = true)
+        {
+            bool hasError = false;
+            List<DataGridViewCell> invalidCells = new List<DataGridViewCell>();
+
+            foreach (DataGridViewRow row in dgv.Rows)
+            {
+                if (row.IsNewRow) continue;
+
+                foreach (string colName in columnsToCheck)
+                {
+                    if (!dgv.Columns.Contains(colName))
+                        continue;
+
+                    var cell = row.Cells[colName];
+                    string value = cell?.Value?.ToString()?.Trim();
+
+                    bool isEmpty = string.IsNullOrEmpty(value);
+                    bool isZero = false;
+
+                    if (decimal.TryParse(value, out decimal numericValue))
+                        isZero = numericValue == 0;
+
+                    if (isEmpty || isZero)
+                    {
+                        hasError = true;
+                        invalidCells.Add(cell);
+                        cell.Style.BackColor = Color.Red;
+                    }
+                }
+            }
+
+            if (hasError)
+            {
+                if (showError)
+                    ShowDialogMessage("error", "Please ensure all required fields are filled.");
+
+                // Wait 3 seconds before resetting color
+                await Task.Delay(3000);
+
+                foreach (var cell in invalidCells)
+                {
+                    cell.Style.BackColor = Color.White;
+                }
+            }
+
+            return hasError;
+        }
+        public static class DatagridviewMapper
+        {
+            // Model mapper for DataGridView / DataTable
+            public static List<T> BuildModelsFromData<T>(object dataSource) where T : new()
+            {
+                var models = new List<T>();
+                var modelType = typeof(T);
+                var properties = modelType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+                // --- CASE 1: DataGridView ---
+                if (dataSource is DataGridView dgv)
+                {
+                    if (dgv.Rows.Count == 0)
+                        return models;
+
+                    foreach (DataGridViewRow row in dgv.Rows)
+                    {
+                        if (row.IsNewRow)
+                            continue;
+
+                        // 🔹 Check if row has ANY data in mapped columns
+                        bool rowHasData = false;
+
+                        foreach (var prop in properties)
+                        {
+                            if (!dgv.Columns.Contains(prop.Name))
+                                continue;
+
+                            var cellValue = row.Cells[prop.Name].Value;
+
+                            if (cellValue != null &&
+                                !string.IsNullOrWhiteSpace(cellValue.ToString()))
+                            {
+                                rowHasData = true;
+                                break;
+                            }
+                        }
+
+                        // ⛔ Skip completely empty rows
+                        if (!rowHasData)
+                            continue;
+
+                        var model = new T();
+
+                        foreach (var prop in properties)
+                        {
+                            if (!dgv.Columns.Contains(prop.Name))
+                                continue;
+
+                            var value = row.Cells[prop.Name].Value;
+                            SetModelPropertyValue(model, prop, value);
+                        }
+
+                        models.Add(model);
+                    }
+
+                    return models;
+                }
+
+                // --- CASE 2: DataTable ---
+                if (dataSource is DataTable dt)
+                {
+                    if (dt.Rows.Count == 0)
+                        return models;
+
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        var model = new T();
+
+                        foreach (var prop in properties)
+                        {
+                            if (!dt.Columns.Contains(prop.Name))
+                                continue;
+
+                            var value = dr[prop.Name];
+                            SetModelPropertyValue(model, prop, value);
+                        }
+
+                        models.Add(model);
+                    }
+
+                    return models;
+                }
+
+                return models;
+            }
+
+            // Helper method for safe conversion and assignment
+            private static void SetModelPropertyValue<T>(
+                T model,
+                PropertyInfo prop,
+                object value)
+            {
+                if (value == null || value == DBNull.Value)
+                    return;
+
+                try
+                {
+                    object convertedValue = Convert.ChangeType(
+                        value,
+                        Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType
+                    );
+
+                    prop.SetValue(model, convertedValue);
+                }
+                catch
+                {
+                    // Intentionally ignored
+                }
+            }
+        }
+        public static T BuildModelFromPanels<T>(Panel[] panels) where T : new()
+        {
+            var model = new T();
+            var modelType = typeof(T);
+
+            // Loop through each property of the model
+            foreach (var prop in modelType.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            {
+                Control control = null;
+
+                // Search through all panels for a matching control
+                foreach (var panel in panels)
+                {
+                    control = panel.Controls
+                        .Cast<Control>()
+                        .FirstOrDefault(c =>
+                            c.Name.Equals("txt_" + prop.Name, StringComparison.OrdinalIgnoreCase) ||
+                            c.Name.Equals("dtp_" + prop.Name, StringComparison.OrdinalIgnoreCase) ||
+                            c.Name.Equals("cmb_" + prop.Name, StringComparison.OrdinalIgnoreCase));
+
+                    if (control != null)
+                        break;
+                }
+
+                if (control == null)
+                    continue;
+
+                object value = null;
+
+                if (control is TextBox textBox)
+                    value = textBox.Text;
+                else if (control is ComboBox comboBox)
+                    value = comboBox.Text;
+                else if (control is DateTimePicker dateTimePicker)
+                    value = dateTimePicker.Value.ToString("MM/dd/yyyy");
+
+                if (value != null && prop.CanWrite)
+                {
+                    try
+                    {
+                        object convertedValue = Convert.ChangeType(value, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
+                        prop.SetValue(model, convertedValue);
+                    }
+                    catch
+                    {
+                        // Ignore conversion errors or handle as needed
+                    }
+                }
+            }
+
+            return model;
+        }
+        public static void SetButtonVisibility(ToolStrip toolStrip, IEnumerable<string> visibleButtons, IEnumerable<string> hiddenButtons)
+        {
+            if (toolStrip == null) return;
+
+            // Make visible buttons visible
+            foreach (var buttonName in visibleButtons ?? Enumerable.Empty<string>())
+            {
+                var btn = toolStrip.Items
+                                   .OfType<ToolStripButton>()
+                                   .FirstOrDefault(b => b.Name == buttonName);
+                if (btn != null)
+                    btn.Visible = true;
+            }
+
+            // Make hidden buttons invisible
+            foreach (var buttonName in hiddenButtons ?? Enumerable.Empty<string>())
+            {
+                var btn = toolStrip.Items
+                                   .OfType<ToolStripButton>()
+                                   .FirstOrDefault(b => b.Name == buttonName);
+                if (btn != null)
+                    btn.Visible = false;
+            }
+        }
+        public static class BindHelpers
+        {
+            /// <summary>
+            /// Bind parent object properties to panel controls (TextBox, ComboBox, DateTimePicker, CheckBox)
+            /// </summary>
+            public static void BindParentToPanels(object model, Panel[] panels)
+            {
+                if (model == null || panels == null)
+                    return;
+
+                var props = model.GetType().GetProperties();
+
+                foreach (var pnl in panels)
+                {
+                    foreach (Control control in pnl.Controls)
+                    {
+                        var matchingProp = props.FirstOrDefault(p =>
+                            string.Equals(p.Name, control.Name.Replace("txt_", "")
+                                .Replace("cmb_", "")
+                                .Replace("chk_", "")
+                                .Replace("dtp_", ""), StringComparison.OrdinalIgnoreCase));
+
+                        if (matchingProp == null) continue;
+
+                        object value = matchingProp.GetValue(model);
+
+                        switch (control)
+                        {
+                            case TextBox textBox:
+                                textBox.Text = value?.ToString() ?? string.Empty;
+                                break;
+
+                            case ComboBox comboBox:
+                                comboBox.Text = value?.ToString() ?? string.Empty;
+                                break;
+
+                            case CheckBox checkBox:
+                                if (value is bool boolVal)
+                                    checkBox.Checked = boolVal;
+                                else if (value is bool?)
+                                    checkBox.Checked = ((bool?)value) ?? false;
+                                break;
+
+                            case DateTimePicker dtp:
+                                if (DateTime.TryParse(value?.ToString(), out DateTime dt))
+                                    dtp.Value = dt;
+                                else
+                                    dtp.Value = DateTime.Now;
+                                break;
+
+                            case NumericUpDown numUpDown:
+                                if (value != null && decimal.TryParse(value.ToString(), out decimal decVal))
+                                    numUpDown.Value = decVal;
+                                else
+                                    numUpDown.Value = 0;
+                                break;
+                        }
+                    }
+                }
+            }
+
+            /// <summary>
+            /// Bind a list of child items to DataGridView and return a BindingList
+            /// </summary>
+            public static BindingList<T> BindChildToDataGridView<T>(DataGridView dgv, List<T> items)
+            {
+                var binding = new BindingList<T>(items ?? new List<T>());
+                dgv.AutoGenerateColumns = false;
+                dgv.DataSource = binding;
+                return binding;
+            }
+        }
+
+
     }
 }

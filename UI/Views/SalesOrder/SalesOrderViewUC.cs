@@ -113,7 +113,7 @@ namespace smpc_dispatching.UI.Views.SalesOrder {
 
             var items = order.Items;
             if (items != null && items.Count > 0) {
-                PopulateItemList(items);
+                //PopulateItemList(items);
             }
 
 
@@ -133,53 +133,53 @@ namespace smpc_dispatching.UI.Views.SalesOrder {
 
         }
 
-        private void PopulateItemList(List<SalesOrderDetailsModel> orderItems) {
-            ItemListDataGridView.Rows.Clear();
-            ItemListDataGridView.Rows.Clear();
+        //private void PopulateItemList(List<SalesOrderDetailsModel> orderItems) {
+        //    ItemListDataGridView.Rows.Clear();
+        //    ItemListDataGridView.Rows.Clear();
 
-            if (orderItems == null || orderItems.Count <= 0) return;
+        //    if (orderItems == null || orderItems.Count <= 0) return;
 
-            List<ItemReleaseModel> releases = new List<ItemReleaseModel>();
-            List<DeliveryReceiptModel> receipts = new List<DeliveryReceiptModel>();
+        //    List<ItemReleaseModel> releases = new List<ItemReleaseModel>();
+        //    List<DeliveryReceiptModel> receipts = new List<DeliveryReceiptModel>();
 
-            for (var i = 0; i < orderItems.Count; i++) {
-                var order = orderItems[i];
+        //    for (var i = 0; i < orderItems.Count; i++) {
+        //        var order = orderItems[i];
 
-                if (order != null) {
+        //        if (order != null) {
 
-                    var serialNumbers = "";
+        //            var serialNumbers = "";
 
-                    if (order.Releases != null && order.Releases.Count() > 0) {
-                        serialNumbers = String.Join("-", order.Releases.Select(x => x.SerialNumber));
-                    }
-                    ItemListDataGridView.Rows.Add(i + 1, order.Qty, order.Item.ModelItem, order.Item.ShortDesc, order.Releases[0]?.DeliveryReceipt?.DeliveryReference, order.Status, serialNumbers);
-                    releases.AddRange(order.Releases);
-                }
-            }
+        //            if (order.Releases != null && order.Releases.Count() > 0) {
+        //                serialNumbers = String.Join("-", order.Releases.Select(x => x.SerialNumber));
+        //            }
+        //            ItemListDataGridView.Rows.Add(i + 1, order.Qty, order.Item.ModelItem, order.Item.ShortDesc, order.Releases[0]?.DeliveryReceipt?.DeliveryReference, order.Status, serialNumbers);
+        //            releases.AddRange(order.Releases);
+        //        }
+        //    }
 
-            PopulateDispatchList(releases);
+        //    PopulateDispatchList(releases);
 
-        }
-
-
-
-        private void PopulateDispatchList(List<ItemReleaseModel> releases) {
-
-            DispatchItemsListDataGridView.Rows.Clear();
-
-            if (releases == null || releases.Count <= 0) return;
-
-            for (int i = 0; i < releases.Count; i++) {
-                var release = releases[i];
-                var pickActivity = "";
-
-                DispatchItemsListDataGridView.Rows.Add(release.CreatedAt, release.Status,
-                    release.Vehicle?.PlateNo, release.Peoples, pickActivity, release.DeliveryReceipt?.DeliveryReceiptNumber, release.DepartedAt,
-                    release.ArrivedAt, release.ReturnedAt, release.DeliveryReceipt?.TripCost?.TotalCost);
-            }
+        //}
 
 
-        }
+
+        //private void PopulateDispatchList(List<ItemReleaseModel> releases) {
+
+        //    DispatchItemsListDataGridView.Rows.Clear();
+
+        //    if (releases == null || releases.Count <= 0) return;
+
+        //    for (int i = 0; i < releases.Count; i++) {
+        //        var release = releases[i];
+        //        var pickActivity = "";
+
+        //        DispatchItemsListDataGridView.Rows.Add(release.CreatedAt, release.Status,
+        //            release.Vehicle?.PlateNo, release.Peoples, pickActivity, release.DeliveryReceipt?.DeliveryReceiptNumber, release.DepartedAt,
+        //            release.ArrivedAt, release.ReturnedAt, release.DeliveryReceipt?.TripCost?.TotalCost);
+        //    }
+
+
+        //}
 
 
         private void PopulateOrderCostList(List<DeliveryReceiptModel> receipts) {

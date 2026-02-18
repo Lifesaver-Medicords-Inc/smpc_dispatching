@@ -156,4 +156,17 @@ namespace smpc_dispatching.Core.Models {
         [JsonProperty("releases")]
         public List<ItemReleaseModel> Releases { get; set; }
     }
+    public class SalesOrderViewModel
+    {
+        public int sales_order_details_id { get; set; }
+        public int sales_order_id { get; set; }
+        public string ref_doc_no { get; set; }
+        public int item_id { get; set; }
+        public string item_description { get; set; }
+        public int required_qty { get; set; }
+        public int required_uom_id { get; set; }
+        public string required_uom { get; set; }
+        public string delivery_preference { get; set; }
+       
+    }
 }

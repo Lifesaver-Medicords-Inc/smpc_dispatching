@@ -70,7 +70,7 @@
             this.MainSplitContainer.Panel2.Controls.Add(this.ScheduleDetailsPanel);
             this.MainSplitContainer.Panel2MinSize = 300;
             this.MainSplitContainer.Size = new System.Drawing.Size(1242, 946);
-            this.MainSplitContainer.SplitterDistance = 820;
+            this.MainSplitContainer.SplitterDistance = 822;
             this.MainSplitContainer.SplitterWidth = 2;
             this.MainSplitContainer.TabIndex = 0;
             // 
@@ -91,7 +91,7 @@
             // EventSplitContainer.Panel2
             // 
             this.EventSplitContainer.Panel2.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.EventSplitContainer.Size = new System.Drawing.Size(820, 946);
+            this.EventSplitContainer.Size = new System.Drawing.Size(822, 946);
             this.EventSplitContainer.SplitterDistance = 677;
             this.EventSplitContainer.SplitterWidth = 1;
             this.EventSplitContainer.TabIndex = 0;
@@ -114,8 +114,8 @@
             // CalendarSplitContainer.Panel2
             // 
             this.CalendarSplitContainer.Panel2.BackColor = System.Drawing.SystemColors.Control;
-            this.CalendarSplitContainer.Size = new System.Drawing.Size(820, 677);
-            this.CalendarSplitContainer.SplitterDistance = 67;
+            this.CalendarSplitContainer.Size = new System.Drawing.Size(822, 677);
+            this.CalendarSplitContainer.SplitterDistance = 70;
             this.CalendarSplitContainer.SplitterWidth = 1;
             this.CalendarSplitContainer.TabIndex = 0;
             // 
@@ -129,7 +129,7 @@
             this.HeaderFlowLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             this.HeaderFlowLayoutPanel.Name = "HeaderFlowLayoutPanel";
             this.HeaderFlowLayoutPanel.Padding = new System.Windows.Forms.Padding(4);
-            this.HeaderFlowLayoutPanel.Size = new System.Drawing.Size(818, 65);
+            this.HeaderFlowLayoutPanel.Size = new System.Drawing.Size(820, 68);
             this.HeaderFlowLayoutPanel.TabIndex = 1;
             this.HeaderFlowLayoutPanel.WrapContents = false;
             // 
@@ -221,7 +221,7 @@
             this.ScheduleDetailsPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.ScheduleDetailsPanel.Location = new System.Drawing.Point(0, 0);
             this.ScheduleDetailsPanel.Name = "ScheduleDetailsPanel";
-            this.ScheduleDetailsPanel.Size = new System.Drawing.Size(418, 664);
+            this.ScheduleDetailsPanel.Size = new System.Drawing.Size(416, 664);
             this.ScheduleDetailsPanel.TabIndex = 0;
             // 
             // CalendarScheduleControllerUC

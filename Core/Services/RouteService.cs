@@ -68,7 +68,7 @@ namespace smpc_dispatching.Core.Services
                 Code = "ITEM_RELEASE",
                 Parent = null,
                 Title = "Item Release",
-                ViewFactory = () => _serviceProvider.GetRequiredService<ItemReleaseViewUC>()
+                ViewFactory = () => _serviceProvider.GetRequiredService<ItemReleaseUC>()
             };
         }
 
