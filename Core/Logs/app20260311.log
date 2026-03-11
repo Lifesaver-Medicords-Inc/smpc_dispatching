@@ -1,0 +1,66 @@
+2026-03-11 14:58:44.327 +08:00 [INF] Running in Production environment
+2026-03-11 14:58:44.363 +08:00 [INF] API URL: https://disordered-wilhelmina-nondetrimentally.ngrok-free.dev/api
+2026-03-11 15:00:35.981 +08:00 [INF] Running in Production environment
+2026-03-11 15:00:36.018 +08:00 [INF] API URL: https://disordered-wilhelmina-nondetrimentally.ngrok-free.dev/api
+2026-03-11 15:02:13.935 +08:00 [INF] Running in Production environment
+2026-03-11 15:02:13.973 +08:00 [INF] API URL: https://disordered-wilhelmina-nondetrimentally.ngrok-free.dev/api
+2026-03-11 15:02:16.151 +08:00 [WRN] API request failed: login, StatusCode: "NotFound", Response: Cannot POST /login
+2026-03-11 15:02:16.229 +08:00 [ERR] Exception during API request: login
+Newtonsoft.Json.JsonReaderException: Unexpected character encountered while parsing value: C. Path '', line 0, position 0.
+   at Newtonsoft.Json.JsonTextReader.ParseValue()
+   at Newtonsoft.Json.JsonReader.ReadForType(JsonContract contract, Boolean hasConverter)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   at smpc_dispatching.Core.Services.HttpService.<SendRequestAsync>d__6`1.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\HttpService.cs:line 75
+2026-03-11 15:04:49.127 +08:00 [INF] Running in Production environment
+2026-03-11 15:04:49.165 +08:00 [INF] API URL: https://disordered-wilhelmina-nondetrimentally.ngrok-free.dev/api
+2026-03-11 15:04:52.663 +08:00 [WRN] API request failed: login, StatusCode: "NotFound", Response: Cannot POST /login
+2026-03-11 15:04:52.726 +08:00 [ERR] Exception during API request: login
+Newtonsoft.Json.JsonReaderException: Unexpected character encountered while parsing value: C. Path '', line 0, position 0.
+   at Newtonsoft.Json.JsonTextReader.ParseValue()
+   at Newtonsoft.Json.JsonReader.ReadForType(JsonContract contract, Boolean hasConverter)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   at smpc_dispatching.Core.Services.HttpService.<SendRequestAsync>d__6`1.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\HttpService.cs:line 95
+2026-03-11 15:05:16.988 +08:00 [INF] Running in Development environment
+2026-03-11 15:05:17.027 +08:00 [INF] API URL: http://127.0.0.1:3000/api
+2026-03-11 15:05:18.156 +08:00 [WRN] API request failed: login, StatusCode: "NotFound", Response: Cannot POST /login
+2026-03-11 15:05:18.227 +08:00 [ERR] Exception during API request: login
+Newtonsoft.Json.JsonReaderException: Unexpected character encountered while parsing value: C. Path '', line 0, position 0.
+   at Newtonsoft.Json.JsonTextReader.ParseValue()
+   at Newtonsoft.Json.JsonReader.ReadForType(JsonContract contract, Boolean hasConverter)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)
+   at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)
+   at smpc_dispatching.Core.Services.HttpService.<SendRequestAsync>d__6`1.MoveNext() in D:\LEM\Source Tree\Dispatching\Core\Services\HttpService.cs:line 95
+2026-03-11 15:07:51.719 +08:00 [INF] Running in Development environment
+2026-03-11 15:07:51.756 +08:00 [INF] API URL: http://127.0.0.1:3000/api
+2026-03-11 15:07:52.598 +08:00 [DBG] API response [POST login] HTTP 404: Cannot POST /login
+2026-03-11 15:07:52.603 +08:00 [WRN] Non-JSON response from [POST login] HTTP 404: Cannot POST /login
+2026-03-11 15:11:52.133 +08:00 [INF] Running in Development environment
+2026-03-11 15:11:52.196 +08:00 [INF] API URL: http://127.0.0.1:3000/api
+2026-03-11 15:11:54.609 +08:00 [DBG] API response [POST login] HTTP 404: Cannot POST /login
+2026-03-11 15:11:54.614 +08:00 [WRN] Non-JSON response from [POST login] HTTP 404: Cannot POST /login
+2026-03-11 15:14:03.382 +08:00 [WRN] API request failed: delivery-receipts/so-with-approved-ir/, StatusCode: "BadRequest", Response: {"message":"Invalid ID","success":false}
+2026-03-11 15:14:04.002 +08:00 [WRN] API request failed: /api/setup/shiptype/, StatusCode: "InternalServerError", Response: {"message":"failed getting ship types","success":false}
+2026-03-11 15:14:08.960 +08:00 [WRN] API request failed: calendar-schedules?department=SALES, StatusCode: "NotFound", Response: {"message":"failed getting sales calendar schedules","success":false}
+2026-03-11 15:14:09.340 +08:00 [WRN] API request failed: calendar-schedules?department=SALES, StatusCode: "NotFound", Response: {"message":"failed getting sales calendar schedules","success":false}
+2026-03-11 15:14:12.287 +08:00 [WRN] API request failed: calendar-schedules?department=SALES, StatusCode: "NotFound", Response: {"message":"failed getting sales calendar schedules","success":false}
+2026-03-11 15:14:13.452 +08:00 [WRN] API request failed: vehicles, StatusCode: "InternalServerError", Response: {"message":"failed to start DB transaction","success":false}
+2026-03-11 15:14:13.536 +08:00 [WRN] API request failed: calendar-schedules?department=SALES, StatusCode: "InternalServerError", Response: {"message":"failed to start DB transaction","success":false}
+2026-03-11 15:14:19.849 +08:00 [WRN] API request failed: calendar-categories, StatusCode: "InternalServerError", Response: {"message":"failed to start DB transaction","success":false}
+2026-03-11 15:14:19.870 +08:00 [WRN] API request failed: calendar-schedules?department=ENGINEERING, StatusCode: "InternalServerError", Response: {"message":"failed to start DB transaction","success":false}
+2026-03-11 15:14:22.362 +08:00 [WRN] API request failed: calendar-schedules?department=ENGINEERING, StatusCode: "NotFound", Response: {"message":"failed getting engineering calendar schedules","success":false}
+2026-03-11 15:14:22.371 +08:00 [WRN] API request failed: calendar-schedules?department=LOGISTICS, StatusCode: "NotFound", Response: {"message":"failed getting logistics calendar schedules","success":false}
+2026-03-11 15:14:22.891 +08:00 [WRN] API request failed: calendar-schedules?department=LOGISTICS, StatusCode: "NotFound", Response: {"message":"failed getting logistics calendar schedules","success":false}
+2026-03-11 15:14:31.527 +08:00 [WRN] API request failed: calendar-schedules?department=LOGISTICS, StatusCode: "NotFound", Response: {"message":"failed getting logistics calendar schedules","success":false}
+2026-03-11 15:14:31.895 +08:00 [WRN] API request failed: calendar-schedules?department=LOGISTICS, StatusCode: "NotFound", Response: {"message":"failed getting logistics calendar schedules","success":false}
+2026-03-11 15:14:33.909 +08:00 [WRN] API request failed: calendar-schedules?department=ENGINEERING, StatusCode: "NotFound", Response: {"message":"failed getting engineering calendar schedules","success":false}
+2026-03-11 15:14:34.586 +08:00 [WRN] API request failed: calendar-schedules?department=ENGINEERING, StatusCode: "NotFound", Response: {"message":"failed getting engineering calendar schedules","success":false}
+2026-03-11 15:14:35.403 +08:00 [WRN] API request failed: calendar-schedules?department=SALES, StatusCode: "NotFound", Response: {"message":"failed getting sales calendar schedules","success":false}
+2026-03-11 15:14:36.077 +08:00 [WRN] API request failed: calendar-schedules?department=SALES, StatusCode: "NotFound", Response: {"message":"failed getting sales calendar schedules","success":false}

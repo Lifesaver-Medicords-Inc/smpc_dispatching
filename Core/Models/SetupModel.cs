@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace smpc_dispatching.Core.Models
 {
-    class SetupModel
+    public class SetupModel
     {
-        [JsonProperty("code")]
-        public string Code { get; set; }
-        [JsonProperty("name")]
-        public string Name { get; set; }
+        public int id { get; set; }
+        public string code { get; set; }
+        public string name { get; set; }
+        public string ship_name { get; set; }
     }
 }

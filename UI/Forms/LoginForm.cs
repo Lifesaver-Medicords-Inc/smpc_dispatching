@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using smpc_dispatching.Core.Enum;
 using smpc_dispatching.Core.Interfaces;
 using smpc_dispatching.UI.Layout;
 using System;
@@ -24,8 +25,17 @@ namespace smpc_dispatching.UI.Forms {
                 //var employeeId = usernameTextBox.Text;
                 //var password = passwordTextBox.Text;
 
-                var employeeId = "PURCH-PO-8";
-                var password = "PURCH-PO-8";
+                // Logistics
+                //var employeeId = "LOG-D-29";
+                //var password = "LOG-D-29";
+
+                // WH Manager
+                //var employeeId = "im-im-25";
+                //var password = "im-im-25";
+
+                // WH Manager
+                var employeeId = "IT-WD-1";
+                var password = "IT-WD-1";
 
                 if (string.IsNullOrWhiteSpace(employeeId)) {
                     MessageBox.Show("Employee ID is required.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -50,6 +60,10 @@ namespace smpc_dispatching.UI.Forms {
                     return;
                 }
 
+                // Cache current user data
+                CacheData.CurrentUser = res.Data;
+
+                // Hide login form
                 this.Hide();
 
                 var mainLayout = _serviceProvider.GetRequiredService <MainLayout>();

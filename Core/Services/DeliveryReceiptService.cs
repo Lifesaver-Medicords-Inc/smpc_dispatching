@@ -29,7 +29,7 @@ namespace smpc_dispatching.Core.Services {
                     .Select(kv => $"{Uri.EscapeDataString(kv.Key)}={Uri.EscapeDataString(kv.Value)}"));
             }
 
-            var res = await _httpService.Get<HttpResponseModel<IEnumerable<DeliveryReceiptModel>>>($"delivery-receipts{queryParams}");
+            var res = await _httpService.Get<HttpResponseModel<IEnumerable<DeliveryReceiptModel>>>($"/api/delivery-receipts{queryParams}");
             return res;
         }
 
@@ -38,7 +38,7 @@ namespace smpc_dispatching.Core.Services {
             return res;
         }
         public async Task<HttpResponseModel<DeliveryReceiptModel>> UpdateAsync(DeliveryReceiptModel entity) {
-            var res = await _httpService.Put<HttpResponseModel<DeliveryReceiptModel>>($"delivery-receipts/{entity.Id}", entity);
+            var res = await _httpService.Put<HttpResponseModel<DeliveryReceiptModel>>($"delivery-receipts/{entity.id}", entity);
             return res;
         }
 

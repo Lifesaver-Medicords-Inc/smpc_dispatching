@@ -1,23 +1,38 @@
 ﻿using Newtonsoft.Json;
-
+using System.Collections.Generic;
 
 namespace smpc_dispatching.Core.Models {
     public class UserModel {
-        [JsonProperty("id")]
-        public int Id { get; set; }
+        public int id { get; set; }
+        public string employee_id { get; set; }
+        public string first_name { get; set; }
+        public string last_name { get; set; }
+        public string department { get; set; }
+        public int position_id { set; get; }
+         public UserPermissionModel permissions { get; set; }
+        public PositionModel position { get; set; }
+    }
+    public class UserPermissionModel
+    {
+        public int id { get; set; }
+        public int user_id { get; set; }
+        public bool can_create { get; set; }
+        public bool can_update { get; set; }
+        public bool can_delete { get; set; }
+    }
 
-        [JsonProperty("employee_id")]
-        public string EmployeeId { get; set; }
+    public class PositionModel
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+        public ICollection<PositionAccessModel> access { get; set; } = new List<PositionAccessModel>();
+        public ICollection<UserModel> users { get; set; } = new List<UserModel>();
+    }
 
-        [JsonProperty("first_name")]
-        public string FirstName { get; set; }
-
-        [JsonProperty("last_name")]
-        public string LastName { get; set; }
-
-
-        [JsonProperty("position_id")]
-        public int PositionId { set; get; }
-
+    public class PositionAccessModel
+    {
+        public int id { get; set; }
+        public int position_id { get; set; }
+        public string code { get; set; }
     }
 }

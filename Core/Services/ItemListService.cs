@@ -30,5 +30,6 @@ namespace smpc_dispatching.Core.Services
             var res = await _httpService.Get<HttpResponseModel<IEnumerable<ItemListModel>>>($"/api/setup/item/all_item/{queryParams}");
             return res;
         }
+
     }
 }

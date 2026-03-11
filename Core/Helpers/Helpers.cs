@@ -14,6 +14,7 @@ using System.Windows.Forms;
 using System.Management;
 using System.Reflection;
 using System.ComponentModel;
+using System.Linq.Expressions;
 
 namespace smpc_dispatching.Core.Helpers
 {
@@ -418,7 +419,7 @@ namespace smpc_dispatching.Core.Helpers
             }
         }
 
-        public static void SetReadOnlyControl(DataGridView dg, bool? boolean = null)
+        public static void SetDGVReadOnly(DataGridView dg, bool? boolean = null)
         {
             Console.WriteLine($"{dg.Name}: [");
             foreach (DataGridViewRow row in dg.Rows)
@@ -451,6 +452,13 @@ namespace smpc_dispatching.Core.Helpers
                 }
             }
             Console.WriteLine("]\n");
+        }
+        public static void SetControlsReadOnly(IEnumerable<Control> controls, bool? status = null)
+        {
+            foreach (var control in controls)
+            {
+                SetControlReadOnly(control, status);
+            }
         }
         public static void SetPanelToReadOnly(Panel pnl, bool? status = null)
         {
@@ -527,6 +535,47 @@ namespace smpc_dispatching.Core.Helpers
             }
             pnl.Enabled = true;
             Console.WriteLine("]\n");
+        }
+        public static void SetControlReadOnly(Control control, bool? status = null)
+        {
+            if (!control.Visible
+                && (!(control is DataGridView) && control.Parent is TabControl)
+                || control is Label)
+                return;
+
+            if (control.Tag != null &&
+                (control.Tag.Equals("no_edit") || control.Tag.Equals("manual")))
+                return;
+
+            if (control is TextBox txt)
+            {
+                txt.ReadOnly = status ?? !txt.ReadOnly;
+                txt.TabStop = !txt.ReadOnly;
+            }
+            else if (control is ComboBox cmb)
+            {
+                cmb.Enabled = !(status ?? !cmb.Enabled);
+            }
+            else if (control is CheckBox chk)
+            {
+                chk.Enabled = !(status ?? !chk.Enabled);
+            }
+            else if (control is Button btn)
+            {
+                btn.Enabled = !(status ?? !btn.Enabled);
+            }
+            else if (control is DataGridView dgv)
+            {
+                dgv.AllowUserToAddRows = status.HasValue ? !status.Value : false;
+                dgv.AllowUserToDeleteRows = status.HasValue ? !status.Value : false;
+                dgv.Enabled = true;
+
+                foreach (DataGridViewColumn col in dgv.Columns)
+                {
+                    if (!col.Visible) continue;
+                    col.ReadOnly = status ?? !col.ReadOnly;
+                }
+            }
         }
 
         public static DataTable ConvertDataGridViewToDataTable(DataGridView dgv, string childName = "")
@@ -647,8 +696,8 @@ namespace smpc_dispatching.Core.Helpers
                     // Check if the control is a TextBox
                     if (control is TextBox textBox)
                     {
-                        // Reset the TextBox's text
-                        textBox.Text = "";
+                        textBox.Text = "";
+                        
                     }
                     else if (control is ComboBox combobox)
                     {
@@ -1609,21 +1658,35 @@ namespace smpc_dispatching.Core.Helpers
 
             foreach (DataGridViewRow row in dgv.Rows)
             {
-                if (row.IsNewRow) continue;
+                if (row.IsNewRow)
+                    continue;
 
+                // Skip row if all relevant cells are empty
+                bool allEmpty = true;
                 foreach (string colName in columnsToCheck)
                 {
-                    if (!dgv.Columns.Contains(colName))
-                        continue;
+                    if (!dgv.Columns.Contains(colName)) continue;
+                    var cell = row.Cells[colName];
+                    string value = cell?.Value?.ToString()?.Trim();
+                    if (!string.IsNullOrEmpty(value) && value != "0")
+                    {
+                        allEmpty = false;
+                        break;
+                    }
+                }
+                if (allEmpty)
+                    continue; // skip entirely empty row
+
+                // Proceed with normal validation
+                foreach (string colName in columnsToCheck)
+                {
+                    if (!dgv.Columns.Contains(colName)) continue;
 
                     var cell = row.Cells[colName];
                     string value = cell?.Value?.ToString()?.Trim();
 
                     bool isEmpty = string.IsNullOrEmpty(value);
-                    bool isZero = false;
-
-                    if (decimal.TryParse(value, out decimal numericValue))
-                        isZero = numericValue == 0;
+                    bool isZero = decimal.TryParse(value, out decimal numericValue) && numericValue == 0;
 
                     if (isEmpty || isZero)
                     {
@@ -1791,9 +1854,51 @@ namespace smpc_dispatching.Core.Helpers
                 object value = null;
 
                 if (control is TextBox textBox)
-                    value = textBox.Text;
+                {
+                    if (textBox.Tag != null && textBox.Tag.ToString() == "MONEY")
+                    {
+                        if (decimal.TryParse(textBox.AccessibleDescription, out decimal exactVal))
+                        {
+                            value = exactVal;
+                        }
+                        else
+                        {
+                            string cleaned = GetCleanedPriceValue(textBox.Text);
+
+                            if (decimal.TryParse(cleaned, out decimal tempVal))
+                            {
+                                value = tempVal;
+                            }
+                            else
+                            {
+                                MessageBox.Show("Invalid money format. Please enter a valid number.");
+                                value = 0;
+                            }
+                        }
+                    }
+
+                    // TEXTBOX WITH LIST OF IDS
+                    else if (textBox.Tag is List<int> ids && ids.Count > 0)
+                    {
+                        value = ids;
+                    }
+
+                    else
+                    {
+                        value = textBox.Text;
+                    }
+                }
                 else if (control is ComboBox comboBox)
-                    value = comboBox.Text;
+                {
+                    if (comboBox.Tag != null && comboBox.Tag.ToString() == "DYNAMIC")
+                    {
+                        value = comboBox.SelectedValue;
+                    }
+                    else
+                    {
+                        value = comboBox.Text;
+                    }
+                }
                 else if (control is DateTimePicker dateTimePicker)
                     value = dateTimePicker.Value.ToString("MM/dd/yyyy");
 
@@ -1840,9 +1945,13 @@ namespace smpc_dispatching.Core.Helpers
         public static class BindHelpers
         {
             /// <summary>
-            /// Bind parent object properties to panel controls (TextBox, ComboBox, DateTimePicker, CheckBox)
+            /// Bind parent object properties to panel controls (TextBox, ComboBox, DateTimePicker, CheckBox, NumericUpDown)
+            /// Automatically formats DocNo fields using DocNoFormatter.
             /// </summary>
-            public static void BindParentToPanels(object model, Panel[] panels)
+            /// <param name="model">Parent object</param>
+            /// <param name="panels">Array of panels containing controls</param>
+            /// <param name="docPrefix">Optional prefix for DocNo fields (default "DOC#")</param>
+            public static void BindParentToPanels(object model, Panel[] panels, string docPrefix = "DOC#")
             {
                 if (model == null || panels == null)
                     return;
@@ -1853,12 +1962,13 @@ namespace smpc_dispatching.Core.Helpers
                 {
                     foreach (Control control in pnl.Controls)
                     {
-                        var matchingProp = props.FirstOrDefault(p =>
-                            string.Equals(p.Name, control.Name.Replace("txt_", "")
-                                .Replace("cmb_", "")
-                                .Replace("chk_", "")
-                                .Replace("dtp_", ""), StringComparison.OrdinalIgnoreCase));
+                        var propName = control.Name
+                            .Replace("txt_", "")
+                            .Replace("cmb_", "")
+                            .Replace("chk_", "")
+                            .Replace("dtp_", "");
 
+                        var matchingProp = props.FirstOrDefault(p => string.Equals(p.Name, propName, StringComparison.OrdinalIgnoreCase));
                         if (matchingProp == null) continue;
 
                         object value = matchingProp.GetValue(model);
@@ -1866,11 +1976,31 @@ namespace smpc_dispatching.Core.Helpers
                         switch (control)
                         {
                             case TextBox textBox:
-                                textBox.Text = value?.ToString() ?? string.Empty;
-                                break;
-
-                            case ComboBox comboBox:
-                                comboBox.Text = value?.ToString() ?? string.Empty;
+                                if (string.Equals(propName, "doc_no", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    if (value != null)
+                                    {
+                                        if (value is int)
+                                            textBox.Text = DocNoFormatter((int)value, docPrefix);
+                                        else if (value is int?)
+                                        {
+                                            int? val = (int?)value;
+                                            textBox.Text = val.HasValue ? DocNoFormatter(val.Value, docPrefix) : string.Empty;
+                                        }
+                                        else
+                                        {
+                                            textBox.Text = value.ToString();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        textBox.Text = string.Empty;
+                                    }
+                                }
+                                else
+                                {
+                                    textBox.Text = value?.ToString() ?? string.Empty;
+                                }
                                 break;
 
                             case CheckBox checkBox:
@@ -1898,9 +2028,6 @@ namespace smpc_dispatching.Core.Helpers
                 }
             }
 
-            /// <summary>
-            /// Bind a list of child items to DataGridView and return a BindingList
-            /// </summary>
             public static BindingList<T> BindChildToDataGridView<T>(DataGridView dgv, List<T> items)
             {
                 var binding = new BindingList<T>(items ?? new List<T>());
@@ -1908,6 +2035,21 @@ namespace smpc_dispatching.Core.Helpers
                 dgv.DataSource = binding;
                 return binding;
             }
+        }
+        public static string DocNoFormatter(int docNo, string prefix = "DOC#", int digits = 4)
+        {
+            return $"{prefix}{docNo.ToString($"D{digits}")}";
+        }
+        public static string GetName<T>(Expression<Func<T, object>> expression)
+        {
+            if (expression.Body is MemberExpression member)
+                return member.Member.Name;
+
+            if (expression.Body is UnaryExpression unary &&
+                unary.Operand is MemberExpression unaryMember)
+                return unaryMember.Member.Name;
+
+            throw new ArgumentException("Invalid expression");
         }
 
 

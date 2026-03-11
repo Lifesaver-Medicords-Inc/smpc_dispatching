@@ -1,0 +1,687 @@
+﻿using Microsoft.Extensions.DependencyInjection;
+using Serilog;
+using smpc_dispatching.Core.Helpers;
+using smpc_dispatching.Core.Interfaces;
+using smpc_dispatching.Core.Models;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace smpc_dispatching.UI.Views.Delivery_Receipt
+{
+    public partial class DeliveryReceiptUC : UserControl
+    {
+
+        private readonly IServiceProvider _serviceProvider;
+        private readonly IDeliveryReceiptService _deliveryReceiptService;
+        private readonly ISalesOrderWithApprovedIRService<SalesOrderWithApprovedIRModel> _salesOrderWithApprovedIRService;
+        private readonly ISalesOrderWithApprovedIRDetailsService _salesOrderWithApprovedIRDetailsService;
+        private readonly ICostTypeService<SetupModel> _costTypeService;
+        private readonly IShipTypeService<ShipTypeModel> _shipTypeService;
+
+        private Panel[] _pnls;
+        private BindingList<DeliveryReceiptItemModel> _bindingListItem;
+        private BindingList<DeliveryReceiptCostModel> _bindingListCost/* = new BindingList<DeliveryReceiptCostModel>()*/;
+        private List<DeliveryReceiptModel> _deliveryReceipts;
+        private List<SalesOrderWithApprovedIRModel> _IrApprovedSo;
+        private List<SalesOrderWithApprovedIRDetailsModel> _IrDetailsApprovedSo;
+        private DataTable _soTable;
+        private bool isLoading = false;
+        private int _currentIndex = 0;
+        private int _previousIRIndex = -1;
+        private bool _hasError = false;
+
+        private enum DRMode { Create, View, Edit }
+        private DRMode _mode;
+        private bool _isNewMode => _mode == DRMode.Create;
+        private bool _isEditMode => _mode == DRMode.Edit;
+        private bool _isViewMode => _mode == DRMode.View;
+        private static readonly HashSet<string> _costTypeTemplate = new HashSet<string>
+        {
+            "LABOR",
+            "VEHICLE",
+            "FUEL",
+            "TOLL GATE",
+            "INSURANCE",
+            "PENALTY",
+            "OTHERS"
+        };
+        private BindingList<DeliveryReceiptCostModel> _costRows = new BindingList<DeliveryReceiptCostModel>();
+
+        private List<SetupModel> _costTypes;
+        private List<ShipTypeModel> _shipTypes;
+        public DeliveryReceiptUC( IServiceProvider serviceProvider)
+        {
+            InitializeComponent();
+
+            _serviceProvider = serviceProvider;
+            _deliveryReceiptService = serviceProvider.GetRequiredService<IDeliveryReceiptService>();
+            _costTypeService = serviceProvider.GetRequiredService<ICostTypeService<SetupModel>>();
+            _salesOrderWithApprovedIRService = serviceProvider.GetRequiredService<ISalesOrderWithApprovedIRService<SalesOrderWithApprovedIRModel>>();
+            _salesOrderWithApprovedIRDetailsService = serviceProvider.GetRequiredService<ISalesOrderWithApprovedIRDetailsService>();
+            _shipTypeService = serviceProvider.GetRequiredService<IShipTypeService<ShipTypeModel>>();
+
+
+            _pnls = new[] { pnl_header };
+            ToggleButton();
+
+            isLoading = true;
+            cmb_sales_order_id.Enabled = false;
+            SetupGridFormat();
+        }
+        private async void DeliveryReceiptUC_Load(object sender, EventArgs e)
+        {
+            InitializeDgCosts();
+            await LoadCostType();
+            await LoadIRApprovedSO();
+            await LoadShipType();
+            
+            await LoadDeliveryReceipts();
+        }
+        private async Task LoadDeliveryReceipts()
+        {
+            var response = await _deliveryReceiptService.GetAllAsync(null);
+            _deliveryReceipts = response?.Data?.ToList() ?? new List<DeliveryReceiptModel>();
+
+            if (_deliveryReceipts.Count == 0)
+            {
+                _currentIndex = -1;
+                return;
+            }
+
+            BindDeliveryReceipt(_currentIndex);
+        }
+        public async Task LoadCostType()
+        {
+            var response = await _costTypeService.GetAllAsync(null);
+            if (response?.Data == null) return;
+
+            _costTypes = response?.Data?.ToList() ?? new List<SetupModel>();
+            costs_cost_type_id.DataSource = AddDefaultValue(_costTypes);
+            costs_cost_type_id.DisplayMember = nameof(SetupModel.name);
+            costs_cost_type_id.ValueMember = nameof(SetupModel.id);
+        }
+        public async Task LoadIRApprovedSO()
+        {
+            isLoading = true;
+            var response = await _salesOrderWithApprovedIRService.GetAllAsync(null);
+            if (response?.Data == null) return;
+            _IrApprovedSo = response.Data.ToList();
+
+            var uniqueDocs = _IrApprovedSo
+                .GroupBy(s => s.sales_order_no)
+                .Where(g => !string.IsNullOrWhiteSpace(g.Key))
+                .Select(g => g.First())
+                .OrderBy(s => s.sales_order_no)
+                .ToList();
+
+            cmb_sales_order_id.DataSource = null; // reset first to avoid binding conflicts
+            cmb_sales_order_id.DataSource = uniqueDocs;
+            cmb_sales_order_id.DisplayMember = nameof(SalesOrderWithApprovedIRModel.sales_order_no);
+            cmb_sales_order_id.ValueMember = nameof(SalesOrderWithApprovedIRModel.sales_order_id);
+            cmb_sales_order_id.SelectedIndex = -1;
+
+            isLoading = false;
+        }
+        private async Task LoadShipType()
+        {
+            var response = await _shipTypeService.GetAllAsync(null);
+
+            _shipTypes = response?.Data?.ToList() ?? new List<ShipTypeModel>();
+            cmb_ship_type_id.DataSource = AddShipTypeDefaultValue(_shipTypes);
+            cmb_ship_type_id.DisplayMember = nameof(ShipTypeModel.ship_name);
+            cmb_ship_type_id.ValueMember = nameof(ShipTypeModel.id);
+
+        }
+        private void BindDeliveryReceipt(int index)
+        {
+            if (_deliveryReceipts == null || index < 0 || index >= _deliveryReceipts.Count)
+            {
+                dg_items.DataSource = null;
+                _costRows.Clear(); // clear instead of nulling datasource
+                return;
+            }
+
+            var current = _deliveryReceipts[index];
+            Helpers.BindHelpers.BindParentToPanels(current, _pnls, "DR#");
+
+            _bindingListItem = new BindingList<DeliveryReceiptItemModel>(
+                current.delivery_receipt_items ?? new List<DeliveryReceiptItemModel>()
+            );
+            dg_items.DataSource = _bindingListItem;
+
+            // Update _costRows in-place instead of creating a new BindingList
+            _costRows.Clear();
+            foreach (var cost in current.delivery_receipt_costs ?? new List<DeliveryReceiptCostModel>())
+                _costRows.Add(cost);
+
+            ComputeGrandTotal();
+            SetMode(DRMode.View);
+        }
+        private void BindSalesOrder(string soDocNo)
+        {
+            var selectedSO = _IrApprovedSo?.FirstOrDefault(x => x.sales_order_no == soDocNo);
+            if (selectedSO == null) return;
+            Helpers.BindHelpers.BindParentToPanels(selectedSO, _pnls);
+
+            // Correct cmb_ship_type_id if ship_type_id not in data source
+            var shipTypeExists = _shipTypes?.Any(x => x.id == selectedSO.ship_type_id) ?? false;
+            if (!shipTypeExists)
+                cmb_ship_type_id.SelectedValue = 0;
+
+            LoadIRItems((int)selectedSO.item_release_id);
+        }
+        private async void LoadIRItems(int irId)
+        {
+             var response = await _salesOrderWithApprovedIRDetailsService.GetAsync(irId);
+
+            if (response?.Data == null) return;
+
+            _IrDetailsApprovedSo = response.Data.ToList();
+            dg_items.DataSource = _IrDetailsApprovedSo;
+        }
+        public void InitializeDgCosts()
+        {
+            dg_costs.DataSource = _costRows; // bind once on form load
+        }
+        public void GenerateCostTypeRow()
+        {
+            _costRows.Clear();
+
+            foreach (var costType in _costTypes)
+            {
+                if (_costTypeTemplate.Contains(costType.name))
+                {
+                    _costRows.Add(new DeliveryReceiptCostModel
+                    {
+                        costs_cost_type_id = costType.id,
+                    });
+                }
+            }
+        }
+        private void BindItemRelease(int index)
+        {
+            if (_deliveryReceipts == null || index < 0 || index >= _deliveryReceipts.Count)
+            {
+                dg_items.DataSource = null;
+                return;
+            }
+
+            var current = _deliveryReceipts[index];
+
+            // Bind parent fields to panels
+            Helpers.BindHelpers.BindParentToPanels(current, _pnls, "IREL#");
+
+
+            // Bind child details to DataGridView
+            _bindingListItem = new BindingList<DeliveryReceiptItemModel>(
+                current.delivery_receipt_items ?? new List<DeliveryReceiptItemModel>()
+            );
+
+            _bindingListCost = new BindingList<DeliveryReceiptCostModel>(
+                    current.delivery_receipt_costs ?? new List<DeliveryReceiptCostModel>()
+                );
+
+
+            dg_items.DataSource = _bindingListItem;
+            dg_costs.DataSource = _bindingListCost;
+
+        }
+        private async void btn_save_Click(object sender, EventArgs e)
+        {
+            btn_save.Enabled = false;
+            try
+            {
+                if (!await ValidateInput(_pnls)) return;
+                var deliveryReceipt = Helpers.BuildModelFromPanels<DeliveryReceiptModel>(_pnls);
+                var deliveryReceiptItem = Helpers.DatagridviewMapper.BuildModelsFromData<DeliveryReceiptItemModel>(dg_items);
+                var deliveryReceiptCosts = Helpers.DatagridviewMapper.BuildModelsFromData < DeliveryReceiptCostModel>(dg_costs);
+
+                deliveryReceipt.delivery_receipt_items = deliveryReceiptItem;
+                deliveryReceipt.delivery_receipt_costs = deliveryReceiptCosts;
+
+
+                bool isNew = string.IsNullOrWhiteSpace(txt_id.Text);
+
+                if (isNew)
+                {
+                    var response = await _deliveryReceiptService.CreateAsync(deliveryReceipt);
+                    if (!response.Success)
+                    {
+                        Helpers.ShowDialogMessage("error", "Delivery Receipt saving failed.");
+                        return;
+                    }
+                    
+                }
+                if (!isNew)
+                {
+                    deliveryReceipt.id = int.Parse(txt_id.Text);
+                    // ✅ explicitly set is_forward
+
+                    var response = await _deliveryReceiptService.UpdateAsync(deliveryReceipt);
+                    if (!response.Success)
+                    {
+                        Helpers.ShowDialogMessage("error", "Item Release saving failed.");
+                        return;
+                    }
+                }
+                Helpers.ShowDialogMessage("success", "Delivery Receipt saved successfully.");
+
+                await LoadDeliveryReceipts();
+
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Save failed");
+                Helpers.ShowDialogMessage("error", ex.Message);
+            }
+            finally
+            {
+                btn_save.Enabled = true;  
+            }
+        }
+        private async void btn_close_Click(object sender, EventArgs e)
+        {
+            SetMode(DRMode.View);
+
+            cmb_sales_order_id.DropDownStyle = ComboBoxStyle.DropDown;
+
+            if (_previousIRIndex >= 0 && _deliveryReceipts != null && _deliveryReceipts.Count > 0)
+            {
+                await LoadDeliveryReceipts();
+            }
+        }
+        private void btn_new_Click(object sender, EventArgs e)
+        {
+            Helpers.ResetControls(_pnls);
+            
+            SetMode(DRMode.Create);
+            GenerateCostTypeRow();
+
+
+            _bindingListItem = new BindingList<DeliveryReceiptItemModel>();
+            dg_items.DataSource = _bindingListItem;
+
+            //_bindingListCost = new BindingList<DeliveryReceiptCostModel>();
+            //dg_items.DataSource = _bindingListCost;
+
+        }
+        private async Task<bool> ValidateInput(Panel[] pnls)
+        {
+            _hasError = false;
+
+            foreach (var pnl in pnls)
+            {
+                if (Helpers.ValidateControlsValues(pnl))
+                {
+                    _hasError = true;
+                    break;
+                }
+            }
+
+            if (_hasError)
+            {
+                Helpers.ShowDialogMessage("error", "Please fill in all required fields");
+                btn_save.Enabled = true;
+                return false;
+            }
+
+            if (dtp_date.Value.Date < DateTime.Now.Date)
+            {
+                Helpers.ShowDialogMessage("error", "Issue Date cannot be later than today.");
+                lb_delivery_date.Focus();
+                return false;
+            }
+
+
+            string[] columnsToValidate = new[] { "qty" };
+            bool dgvHasErrors = await Helpers.ValidateDataGridViewCells(dg_items, columnsToValidate);
+
+            return !dgvHasErrors;
+        }
+        private void SetMode(DRMode mode)
+        {
+            try
+            {
+                _mode = mode;
+                bool isView = _isViewMode;
+                bool isNew = _isNewMode;
+                bool canEdit = _isNewMode || _isEditMode;
+
+                // DataGridView
+                dg_items.ReadOnly = !canEdit;
+                dg_costs.ReadOnly = !canEdit;
+
+
+                // Buttons
+                SetToolStripButtons(canEdit);
+                if (canEdit)
+                {
+                    Helpers.SetPanelToReadOnly(pnl_header, false);
+
+                    _previousIRIndex = _currentIndex;
+                    if (isNew)
+                    {
+                        txt_doc_no.Text = "DR#0000";
+                        txt_doc_no.ReadOnly = true;
+                        cmb_sales_order_id.Enabled = true;
+                        dg_items.Enabled = false;
+
+                       
+
+                    }
+                }
+
+                if (isView)
+                {
+                    Helpers.SetPanelToReadOnly(pnl_header, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to set mode: {ex.Message}\n{ex.StackTrace}");
+            }
+        }
+        private void SetToolStripButtons(bool canEdit)
+        {
+            Helpers.SetButtonVisibility(
+                toolStrip1,
+                visibleButtons: canEdit
+                    ? new[] { "btn_save", "btn_close" }
+                    : new[] { "btn_prev", "btn_next", "btn_search", "btn_new", "btn_edit", "btn_delete", "btn_print" },
+                hiddenButtons: canEdit
+                    ? new[] { "btn_prev", "btn_next", "btn_search", "btn_new", "btn_edit", "btn_delete", "btn_print" }
+                    : new[] { "btn_save", "btn_close" }
+            );
+        }
+
+        private void SetEditableColumns(bool isEdit)
+        {
+            var editableColumns = new[]
+            {
+                nameof(DeliveryReceiptCostModel.costs_cost_type_id),
+                nameof(DeliveryReceiptCostModel.costs_description),
+                nameof(DeliveryReceiptCostModel.costs_amount),
+                nameof(DeliveryReceiptCostModel.costs_multiplier),
+            };
+
+            foreach (var colName in editableColumns)
+            {
+                if (dg_items.Columns.Contains(colName))
+                    dg_items.Columns[colName].ReadOnly = !isEdit;
+            }
+        }
+
+        private void btn_toggle_Click(object sender, EventArgs e)
+        {
+            bool isExpanded = pnl_footer.Visible = !pnl_footer.Visible;
+            ToggleButton();
+        }
+        private void ToggleButton()
+        {
+            btn_toggle.Text = pnl_footer.Visible
+                ? "DELIVERY COST  ▲"
+                : "DELIVERY COST  ▼";
+
+            btn_toggle.BackColor = pnl_footer.Visible
+                ? Color.LightCoral 
+                : Color.LightGreen;
+
+            btn_toggle.ForeColor = Color.Black;
+        }
+
+        
+        private void btn_prev_Click(object sender, EventArgs e) => ChangeRecord(-1);
+        private void btn_next_Click(object sender, EventArgs e) => ChangeRecord(1);
+        private void btn_edit_Click(object sender, EventArgs e) => SetMode(DRMode.Edit);
+        private void ChangeRecord(int step)
+        {
+            if (_deliveryReceipts == null || !_deliveryReceipts.Any())
+                return;
+
+            int newIndex = _currentIndex + step;
+            if (newIndex < 0 || newIndex >= _deliveryReceipts.Count)
+                return;
+
+            _currentIndex = newIndex;
+            BindDeliveryReceipt(_currentIndex);
+
+            btn_prev.Enabled = _currentIndex > 0;
+            btn_next.Enabled = _currentIndex < _deliveryReceipts.Count - 1;
+        }
+
+        private void dg_costs_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            var grid = (DataGridView)sender;
+            var columnName = grid.Columns[e.ColumnIndex].DataPropertyName;
+
+            if (e.RowIndex < _costRows.Count)
+            {
+                var costRow = _costRows[e.RowIndex];
+
+                switch (columnName)
+                {
+                    case nameof(DeliveryReceiptCostModel.costs_amount):
+                        costRow.costs_amount = 0;
+                        break;
+                    case nameof(DeliveryReceiptCostModel.costs_multiplier):
+                        costRow.costs_multiplier = 0;
+                        break;
+                    case nameof(DeliveryReceiptCostModel.costs_total_cost):
+                        costRow.costs_total_cost = 0;
+                        break;
+                    case nameof(DeliveryReceiptCostModel.costs_id):
+                        costRow.costs_id = 0;
+                        break;
+                }
+                var columnFriendlyName = grid.Columns[e.ColumnIndex].HeaderText;
+                Helpers.ShowDialogMessage("warning", $"'{columnFriendlyName}' only accepts numbers.");
+            }
+
+            e.Cancel = true;
+        }
+
+        private void dg_costs_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            var columnName = dg_costs.Columns[e.ColumnIndex].DataPropertyName;
+
+            // CHECK FOR DUPLICATE COST TYPE
+            if (columnName == nameof(DeliveryReceiptCostModel.costs_cost_type_id))
+            {
+                var currentRow = dg_costs.Rows[e.RowIndex];
+                var currentValue = currentRow.Cells[e.ColumnIndex].Value;
+
+                if (currentValue != null)
+                {
+                    int currentCostTypeId = Convert.ToInt32(currentValue);
+
+                    for (int i = 0; i < dg_costs.Rows.Count; i++)
+                    {
+                        if (i == e.RowIndex) continue;
+
+                        var cellValue = dg_costs.Rows[i]
+                            .Cells[nameof(DeliveryReceiptCostModel.costs_cost_type_id)]
+                            .Value;
+
+                        if (cellValue != null && Convert.ToInt32(cellValue) == currentCostTypeId)
+                        {
+                            // Reset duplicate
+                            currentRow.Cells[e.ColumnIndex].Value = 0;
+
+                            currentRow.Cells[e.ColumnIndex].ErrorText = "Cost type already exists!";
+
+                            var timer = new System.Windows.Forms.Timer { Interval = 2000 };
+                            timer.Tick += (s, args) =>
+                            {
+                                currentRow.Cells[e.ColumnIndex].ErrorText = string.Empty;
+                                timer.Stop();
+                                timer.Dispose();
+                            };
+                            timer.Start();
+
+                            dg_costs.CurrentCell = currentRow.Cells[e.ColumnIndex];
+                            return;
+                        }
+                    }
+                }
+            }
+
+            // Only validate if editing a column that requires cost type first
+            if (columnName != nameof(DeliveryReceiptCostModel.costs_cost_type_id))
+            {
+                var costRow = _costRows[e.RowIndex];
+
+                if (costRow.costs_cost_type_id == 0)
+                {
+                    dg_costs.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = 0;
+
+                    dg_costs.Rows[e.RowIndex]
+                        .Cells[nameof(DeliveryReceiptCostModel.costs_cost_type_id)]
+                        .ErrorText = "Please select a cost type first!";
+
+                    var timer = new System.Windows.Forms.Timer { Interval = 2000 };
+                    timer.Tick += (s, args) =>
+                    {
+                        dg_costs.Rows[e.RowIndex]
+                            .Cells[nameof(DeliveryReceiptCostModel.costs_cost_type_id)]
+                            .ErrorText = string.Empty;
+
+                        timer.Stop();
+                        timer.Dispose();
+                    };
+                    timer.Start();
+
+                    dg_costs.CurrentCell = dg_costs.Rows[e.RowIndex]
+                        .Cells[nameof(DeliveryReceiptCostModel.costs_cost_type_id)];
+
+                    return;
+                }
+            }
+
+            // Run computation if amount or multiplier changed
+            if (columnName == nameof(DeliveryReceiptCostModel.costs_amount) ||
+                columnName == nameof(DeliveryReceiptCostModel.costs_multiplier))
+            {
+                ComputeRowTotal(e.RowIndex);
+                ComputeGrandTotal();
+            }
+        }
+        private void cmb_reference_doc_no_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (isLoading) { isLoading = false; return; }
+            var selected = cmb_sales_order_id.SelectedItem as SalesOrderWithApprovedIRModel;
+            if (selected == null) return;
+            BindSalesOrder(selected.sales_order_no);
+        }
+        private static List<ShipTypeModel> AddShipTypeDefaultValue(List<ShipTypeModel> list, string defaultText = "-- SELECT --")
+        {
+            var result = new List<ShipTypeModel>(list);
+            result.Insert(0, new ShipTypeModel { id = 0, ship_name = defaultText });
+            return result;
+        }
+        private static List<SetupModel> AddDefaultValue(List<SetupModel> list, string defaultText = "-- SELECT --")
+        {
+            var result = new List<SetupModel>(list);
+            result.Insert(0, new SetupModel { id = 0, name = defaultText });
+            return result;
+        }
+        private List<DeliveryReceiptItemModel> GetDRItem(bool isUpdate)
+        {
+            var itemsData = Helpers.ConvertDataGridViewToDataTable(dg_items);
+
+            List<DeliveryReceiptItemModel> listOfItems = new List<DeliveryReceiptItemModel>();
+
+            DeliveryReceiptItemModel items = null;
+
+
+            return listOfItems;
+        }
+        private List<DeliveryReceiptCostModel> GetDRCost(bool isUpdate)
+        {
+            var costsData = Helpers.ConvertDataGridViewToDataTable(dg_items);
+            List<DeliveryReceiptCostModel> listOfCost = new List<DeliveryReceiptCostModel>();
+
+            DeliveryReceiptItemModel items = null;
+
+
+            return listOfCost;
+        }
+        private void ComputeRowTotal(int rowIndex)
+        {
+            var row = dg_costs.Rows[rowIndex];
+
+            decimal amount = 0;
+            decimal multiplier = 0;
+
+            decimal.TryParse(row.Cells[nameof(DeliveryReceiptCostModel.costs_amount)].Value?.ToString(), out amount);
+            decimal.TryParse(row.Cells[nameof(DeliveryReceiptCostModel.costs_multiplier)].Value?.ToString(), out multiplier);
+
+            decimal total = amount * multiplier;
+
+            row.Cells[nameof(DeliveryReceiptCostModel.costs_total_cost)].Value = total;
+
+            if (_costRows != null && rowIndex < _costRows.Count)
+            {
+                _costRows[rowIndex].costs_total_cost = total;
+            }
+        }
+        private void SetupGridFormat()
+        {
+            // visibility
+            dg_items.Columns[nameof(DeliveryReceiptItemModel.items_id)].Visible = false;
+            dg_items.Columns[nameof(DeliveryReceiptItemModel.items_delivery_receipt_id)].Visible = false;
+            dg_items.Columns[nameof(DeliveryReceiptItemModel.items_item_id)].Visible = false;
+
+            dg_costs.Columns[nameof(DeliveryReceiptCostModel.costs_id)].Visible = false;
+            dg_costs.Columns[nameof(DeliveryReceiptCostModel.costs_delivery_receipt_id)].Visible = false;
+
+            // format
+            dg_costs.Columns[nameof(DeliveryReceiptCostModel.costs_amount)].DefaultCellStyle.Format = "C2";
+            dg_costs.Columns[nameof(DeliveryReceiptCostModel.costs_total_cost)].DefaultCellStyle.Format = "C2";
+            dg_costs.Columns[nameof(DeliveryReceiptCostModel.costs_total_cost)].ReadOnly = true;
+
+
+
+        }
+
+        private void dg_costs_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+        {
+            var result = MessageBox.Show( "Are you sure you want to delete this cost?","Confirm Delete",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
+            if (result == DialogResult.No)
+            {
+                e.Cancel = true;
+                return;
+            }
+
+            int rowIndex = e.Row.Index;
+
+            if (_costRows != null && rowIndex < _costRows.Count)
+            {
+                _costRows.RemoveAt(rowIndex);
+            }
+
+
+            ComputeGrandTotal();
+        }
+        private void ComputeGrandTotal()
+        {
+            decimal total = _costRows.Sum(x => x.costs_total_cost);
+            txt_total_cost.Text = total.ToString("C2");
+        }
+
+        private void btn_print_Click(object sender, EventArgs e)
+        {
+
+        }
+    }
+}

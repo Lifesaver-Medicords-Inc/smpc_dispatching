@@ -9,6 +9,7 @@ using smpc_dispatching.UI.Layout;
 using smpc_dispatching.UI.Shared;
 using smpc_dispatching.UI.Shared.Calendar;
 using smpc_dispatching.UI.Shared.CalendarEvent;
+using smpc_dispatching.UI.Views.Delivery_Receipt;
 using smpc_dispatching.UI.Views.Engineering;
 using smpc_dispatching.UI.Views.ItemRelease;
 using smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals;
@@ -16,6 +17,8 @@ using smpc_dispatching.UI.Views.Logistics;
 using smpc_dispatching.UI.Views.Sales;
 using smpc_dispatching.UI.Views.SalesOrder;
 using System;
+using System.Globalization;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace smpc_dispatching {
@@ -34,7 +37,7 @@ namespace smpc_dispatching {
 
             LoggerConfig.Configure();
 
-            var env = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Development";
+            var env = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Production";
 
             // Build configuration
             Configuration = new ConfigurationBuilder()
@@ -46,7 +49,10 @@ namespace smpc_dispatching {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            var culture = new CultureInfo("en-PH");
 
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
 
             // Create a service collection
             var services = new ServiceCollection();
@@ -78,8 +84,13 @@ namespace smpc_dispatching {
             services.AddScoped<ICalendarCategoryService, CalendarCategoryService>();
             services.AddScoped<IVehicleService, VehicleService>();
             services.AddScoped<IDeliveryReceiptService, DeliveryReceiptService>();
+            services.AddScoped<ISalesOrderWithApprovedIRService<SalesOrderWithApprovedIRModel>, SalesOrderWithApprovedIRService>();
+            services.AddScoped<ISalesOrderWithApprovedIRDetailsService, SalesOrderWithApprovedIRDetailsService>();
+            services.AddScoped<ICostTypeService<SetupModel>, CostTypeService>();
+            services.AddScoped<IShipTypeService<ShipTypeModel>, ShipTypeService>();
             services.AddScoped<IItemReleaseService, ItemReleaseService>();
             services.AddScoped<IItemListService<ItemListModel>, ItemListService>();
+            services.AddScoped<IItemStockAndLocationService<ItemStockAndLocationModel>, ItemStockAndLocationService>();
             services.AddScoped<ISalesOrderIRViewService<SalesOrderViewModel>, SalesOrderIRViewService>();
             services.AddScoped<ISalesOrderService, SalesOrderService>();
             services.AddScoped<IGeoService, GeoService>();
@@ -103,6 +114,8 @@ namespace smpc_dispatching {
             services.AddTransient<SalesOrderListForm>();
             services.AddTransient<ItemReleaseUC>();
             services.AddTransient<ItemReleaseItems>();
+            services.AddTransient<PickActivity>();
+            services.AddTransient<DeliveryReceiptUC>();
 
         }
     }

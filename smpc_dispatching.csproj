@@ -15,7 +15,9 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <PublishUrl>publish\</PublishUrl>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
+    <PublishUrl>D:\LEM\Publish\Dispatching\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -25,12 +27,11 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationRevision>2</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
@@ -90,6 +91,18 @@
     <LangVersion>7.3</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>40A3FA4E32FF5D5018AEE9BF8049C6429113E931</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>smpc_dispatching_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AjaxMin, Version=5.14.5506.26196, Culture=neutral, PublicKeyToken=21ef50ce11b5d80f, processorArchitecture=MSIL">
@@ -171,6 +184,10 @@
       <HintPath>packages\System.CodeDom.10.0.2\lib\net462\System.CodeDom.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.ConfigurationManager, Version=10.0.0.4, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Configuration.ConfigurationManager.10.0.4\lib\net462\System.Configuration.ConfigurationManager.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Data.SqlClient, Version=4.6.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Data.SqlClient.4.9.0\lib\net462\System.Data.SqlClient.dll</HintPath>
@@ -228,18 +245,37 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Config\LoggerConfig.cs" />
+    <Compile Include="Core\Enum\CacheData.cs" />
+    <Compile Include="Core\Enum\Endpoint.cs" />
     <Compile Include="Core\Interfaces\ICalendarScheduleDetails.cs" />
     <Compile Include="Core\Interfaces\ICalendarScheduleModel.cs" />
+    <Compile Include="Core\Interfaces\ICostTypeService.cs" />
     <Compile Include="Core\Interfaces\IDepartmentApiService.cs" />
+    <Compile Include="Core\Interfaces\IGeneralSetupService.cs" />
+    <Compile Include="Core\Interfaces\IGetByIdService.cs" />
     <Compile Include="Core\Interfaces\IGetViewService.cs" />
     <Compile Include="Core\Interfaces\IItemListService.cs" />
+    <Compile Include="Core\Interfaces\IItemStockAndLocationService.cs" />
     <Compile Include="Core\Interfaces\ISalesOrderIRView.cs" />
     <Compile Include="Core\Interfaces\ISalesOrderIRViewService.cs" />
+    <Compile Include="Core\Interfaces\ISalesOrderWithApprovedIRDetailsService.cs" />
+    <Compile Include="Core\Interfaces\ISalesOrderWithApprovedIRService.cs" />
+    <Compile Include="Core\Interfaces\IShipTypeService.cs" />
     <Compile Include="Core\Interfaces\IVehicleService.cs" />
+    <Compile Include="Core\Models\DeliveryReceiptCostModel.cs" />
+    <Compile Include="Core\Models\DeliveryReceiptFileModel.cs" />
     <Compile Include="Core\Models\ItemListModel.cs" />
     <Compile Include="Core\Models\SalesCalendarScheduleModel.cs" />
+    <Compile Include="Core\Models\SalesOrderWithApprovedIRModel.cs" />
+    <Compile Include="Core\Models\ShipTypeModel.cs" />
+    <Compile Include="Core\Services\BaseApiService.cs" />
+    <Compile Include="Core\Services\CostTypeService.cs" />
     <Compile Include="Core\Services\ItemListService.cs" />
+    <Compile Include="Core\Services\ItemStockAndLocationService.cs" />
     <Compile Include="Core\Services\SalesOrderIRViewService.cs" />
+    <Compile Include="Core\Services\SalesOrderWithApprovedIRDetailsService.cs" />
+    <Compile Include="Core\Services\SalesOrderWithApprovedIRService.cs" />
+    <Compile Include="Core\Services\ShipTypeService.cs" />
     <Compile Include="Core\Services\VehicleService.cs" />
     <Compile Include="UI\Shared\SmoothScrollUC.cs">
       <SubType>UserControl</SubType>
@@ -260,9 +296,8 @@
     <Compile Include="Core\Models\BaseModel.cs" />
     <Compile Include="Core\Models\CalendarCategoryModel.cs" />
     <Compile Include="Core\Models\CalendarScheduleModel.cs" />
-    <Compile Include="Core\Models\DeliveryItemModel.cs" />
+    <Compile Include="Core\Models\DeliveryReceiptItemModel.cs" />
     <Compile Include="Core\Models\DeliveryReceiptModel.cs" />
-    <Compile Include="Core\Models\FileModel.cs" />
     <Compile Include="Core\Models\FolderTreeModel.cs" />
     <Compile Include="Core\Models\HttpResponseModel.cs" />
     <Compile Include="Core\Models\ItemModel.cs" />
@@ -340,6 +375,12 @@
     <Compile Include="UI\Shared\SetupModal.Designer.cs">
       <DependentUpon>SetupModal.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Views\Delivery Receipt\DeliveryReceiptUC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Views\Delivery Receipt\DeliveryReceiptUC.Designer.cs">
+      <DependentUpon>DeliveryReceiptUC.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Views\Engineering\EngineeringScheduleCalendarDetailsUC.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -357,6 +398,12 @@
     </Compile>
     <Compile Include="UI\Views\ItemRelease\ItemReleaseModals\ItemReleaseItems.Designer.cs">
       <DependentUpon>ItemReleaseItems.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Views\ItemRelease\ItemReleaseModals\PickActivity.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Views\ItemRelease\ItemReleaseModals\PickActivity.Designer.cs">
+      <DependentUpon>PickActivity.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Views\ItemRelease\ItemReleaseUC.cs">
       <SubType>UserControl</SubType>
@@ -446,6 +493,9 @@
     <EmbeddedResource Include="UI\Shared\SetupModal.resx">
       <DependentUpon>SetupModal.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Views\Delivery Receipt\DeliveryReceiptUC.resx">
+      <DependentUpon>DeliveryReceiptUC.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Views\Engineering\EngineeringScheduleCalendarDetailsUC.resx">
       <DependentUpon>EngineeringScheduleCalendarDetailsUC.cs</DependentUpon>
     </EmbeddedResource>
@@ -454,6 +504,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Views\ItemRelease\ItemReleaseModals\ItemReleaseItems.resx">
       <DependentUpon>ItemReleaseItems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Views\ItemRelease\ItemReleaseModals\PickActivity.resx">
+      <DependentUpon>PickActivity.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Views\ItemRelease\ItemReleaseUC.resx">
       <DependentUpon>ItemReleaseUC.cs</DependentUpon>
@@ -495,6 +548,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="smpc_dispatching_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

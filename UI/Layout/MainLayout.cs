@@ -1,4 +1,5 @@
-﻿using smpc_dispatching.Core.Interfaces;
+﻿using smpc_dispatching.Core.Enum;
+using smpc_dispatching.Core.Interfaces;
 using System;
 using System.Drawing;
 using System.IO;
@@ -15,10 +16,14 @@ namespace smpc_dispatching.UI.Layout {
 
         private void MainLayout_Load(object sender, EventArgs e) {
             SetupnavigationBar();
+            
             TabControl.DrawMode = TabDrawMode.OwnerDrawFixed;
             TabControl.DrawItem += TabControl_DrawItem;
             TabControl.MouseDown += TabControl_MouseDown;
-            
+            statusStrip1.Dock = DockStyle.Bottom;
+
+            StatusStrip();
+
 
         }
         // LOAD TREE VIEW
@@ -92,6 +97,13 @@ namespace smpc_dispatching.UI.Layout {
                     }
                 }
             }
+        }
+        // LOAD STATUS STRIP
+        private void StatusStrip()
+        {
+            lbl_name.Text = CacheData.CurrentUser.first_name + " " + CacheData.CurrentUser.last_name;
+            lbl_position.Text = CacheData.CurrentUser.position.name;
+            lbl_department.Text = CacheData.CurrentUser.department;
         }
         // CLOSE WINDOW
         private void MainLayout_FormClosing(object sender, FormClosingEventArgs e)

@@ -30,12 +30,12 @@ namespace smpc_dispatching.UI.Views.ItemRelease
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ItemReleaseUC));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pnl_header = new System.Windows.Forms.Panel();
             this.dtp_request_date = new System.Windows.Forms.DateTimePicker();
             this.dtp_released_date = new System.Windows.Forms.DateTimePicker();
             this.dtp_required_date = new System.Windows.Forms.DateTimePicker();
-            this.txt_Id = new System.Windows.Forms.TextBox();
+            this.txt_id = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.cmb_reference_doc_no = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -56,7 +56,9 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.panel6 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.pnl_footer = new System.Windows.Forms.Panel();
-            this.cmb_received_by = new System.Windows.Forms.ComboBox();
+            this.chk_is_forward = new System.Windows.Forms.CheckBox();
+            this.txt_received_by = new System.Windows.Forms.TextBox();
+            this.cmb_received_by_try = new System.Windows.Forms.ComboBox();
             this.btn_forward = new System.Windows.Forms.Button();
             this.txt_issued_by = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
@@ -65,7 +67,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.label10 = new System.Windows.Forms.Label();
             this.txt_requested_by = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.btn_cancel = new System.Windows.Forms.Button();
+            this.btn_cancel_request = new System.Windows.Forms.Button();
             this.pnl_body = new System.Windows.Forms.Panel();
             this.dgv_details = new System.Windows.Forms.DataGridView();
             this.number = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -82,6 +84,9 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.released_uom = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.serial_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.delivery_preference = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bin_location = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.txt_sales_order_id = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.pnl_header.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.panel6.SuspendLayout();
@@ -92,10 +97,12 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             // 
             // pnl_header
             // 
+            this.pnl_header.Controls.Add(this.label2);
+            this.pnl_header.Controls.Add(this.txt_sales_order_id);
             this.pnl_header.Controls.Add(this.dtp_request_date);
             this.pnl_header.Controls.Add(this.dtp_released_date);
             this.pnl_header.Controls.Add(this.dtp_required_date);
-            this.pnl_header.Controls.Add(this.txt_Id);
+            this.pnl_header.Controls.Add(this.txt_id);
             this.pnl_header.Controls.Add(this.label13);
             this.pnl_header.Controls.Add(this.cmb_reference_doc_no);
             this.pnl_header.Controls.Add(this.label8);
@@ -142,23 +149,22 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.dtp_required_date.TabIndex = 96;
             this.dtp_required_date.Tag = "REQUIRED";
             // 
-            // txt_Id
+            // txt_id
             // 
-            this.txt_Id.Location = new System.Drawing.Point(1029, 150);
-            this.txt_Id.Name = "txt_Id";
-            this.txt_Id.Size = new System.Drawing.Size(200, 20);
-            this.txt_Id.TabIndex = 29;
-            this.txt_Id.Tag = "";
-            this.txt_Id.Visible = false;
+            this.txt_id.Location = new System.Drawing.Point(1029, 151);
+            this.txt_id.Name = "txt_id";
+            this.txt_id.Size = new System.Drawing.Size(200, 20);
+            this.txt_id.TabIndex = 29;
+            this.txt_id.Tag = "";
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(910, 153);
+            this.label13.Location = new System.Drawing.Point(983, 154);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(105, 13);
+            this.label13.Size = new System.Drawing.Size(21, 13);
             this.label13.TabIndex = 28;
-            this.label13.Text = "ITEM REQUEST ID:";
+            this.label13.Text = "ID:";
             this.label13.Visible = false;
             // 
             // cmb_reference_doc_no
@@ -183,16 +189,18 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             // txt_doc_no
             // 
             this.txt_doc_no.Enabled = false;
+            this.txt_doc_no.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txt_doc_no.Location = new System.Drawing.Point(1029, 87);
             this.txt_doc_no.Name = "txt_doc_no";
             this.txt_doc_no.Size = new System.Drawing.Size(200, 20);
             this.txt_doc_no.TabIndex = 25;
             this.txt_doc_no.Tag = "";
+            this.txt_doc_no.Text = "IREL#0000";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(910, 90);
+            this.label7.Location = new System.Drawing.Point(949, 90);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(55, 13);
             this.label7.TabIndex = 24;
@@ -267,6 +275,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.btn_edit.Name = "btn_edit";
             this.btn_edit.Size = new System.Drawing.Size(47, 22);
             this.btn_edit.Text = "Edit";
+            this.btn_edit.Click += new System.EventHandler(this.btn_edit_Click);
             // 
             // btn_delete
             // 
@@ -339,7 +348,9 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             // 
             // pnl_footer
             // 
-            this.pnl_footer.Controls.Add(this.cmb_received_by);
+            this.pnl_footer.Controls.Add(this.chk_is_forward);
+            this.pnl_footer.Controls.Add(this.txt_received_by);
+            this.pnl_footer.Controls.Add(this.cmb_received_by_try);
             this.pnl_footer.Controls.Add(this.btn_forward);
             this.pnl_footer.Controls.Add(this.txt_issued_by);
             this.pnl_footer.Controls.Add(this.label12);
@@ -348,17 +359,34 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.pnl_footer.Controls.Add(this.label10);
             this.pnl_footer.Controls.Add(this.txt_requested_by);
             this.pnl_footer.Controls.Add(this.label9);
-            this.pnl_footer.Controls.Add(this.btn_cancel);
+            this.pnl_footer.Controls.Add(this.btn_cancel_request);
             this.pnl_footer.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnl_footer.Location = new System.Drawing.Point(0, 736);
             this.pnl_footer.Name = "pnl_footer";
             this.pnl_footer.Size = new System.Drawing.Size(1242, 210);
             this.pnl_footer.TabIndex = 2;
             // 
-            // cmb_received_by
+            // chk_is_forward
             // 
-            this.cmb_received_by.FormattingEnabled = true;
-            this.cmb_received_by.Items.AddRange(new object[] {
+            this.chk_is_forward.AutoSize = true;
+            this.chk_is_forward.Location = new System.Drawing.Point(885, 105);
+            this.chk_is_forward.Name = "chk_is_forward";
+            this.chk_is_forward.Size = new System.Drawing.Size(72, 17);
+            this.chk_is_forward.TabIndex = 40;
+            this.chk_is_forward.Text = "IsForward";
+            this.chk_is_forward.UseVisualStyleBackColor = true;
+            // 
+            // txt_received_by
+            // 
+            this.txt_received_by.Location = new System.Drawing.Point(139, 49);
+            this.txt_received_by.Name = "txt_received_by";
+            this.txt_received_by.Size = new System.Drawing.Size(200, 20);
+            this.txt_received_by.TabIndex = 39;
+            // 
+            // cmb_received_by_try
+            // 
+            this.cmb_received_by_try.FormattingEnabled = true;
+            this.cmb_received_by_try.Items.AddRange(new object[] {
             "Management",
             "Sales",
             "Logistics",
@@ -366,11 +394,12 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             "Accounting",
             "Purchasing",
             "Warehouse"});
-            this.cmb_received_by.Location = new System.Drawing.Point(139, 49);
-            this.cmb_received_by.Name = "cmb_received_by";
-            this.cmb_received_by.Size = new System.Drawing.Size(200, 21);
-            this.cmb_received_by.TabIndex = 38;
-            this.cmb_received_by.Tag = "";
+            this.cmb_received_by_try.Location = new System.Drawing.Point(139, 75);
+            this.cmb_received_by_try.Name = "cmb_received_by_try";
+            this.cmb_received_by_try.Size = new System.Drawing.Size(200, 21);
+            this.cmb_received_by_try.TabIndex = 38;
+            this.cmb_received_by_try.Tag = "DYNAMIC, REQUIRED";
+            this.cmb_received_by_try.Visible = false;
             // 
             // btn_forward
             // 
@@ -383,6 +412,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.btn_forward.TabIndex = 36;
             this.btn_forward.Text = "FORWARD TO WAREHOUSE";
             this.btn_forward.UseVisualStyleBackColor = false;
+            this.btn_forward.Click += new System.EventHandler(this.btn_forward_Click);
             // 
             // txt_issued_by
             // 
@@ -441,18 +471,19 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.label9.TabIndex = 18;
             this.label9.Text = "REQUESTED BY:";
             // 
-            // btn_cancel
+            // btn_cancel_request
             // 
-            this.btn_cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_cancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.btn_cancel.Enabled = false;
-            this.btn_cancel.Location = new System.Drawing.Point(979, 101);
-            this.btn_cancel.Name = "btn_cancel";
-            this.btn_cancel.Size = new System.Drawing.Size(231, 23);
-            this.btn_cancel.TabIndex = 37;
-            this.btn_cancel.Text = "CANCEL REQUEST";
-            this.btn_cancel.UseVisualStyleBackColor = false;
-            this.btn_cancel.Visible = false;
+            this.btn_cancel_request.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_cancel_request.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.btn_cancel_request.Enabled = false;
+            this.btn_cancel_request.Location = new System.Drawing.Point(979, 101);
+            this.btn_cancel_request.Name = "btn_cancel_request";
+            this.btn_cancel_request.Size = new System.Drawing.Size(231, 23);
+            this.btn_cancel_request.TabIndex = 37;
+            this.btn_cancel_request.Text = "CANCEL REQUEST";
+            this.btn_cancel_request.UseVisualStyleBackColor = false;
+            this.btn_cancel_request.Visible = false;
+            this.btn_cancel_request.Click += new System.EventHandler(this.btn_cancel_Click);
             // 
             // pnl_body
             // 
@@ -468,16 +499,15 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.dgv_details.AllowUserToAddRows = false;
             this.dgv_details.AllowUserToDeleteRows = false;
             this.dgv_details.AllowUserToResizeColumns = false;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_details.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            this.dgv_details.ColumnHeadersHeight = 50;
-            this.dgv_details.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_details.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgv_details.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_details.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.number,
             this.id,
@@ -492,7 +522,8 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.released_qty,
             this.released_uom,
             this.serial_no,
-            this.delivery_preference});
+            this.delivery_preference,
+            this.bin_location});
             this.dgv_details.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgv_details.EnableHeadersVisualStyles = false;
             this.dgv_details.Location = new System.Drawing.Point(0, 0);
@@ -509,6 +540,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.number.HeaderText = "#";
             this.number.Name = "number";
             this.number.ReadOnly = true;
+            this.number.Visible = false;
             this.number.Width = 50;
             // 
             // id
@@ -589,7 +621,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             // released_qty
             // 
             this.released_qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.released_qty.DataPropertyName = "issued_qty";
+            this.released_qty.DataPropertyName = "released_qty";
             this.released_qty.HeaderText = "QTY";
             this.released_qty.MinimumWidth = 80;
             this.released_qty.Name = "released_qty";
@@ -599,7 +631,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             // released_uom
             // 
             this.released_uom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.released_uom.DataPropertyName = "issued_uom";
+            this.released_uom.DataPropertyName = "released_uom";
             this.released_uom.HeaderText = "UOM";
             this.released_uom.MinimumWidth = 80;
             this.released_uom.Name = "released_uom";
@@ -623,6 +655,30 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.delivery_preference.Name = "delivery_preference";
             this.delivery_preference.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.delivery_preference.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // bin_location
+            // 
+            this.bin_location.HeaderText = "bin_location ";
+            this.bin_location.Name = "bin_location";
+            this.bin_location.Visible = false;
+            // 
+            // txt_sales_order_id
+            // 
+            this.txt_sales_order_id.Location = new System.Drawing.Point(1029, 130);
+            this.txt_sales_order_id.Name = "txt_sales_order_id";
+            this.txt_sales_order_id.Size = new System.Drawing.Size(200, 20);
+            this.txt_sales_order_id.TabIndex = 99;
+            this.txt_sales_order_id.Tag = "";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(965, 133);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(39, 13);
+            this.label2.TabIndex = 100;
+            this.label2.Text = "SO ID:";
+            this.label2.Visible = false;
             // 
             // ItemReleaseUC
             // 
@@ -654,7 +710,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
         private System.Windows.Forms.DateTimePicker dtp_request_date;
         private System.Windows.Forms.DateTimePicker dtp_released_date;
         private System.Windows.Forms.DateTimePicker dtp_required_date;
-        private System.Windows.Forms.TextBox txt_Id;
+        private System.Windows.Forms.TextBox txt_id;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.ComboBox cmb_reference_doc_no;
         private System.Windows.Forms.Label label8;
@@ -675,7 +731,6 @@ namespace smpc_dispatching.UI.Views.ItemRelease
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel pnl_footer;
-        private System.Windows.Forms.ComboBox cmb_received_by;
         private System.Windows.Forms.Button btn_forward;
         private System.Windows.Forms.TextBox txt_issued_by;
         private System.Windows.Forms.Label label12;
@@ -684,9 +739,11 @@ namespace smpc_dispatching.UI.Views.ItemRelease
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox txt_requested_by;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Button btn_cancel;
+        private System.Windows.Forms.Button btn_cancel_request;
         private System.Windows.Forms.Panel pnl_body;
         private System.Windows.Forms.DataGridView dgv_details;
+        private System.Windows.Forms.TextBox txt_received_by;
+        private System.Windows.Forms.ComboBox cmb_received_by_try;
         private System.Windows.Forms.DataGridViewTextBoxColumn number;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
         private System.Windows.Forms.DataGridViewTextBoxColumn ir_id;
@@ -701,5 +758,9 @@ namespace smpc_dispatching.UI.Views.ItemRelease
         private System.Windows.Forms.DataGridViewTextBoxColumn released_uom;
         private System.Windows.Forms.DataGridViewTextBoxColumn serial_no;
         private System.Windows.Forms.DataGridViewTextBoxColumn delivery_preference;
+        private System.Windows.Forms.DataGridViewTextBoxColumn bin_location;
+        private System.Windows.Forms.CheckBox chk_is_forward;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txt_sales_order_id;
     }
 }

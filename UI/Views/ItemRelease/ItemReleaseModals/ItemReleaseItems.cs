@@ -20,6 +20,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
         public ItemListModel SelectedItem { get; private set; }
         private readonly IItemListService<ItemListModel> _itemListService;
         private string placeHolderText = "Item List Search...";
+        private DataTable _itemTable;
         private static class ItemDGV
         {
             public const string ItemId = "item_id";
@@ -36,6 +37,9 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
             _itemListService = serviceProvider.GetRequiredService<IItemListService<ItemListModel>>();
             this.StartPosition = FormStartPosition.CenterParent;
 
+            // Event Subscriptions
+            txt_search.TextChanged += txt_search_TextChanged;
+
             // Set properties programatically
             dgv_all_item.AutoGenerateColumns = false;
             dgv_all_item.ReadOnly = true;
@@ -43,8 +47,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
             
         }
 
-        private async void ItemReleaseItems_Load(object sender, EventArgs e)
-        {
+        private async void ItemReleaseItems_Load(object sender, EventArgs e)        {
             try
             {
                 Helpers.Loading.ShowLoading(dgv_all_item, "Fetching data...");
@@ -63,26 +66,17 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
         {
             var response = await _itemListService.GetAllAsync(null);
 
-            if (response?.Data == null)
+            if (response?.Data == null || !response.Data.Any())
             {
                 dgv_all_item.DataSource = null;
                 Helpers.ShowDialogMessage("error", "No items found.");
                 return;
             }
 
-            var list = response.Data.ToList();
-
-            if (!list.Any())
-            {
-                dgv_all_item.DataSource = null;
-                Helpers.ShowDialogMessage("error", "No items found.");
-                return;
-            }
-
-            DataTable dt = Helpers.ToDataTable(list);
+            _itemTable = Helpers.ToDataTable(response.Data.ToList());
 
             dgv_all_item.AutoGenerateColumns = true;
-            dgv_all_item.DataSource = dt;
+            dgv_all_item.DataSource = _itemTable;
         }
         private void dgv_all_item_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -92,7 +86,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
 
             SelectedItem = new ItemListModel
             {
-                item_id = Convert.ToInt32(row.Cells[ItemDGV.ItemId].Value),
+                item_id = Convert.ToUInt32(row.Cells[ItemDGV.ItemId].Value),
                 general_name = row.Cells[ItemDGV.ItemName].Value.ToString(),
                 short_desc = row.Cells[ItemDGV.Description].Value.ToString(),
                 uom_name = row.Cells[ItemDGV.UomName].Value.ToString(),
@@ -100,6 +94,27 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
 
             this.DialogResult = DialogResult.OK;
             this.Close();
+        }
+        private void txt_search_TextChanged(object sender, EventArgs e)
+        {
+            if (_itemTable == null) return;
+
+            string search = txt_search.Text.Trim().Replace("'", "''");
+
+            DataView dv = _itemTable.DefaultView;
+
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                dv.RowFilter = string.Empty;
+                return;
+            }
+
+            dv.RowFilter = $@"
+                general_name LIKE '%{search}%' OR
+                item_code LIKE '%{search}%' OR
+                item_model LIKE '%{search}%' OR
+                short_desc LIKE '%{search}%'
+             ";
         }
     }
 }

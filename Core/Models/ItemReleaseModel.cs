@@ -11,8 +11,9 @@ namespace smpc_dispatching.Core.Models {
         public string request_date { get; set; }
         public string required_date { get; set; }
         public string released_date { get; set; }
+        public string sales_order_id { get; set; }
         public string reference_doc_no { get; set; }
-        public string doc_no { get; set; }
+        public int doc_no { get; set; }
         public string requested_by { get; set; }
         public string received_by { get; set; }
         public string approved_by { get; set; }

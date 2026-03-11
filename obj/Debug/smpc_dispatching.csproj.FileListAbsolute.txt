@@ -8,6 +8,8 @@ D:\LEM\Source Tree\Dispatching\bin\Debug\Icons\previous.png
 D:\LEM\Source Tree\Dispatching\bin\Debug\Icons\search.png
 D:\LEM\Source Tree\Dispatching\bin\Debug\Icons\small_close.png
 D:\LEM\Source Tree\Dispatching\bin\Debug\smpc_dispatching.exe.config
+D:\LEM\Source Tree\Dispatching\bin\Debug\smpc_dispatching.exe.manifest
+D:\LEM\Source Tree\Dispatching\bin\Debug\smpc_dispatching.application
 D:\LEM\Source Tree\Dispatching\bin\Debug\smpc_dispatching.exe
 D:\LEM\Source Tree\Dispatching\bin\Debug\smpc_dispatching.pdb
 D:\LEM\Source Tree\Dispatching\bin\Debug\AjaxMin.dll
@@ -35,6 +37,7 @@ D:\LEM\Source Tree\Dispatching\bin\Debug\Serilog.Sinks.Debug.dll
 D:\LEM\Source Tree\Dispatching\bin\Debug\Serilog.Sinks.File.dll
 D:\LEM\Source Tree\Dispatching\bin\Debug\System.Buffers.dll
 D:\LEM\Source Tree\Dispatching\bin\Debug\System.CodeDom.dll
+D:\LEM\Source Tree\Dispatching\bin\Debug\System.Configuration.ConfigurationManager.dll
 D:\LEM\Source Tree\Dispatching\bin\Debug\System.Data.SqlClient.dll
 D:\LEM\Source Tree\Dispatching\bin\Debug\System.Data.SQLite.dll
 D:\LEM\Source Tree\Dispatching\bin\Debug\System.Diagnostics.DiagnosticSource.dll
@@ -71,6 +74,7 @@ D:\LEM\Source Tree\Dispatching\bin\Debug\Serilog.Sinks.Debug.xml
 D:\LEM\Source Tree\Dispatching\bin\Debug\Serilog.Sinks.File.xml
 D:\LEM\Source Tree\Dispatching\bin\Debug\System.Buffers.xml
 D:\LEM\Source Tree\Dispatching\bin\Debug\System.CodeDom.xml
+D:\LEM\Source Tree\Dispatching\bin\Debug\System.Configuration.ConfigurationManager.xml
 D:\LEM\Source Tree\Dispatching\bin\Debug\System.Data.SqlClient.xml
 D:\LEM\Source Tree\Dispatching\bin\Debug\System.Data.SQLite.xml
 D:\LEM\Source Tree\Dispatching\bin\Debug\System.Diagnostics.DiagnosticSource.xml
@@ -94,8 +98,12 @@ D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Shared.CalendarEven
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Shared.Calendar.ScheduleCalendarUC.resources
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Shared.MapLocPinForm.resources
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Shared.SetupModal.resources
+D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Views.Delivery_Receipt.DeliveryReceiptUC.resources
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Views.Engineering.EngineeringScheduleCalendarDetailsUC.resources
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Views.Engineering.EngineeringViewUC.resources
+D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals.ItemReleaseItems.resources
+D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals.PickActivity.resources
+D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Views.ItemRelease.ItemReleaseUC.resources
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Views.Logistics.LogisticsCalendarScheduleDetailsUC.resources
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Views.Logistics.LogisticsRouteDetailsUC.resources
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Views.Logistics.LogisticsViewUC.resources
@@ -105,9 +113,8 @@ D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Views.SalesOrder.Sa
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Views.Sales.SalesViewUserControl.resources
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.csproj.GenerateResource.cache
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.csproj.CoreCompileInputs.cache
+D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.exe.manifest
+D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.application
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.csproj.CopyComplete
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.exe
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.pdb
-D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.csproj.AssemblyReference.cache
-D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Views.ItemRelease.ItemReleaseUC.resources
-D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals.ItemReleaseItems.resources

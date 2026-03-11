@@ -1,0 +1,4 @@
+2026-03-05 10:07:57.561 +08:00 [WRN] API request failed: delivery-receipts, StatusCode: "InternalServerError", Response: {"message":"DeliveryReceiptDetails: unsupported relations for schema DeliveryReceipt","success":false}
+2026-03-05 10:19:06.486 +08:00 [WRN] API request failed: delivery-receipts, StatusCode: "InternalServerError", Response: {"message":"DeliveryReceiptDetails: unsupported relations for schema DeliveryReceipt","success":false}
+2026-03-05 10:19:41.248 +08:00 [WRN] API request failed: delivery-receipts, StatusCode: "InternalServerError", Response: {"message":"DeliveryReceiptDetails: unsupported relations for schema DeliveryReceipt","success":false}
+2026-03-05 13:40:43.324 +08:00 [WRN] API request failed: delivery-receipts, StatusCode: "InternalServerError", Response: {"message":"DeliveryReceiptDetails: unsupported relations for schema DeliveryReceipt","success":false}

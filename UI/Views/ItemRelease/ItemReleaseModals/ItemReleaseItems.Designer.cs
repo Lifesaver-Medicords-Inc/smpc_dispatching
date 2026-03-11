@@ -31,7 +31,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txt_search = new System.Windows.Forms.TextBox();
             this.dgv_all_item = new System.Windows.Forms.DataGridView();
             this.item_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.short_desc = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -56,7 +56,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.textBox1);
+            this.splitContainer1.Panel1.Controls.Add(this.txt_search);
             // 
             // splitContainer1.Panel2
             // 
@@ -65,14 +65,14 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
             this.splitContainer1.SplitterDistance = 25;
             this.splitContainer1.TabIndex = 0;
             // 
-            // textBox1
+            // txt_search
             // 
-            this.textBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox1.Location = new System.Drawing.Point(0, 0);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(800, 20);
-            this.textBox1.TabIndex = 0;
-            this.textBox1.Text = "Item List Search...";
+            this.txt_search.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txt_search.Location = new System.Drawing.Point(0, 0);
+            this.txt_search.Name = "txt_search";
+            this.txt_search.Size = new System.Drawing.Size(800, 20);
+            this.txt_search.TabIndex = 0;
+            this.txt_search.Text = "Item List Search...";
             // 
             // dgv_all_item
             // 
@@ -191,6 +191,6 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
         private System.Windows.Forms.DataGridViewTextBoxColumn item_model;
         private System.Windows.Forms.DataGridViewTextBoxColumn uom_name;
         private System.Windows.Forms.DataGridViewTextBoxColumn size;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txt_search;
     }
 }
