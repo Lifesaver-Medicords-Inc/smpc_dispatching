@@ -118,3 +118,4 @@ D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.application
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.csproj.CopyComplete
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.exe
 D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.pdb
+D:\LEM\Source Tree\Dispatching\obj\Debug\smpc_dispatching.csproj.AssemblyReference.cache

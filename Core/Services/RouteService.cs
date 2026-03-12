@@ -33,20 +33,6 @@ namespace smpc_dispatching.Core.Services
         /// </summary>
         private void RegisterRoutes()
         {
-            _pages["DELIVERY_RECEIPT"] = new ViewControlModel
-            {
-                Code = "DELIVERY_RECEIPT",
-                Parent = null,
-                Title = "Delivery Receipt",
-                ViewFactory = () => _serviceProvider.GetRequiredService<DeliveryReceiptUC>()
-            };
-            _pages["ITEM_RELEASE"] = new ViewControlModel
-            {
-                Code = "ITEM_RELEASE",
-                Parent = null,
-                Title = "Item Release",
-                ViewFactory = () => _serviceProvider.GetRequiredService<ItemReleaseUC>()
-            };
             _pages["SALES_CALENDAR"] = new ViewControlModel
             {
                 Code = "SALES_CALENDAR",
@@ -78,7 +64,21 @@ namespace smpc_dispatching.Core.Services
                 Title = "Sales Order",
                 ViewFactory = () => _serviceProvider.GetRequiredService<SalesOrderViewUC>()
             };
-            
+            _pages["DELIVERY_RECEIPT"] = new ViewControlModel
+            {
+                Code = "DELIVERY_RECEIPT",
+                Parent = null,
+                Title = "Delivery Receipt",
+                ViewFactory = () => _serviceProvider.GetRequiredService<DeliveryReceiptUC>()
+            };
+            _pages["ITEM_RELEASE"] = new ViewControlModel
+            {
+                Code = "ITEM_RELEASE",
+                Parent = null,
+                Title = "Item Release",
+                ViewFactory = () => _serviceProvider.GetRequiredService<ItemReleaseUC>()
+            };
+
         }
 
         // --- Public Methods ---
