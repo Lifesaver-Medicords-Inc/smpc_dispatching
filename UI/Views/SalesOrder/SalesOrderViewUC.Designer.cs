@@ -1378,7 +1378,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.TreeView FolderTreeView;
         private System.Windows.Forms.Panel FileViewPanel;
         private System.Windows.Forms.Panel TreeViewPanel;
         private System.Windows.Forms.Panel panel6;

@@ -1,8 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Reporting.WinForms;
 using Serilog;
+using smpc_dispatching.Core.Enum;
 using smpc_dispatching.Core.Helpers;
 using smpc_dispatching.Core.Interfaces;
 using smpc_dispatching.Core.Models;
+using smpc_dispatching.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,7 +21,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
 {
     public partial class DeliveryReceiptUC : UserControl
     {
-
+        private readonly PrintService _printService;
         private readonly IServiceProvider _serviceProvider;
         private readonly IDeliveryReceiptService _deliveryReceiptService;
         private readonly ISalesOrderWithApprovedIRService<SalesOrderWithApprovedIRModel> _salesOrderWithApprovedIRService;
@@ -57,11 +60,12 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
 
         private List<SetupModel> _costTypes;
         private List<ShipTypeModel> _shipTypes;
-        public DeliveryReceiptUC( IServiceProvider serviceProvider)
+        public DeliveryReceiptUC( IServiceProvider serviceProvider, PrintService printService)
         {
             InitializeComponent();
 
             _serviceProvider = serviceProvider;
+            _printService = printService;
             _deliveryReceiptService = serviceProvider.GetRequiredService<IDeliveryReceiptService>();
             _costTypeService = serviceProvider.GetRequiredService<ICostTypeService<SetupModel>>();
             _salesOrderWithApprovedIRService = serviceProvider.GetRequiredService<ISalesOrderWithApprovedIRService<SalesOrderWithApprovedIRModel>>();
@@ -592,27 +596,16 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             result.Insert(0, new SetupModel { id = 0, name = defaultText });
             return result;
         }
-        private List<DeliveryReceiptItemModel> GetDRItem(bool isUpdate)
-        {
-            var itemsData = Helpers.ConvertDataGridViewToDataTable(dg_items);
+        //private List<DeliveryReceiptCostModel> GetDRCost(bool isUpdate)
+        //{
+        //    var costsData = Helpers.ConvertDataGridViewToDataTable(dg_items);
+        //    List<DeliveryReceiptCostModel> listOfCost = new List<DeliveryReceiptCostModel>();
 
-            List<DeliveryReceiptItemModel> listOfItems = new List<DeliveryReceiptItemModel>();
-
-            DeliveryReceiptItemModel items = null;
-
-
-            return listOfItems;
-        }
-        private List<DeliveryReceiptCostModel> GetDRCost(bool isUpdate)
-        {
-            var costsData = Helpers.ConvertDataGridViewToDataTable(dg_items);
-            List<DeliveryReceiptCostModel> listOfCost = new List<DeliveryReceiptCostModel>();
-
-            DeliveryReceiptItemModel items = null;
+        //    DeliveryReceiptItemModel items = null;
 
 
-            return listOfCost;
-        }
+        //    return listOfCost;
+        //}
         private void ComputeRowTotal(int rowIndex)
         {
             var row = dg_costs.Rows[rowIndex];
@@ -681,7 +674,22 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
 
         private void btn_print_Click(object sender, EventArgs e)
         {
+            if(_currentIndex < 0 || _deliveryReceipts == null) return;
 
+            var current = _deliveryReceipts[_currentIndex];
+
+            // Header — single DR record as a list
+            var headerSource = new List<DeliveryReceiptModel> { current };
+
+            // Details — items and already loaded in the current record
+            var itemsSource = current.delivery_receipt_items
+                ?? new List<DeliveryReceiptItemModel>();
+
+            _printService.Show(ReportPath.DeliveryReceipt, new List<ReportDataSource>
+            {
+                new ReportDataSource("DataSet1", headerSource),
+                new ReportDataSource("DataSet2", itemsSource),
+            });
         }
     }
 }

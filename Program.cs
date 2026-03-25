@@ -26,7 +26,8 @@ namespace smpc_dispatching {
 
         public static IConfiguration Configuration { get; private set; }
         public static IServiceProvider ServiceProvider { get; private set; }
-
+        
+       
 
 
         /// <summary>
@@ -37,6 +38,7 @@ namespace smpc_dispatching {
 
             LoggerConfig.Configure();
 
+            // change else for Development and Production
             var env = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Production";
 
             // Build configuration
@@ -73,6 +75,7 @@ namespace smpc_dispatching {
 
 
             services.AddSingleton<IConfiguration>(Configuration);
+            services.AddSingleton<PrintService>();
 
             //Services
             services.AddScoped<IHttpService, HttpService>();

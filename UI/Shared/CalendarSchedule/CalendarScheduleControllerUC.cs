@@ -20,9 +20,7 @@ namespace smpc_dispatching.UI.Shared.CalendarEvent
         private readonly ScheduleCalendarUC _scheduleCalendarUserControl;
         private readonly ScheduleListUserControl _scheduleListUserControl;
         private readonly ScheduleDetailsUserControl _scheduleDetailsUserControl;
-        private readonly SalesCalendarScheduleDetailsUC _salesScheduleCalendarDetails;
-        private readonly EngineeringScheduleCalendarDetailsUC _engineeringScheduleCalendarDetails;
-        private readonly LogisticsCalendarScheduleDetailsUC  logisticsCalendarScheduleDetailsUC;
+        private readonly LogisticsCalendarScheduleDetailsUC logisticsCalendarScheduleDetailsUC;
         private readonly ICalendarScheduleService<SalesCalendarScheduleContent> _calendarScheduleService;
         private readonly ICalendarCategoryService _calendarCategoryService;
         private Dictionary<int, CalendarCategoryModel> _categoryLookup = new Dictionary<int, CalendarCategoryModel>();

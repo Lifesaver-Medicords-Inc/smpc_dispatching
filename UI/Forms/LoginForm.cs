@@ -22,8 +22,8 @@ namespace smpc_dispatching.UI.Forms {
         private async void loginBtn_Click(object sender, EventArgs e) {
 
             try {
-                //var employeeId = usernameTextBox.Text;
-                //var password = passwordTextBox.Text;
+                var employeeId = usernameTextBox.Text;
+                var password = passwordTextBox.Text;
 
                 // Logistics
                 //var employeeId = "LOG-D-29";
@@ -34,8 +34,8 @@ namespace smpc_dispatching.UI.Forms {
                 //var password = "im-im-25";
 
                 // WH Manager
-                var employeeId = "IT-WD-1";
-                var password = "IT-WD-1";
+                //var employeeId = "IT-WD-1";
+                //var password = "IT-WD-1";
 
                 if (string.IsNullOrWhiteSpace(employeeId)) {
                     MessageBox.Show("Employee ID is required.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);

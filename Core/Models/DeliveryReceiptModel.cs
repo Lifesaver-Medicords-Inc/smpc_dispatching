@@ -15,6 +15,7 @@ namespace smpc_dispatching.Core.Models {
         public int? ship_type_id { get; set; }
         public string deliver_to { get; set; }
         public string ship_via { get; set; }
+        public string payment_terms { get; set; }
         public string att { get; set; }
         public string date { get; set; }
         public string delivery_date { get; set; }

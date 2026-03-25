@@ -162,6 +162,7 @@ namespace smpc_dispatching.Core.Models {
         public int sales_order_id { get; set; }
         public string ref_doc_no { get; set; }
         public int item_id { get; set; }
+        public string item_code { get; set; }
         public string item_description { get; set; }
         public int required_qty { get; set; }
         public int required_uom_id { get; set; }

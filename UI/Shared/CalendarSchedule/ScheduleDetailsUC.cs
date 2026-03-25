@@ -173,7 +173,7 @@ namespace smpc_dispatching.UI.Shared.CalendarEvent {
             Helpers.ResetControls(flowLayoutPanel3);
         }
 
-        private async void btn_close_Click(object sender, EventArgs e)
+        private void btn_close_Click(object sender, EventArgs e)
         {
             BtnToggle(false);
 

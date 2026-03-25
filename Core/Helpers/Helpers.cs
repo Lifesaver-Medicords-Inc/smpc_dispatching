@@ -8,10 +8,8 @@ using System.Management;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Management;
 using System.Reflection;
 using System.ComponentModel;
 using System.Linq.Expressions;
@@ -724,7 +722,7 @@ namespace smpc_dispatching.Core.Helpers
                     string key = textBox.Name.Replace("txt_", "");
                     string val = "";
 
-                    if (textBox.Tag == "MONEY")
+                    if (textBox.Tag?.ToString() == "MONEY")
                     {
 
                         val = String.Format("{0}", textBox.Text.ToString().Replace(",", ""));
@@ -772,7 +770,7 @@ namespace smpc_dispatching.Core.Helpers
                     //    val = comboBox.Text.ToString();
                     //}
 
-                    if (comboBox.Tag == "DYNAMIC")
+                    if (comboBox.Tag.ToString() == "DYNAMIC")
                     {
                         key = key + "_id";
                         values.Add(key, comboBox.SelectedValue);
@@ -877,7 +875,7 @@ namespace smpc_dispatching.Core.Helpers
                         string key = comboBox.Name.Replace("cmb_", "");
                         string val = "";
 
-                        if (comboBox.Tag == "DYNAMIC")
+                        if (comboBox.Tag.ToString() == "DYNAMIC")
                         {
                             key = key + "_id";
                             values.Add(key, comboBox.SelectedValue);
@@ -937,7 +935,7 @@ namespace smpc_dispatching.Core.Helpers
                     string key = textBox.Name.Replace("txt_", "");
                     string val = "";
 
-                    if (textBox.Tag == "MONEY")
+                    if (textBox.Tag.ToString() == "MONEY")
                     {
 
                         val = String.Format("{0}", textBox.Text.ToString().Replace(",", ""));
@@ -1000,7 +998,7 @@ namespace smpc_dispatching.Core.Helpers
                     string key = textBox.Name.Replace("txt_", "");
                     string val = "";
 
-                    if (textBox.Tag == "MONEY")
+                    if (textBox.Tag.ToString() == "MONEY")
                     {
 
                         val = String.Format("'{0}'", textBox.Text.ToString().Replace(",", ""));
@@ -1183,13 +1181,13 @@ namespace smpc_dispatching.Core.Helpers
                                 Console.WriteLine($"This is a  combobox: {comboBox.Name} ");
                                 string key = comboBox.Name.Replace("cmb_", "") + "_id";
 
-                                if (comboBox.Tag == "DYNAMIC")
+                                if (comboBox.Tag.ToString() == "DYNAMIC")
                                 {
                                     Console.WriteLine("DYNAMICS:", comboBox.Name);
                                     comboBox.SelectedValue = (string)dt.Rows[selectedIndex][key].ToString();
                                 }
                                 // Check multiple values
-                                else if (comboBox.Tag == "MULTIVALUE")
+                                else if (comboBox.Tag.ToString() == "MULTIVALUE")
                                 {
                                     string rawValue = dt.Rows[selectedIndex][column_name].ToString();
                                     var multiValues = rawValue.Split(',')
@@ -1323,13 +1321,13 @@ namespace smpc_dispatching.Core.Helpers
                                 Console.WriteLine($"This is a  combobox: {comboBox.Name} ");
                                 string key = comboBox.Name.Replace("cmb_", "") + "_id";
 
-                                if (comboBox.Tag == "DYNAMIC")
+                                if (comboBox.Tag.ToString() == "DYNAMIC")
                                 {
                                     Console.WriteLine("DYNAMICS:", comboBox.Name);
                                     comboBox.SelectedValue = (string)dt.Rows[selectedIndex][key].ToString();
                                 }
                                 // Check multiple values
-                                else if (comboBox.Tag == "MULTIVALUE")
+                                else if (comboBox.Tag.ToString() == "MULTIVALUE")
                                 {
                                     string rawValue = dt.Rows[selectedIndex][column_name].ToString();
                                     var multiValues = rawValue.Split(',')
@@ -1541,7 +1539,7 @@ namespace smpc_dispatching.Core.Helpers
             foreach (DataRowView rowView in dataView)
             {
 
-                if (textBox.Tag == "MULTI" || textBox.Tag is List<int>)
+                if (textBox.Tag.ToString() == "MULTI" || textBox.Tag is List<int>)
                 {
                     int id = Convert.ToInt32(rowView["id"]);
                     ids.Add(id);
@@ -1584,8 +1582,8 @@ namespace smpc_dispatching.Core.Helpers
                         case DateTimePicker dateTimePicker:
                             dateTimePicker.Enabled = !isReadOnly;
                             break;
-                            //case CheckBox checkBox:
-                            //    checkBox.Enabled = !isReadOnly;
+                        case CheckBox checkBox:
+                            checkBox.Enabled = !isReadOnly;
                             break;
                         case NumericUpDown numericUpDown:
                             numericUpDown.Enabled = !isReadOnly;

@@ -32,6 +32,8 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ItemReleaseUC));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pnl_header = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txt_sales_order_id = new System.Windows.Forms.TextBox();
             this.dtp_request_date = new System.Windows.Forms.DateTimePicker();
             this.dtp_released_date = new System.Windows.Forms.DateTimePicker();
             this.dtp_required_date = new System.Windows.Forms.DateTimePicker();
@@ -70,10 +72,12 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.btn_cancel_request = new System.Windows.Forms.Button();
             this.pnl_body = new System.Windows.Forms.Panel();
             this.dgv_details = new System.Windows.Forms.DataGridView();
+            this.btn_print = new System.Windows.Forms.ToolStripButton();
             this.number = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ir_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.item_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sales_order_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sales_order_details_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.item_description = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -85,8 +89,6 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.serial_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.delivery_preference = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bin_location = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.txt_sales_order_id = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.pnl_header.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.panel6.SuspendLayout();
@@ -118,6 +120,24 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.pnl_header.Name = "pnl_header";
             this.pnl_header.Size = new System.Drawing.Size(1242, 215);
             this.pnl_header.TabIndex = 1;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(965, 133);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(39, 13);
+            this.label2.TabIndex = 100;
+            this.label2.Text = "SO ID:";
+            this.label2.Visible = false;
+            // 
+            // txt_sales_order_id
+            // 
+            this.txt_sales_order_id.Location = new System.Drawing.Point(1029, 130);
+            this.txt_sales_order_id.Name = "txt_sales_order_id";
+            this.txt_sales_order_id.Size = new System.Drawing.Size(200, 20);
+            this.txt_sales_order_id.TabIndex = 99;
+            this.txt_sales_order_id.Tag = "";
             // 
             // dtp_request_date
             // 
@@ -240,6 +260,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.btn_search,
             this.btn_edit,
             this.btn_delete,
+            this.btn_print,
             this.btn_save,
             this.btn_close,
             this.btn_next,
@@ -513,6 +534,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.id,
             this.ir_id,
             this.item_id,
+            this.item_code,
             this.sales_order_id,
             this.sales_order_details_id,
             this.item_description,
@@ -531,6 +553,15 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.dgv_details.Size = new System.Drawing.Size(1242, 521);
             this.dgv_details.TabIndex = 1;
             this.dgv_details.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_details_CellClick);
+            // 
+            // btn_print
+            // 
+            this.btn_print.Image = ((System.Drawing.Image)(resources.GetObject("btn_print.Image")));
+            this.btn_print.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btn_print.Name = "btn_print";
+            this.btn_print.Size = new System.Drawing.Size(52, 22);
+            this.btn_print.Text = "Print";
+            this.btn_print.Click += new System.EventHandler(this.btn_print_Click);
             // 
             // number
             // 
@@ -564,6 +595,12 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.item_id.Name = "item_id";
             this.item_id.ReadOnly = true;
             this.item_id.Visible = false;
+            // 
+            // item_code
+            // 
+            this.item_code.DataPropertyName = "item_code";
+            this.item_code.HeaderText = "ITEM CODE";
+            this.item_code.Name = "item_code";
             // 
             // sales_order_id
             // 
@@ -662,24 +699,6 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.bin_location.Name = "bin_location";
             this.bin_location.Visible = false;
             // 
-            // txt_sales_order_id
-            // 
-            this.txt_sales_order_id.Location = new System.Drawing.Point(1029, 130);
-            this.txt_sales_order_id.Name = "txt_sales_order_id";
-            this.txt_sales_order_id.Size = new System.Drawing.Size(200, 20);
-            this.txt_sales_order_id.TabIndex = 99;
-            this.txt_sales_order_id.Tag = "";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(965, 133);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(39, 13);
-            this.label2.TabIndex = 100;
-            this.label2.Text = "SO ID:";
-            this.label2.Visible = false;
-            // 
             // ItemReleaseUC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -744,10 +763,15 @@ namespace smpc_dispatching.UI.Views.ItemRelease
         private System.Windows.Forms.DataGridView dgv_details;
         private System.Windows.Forms.TextBox txt_received_by;
         private System.Windows.Forms.ComboBox cmb_received_by_try;
+        private System.Windows.Forms.CheckBox chk_is_forward;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txt_sales_order_id;
+        private System.Windows.Forms.ToolStripButton btn_print;
         private System.Windows.Forms.DataGridViewTextBoxColumn number;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
         private System.Windows.Forms.DataGridViewTextBoxColumn ir_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn item_code;
         private System.Windows.Forms.DataGridViewTextBoxColumn sales_order_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn sales_order_details_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_description;
@@ -759,8 +783,5 @@ namespace smpc_dispatching.UI.Views.ItemRelease
         private System.Windows.Forms.DataGridViewTextBoxColumn serial_no;
         private System.Windows.Forms.DataGridViewTextBoxColumn delivery_preference;
         private System.Windows.Forms.DataGridViewTextBoxColumn bin_location;
-        private System.Windows.Forms.CheckBox chk_is_forward;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txt_sales_order_id;
     }
 }

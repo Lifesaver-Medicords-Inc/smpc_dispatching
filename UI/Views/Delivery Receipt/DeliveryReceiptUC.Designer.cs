@@ -31,8 +31,9 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DeliveryReceiptUC));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pnl_footer = new System.Windows.Forms.Panel();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.dg_costs = new System.Windows.Forms.DataGridView();
             this.costs_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.costs_delivery_receipt_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -51,6 +52,8 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.column5 = new System.Data.DataColumn();
             this.column6 = new System.Data.DataColumn();
             this.column7 = new System.Data.DataColumn();
+            this.txt_total_cost = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
             this.pnl_header = new System.Windows.Forms.Panel();
             this.label16 = new System.Windows.Forms.Label();
             this.txt_customer_id = new System.Windows.Forms.TextBox();
@@ -100,6 +103,13 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.panel6 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.dg_items = new System.Windows.Forms.DataGridView();
+            this.items_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.items_delivery_receipt_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.items_item_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.items_qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.items_unit_of_measure = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.items_item_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.items_serial_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataBindingItem = new System.Windows.Forms.BindingSource(this.components);
             this.ds_dr_item = new System.Data.DataSet();
             this.tbl_dr_items = new System.Data.DataTable();
@@ -125,17 +135,11 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.dataColumn14 = new System.Data.DataColumn();
             this.dataColumn15 = new System.Data.DataColumn();
             this.dataBindingFile = new System.Windows.Forms.BindingSource(this.components);
-            this.label17 = new System.Windows.Forms.Label();
-            this.txt_total_cost = new System.Windows.Forms.TextBox();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.items_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.items_delivery_receipt_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.items_item_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.items_qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.items_unit_of_measure = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.items_item_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.items_serial_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pnl_footer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dg_costs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataBindingCost)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ds_dr_cost)).BeginInit();
@@ -153,10 +157,6 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             ((System.ComponentModel.ISupportInitialize)(this.ds_dr_file)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dr_file)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataBindingFile)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnl_footer
@@ -167,6 +167,25 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.pnl_footer.Name = "pnl_footer";
             this.pnl_footer.Size = new System.Drawing.Size(1236, 326);
             this.pnl_footer.TabIndex = 3;
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.dg_costs);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.txt_total_cost);
+            this.splitContainer1.Panel2.Controls.Add(this.label17);
+            this.splitContainer1.Size = new System.Drawing.Size(1236, 326);
+            this.splitContainer1.SplitterDistance = 284;
+            this.splitContainer1.TabIndex = 1;
             // 
             // dg_costs
             // 
@@ -291,6 +310,22 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             // column7
             // 
             this.column7.ColumnName = "costs_total_cost";
+            // 
+            // txt_total_cost
+            // 
+            this.txt_total_cost.Location = new System.Drawing.Point(1033, 3);
+            this.txt_total_cost.Name = "txt_total_cost";
+            this.txt_total_cost.Size = new System.Drawing.Size(200, 20);
+            this.txt_total_cost.TabIndex = 120;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(950, 6);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(77, 13);
+            this.label17.TabIndex = 121;
+            this.label17.Text = "TOTAL COST:";
             // 
             // pnl_header
             // 
@@ -637,9 +672,9 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.btn_edit,
             this.btn_delete,
             this.btn_print,
+            this.btn_search,
             this.btn_save,
             this.btn_close,
-            this.btn_search,
             this.btn_next,
             this.btn_prev});
             this.toolStrip1.Location = new System.Drawing.Point(0, 44);
@@ -758,14 +793,14 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.dg_items.AllowUserToDeleteRows = false;
             this.dg_items.AllowUserToResizeColumns = false;
             this.dg_items.AutoGenerateColumns = false;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dg_items.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dg_items.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dg_items.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dg_items.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.items_id,
@@ -782,6 +817,55 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.dg_items.Name = "dg_items";
             this.dg_items.Size = new System.Drawing.Size(1236, 200);
             this.dg_items.TabIndex = 1;
+            // 
+            // items_id
+            // 
+            this.items_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.items_id.DataPropertyName = "items_id";
+            this.items_id.HeaderText = "items_id";
+            this.items_id.Name = "items_id";
+            // 
+            // items_delivery_receipt_id
+            // 
+            this.items_delivery_receipt_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.items_delivery_receipt_id.DataPropertyName = "items_delivery_receipt_id";
+            this.items_delivery_receipt_id.HeaderText = "items_delivery_receipt_id";
+            this.items_delivery_receipt_id.Name = "items_delivery_receipt_id";
+            // 
+            // items_item_id
+            // 
+            this.items_item_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.items_item_id.DataPropertyName = "items_item_id";
+            this.items_item_id.HeaderText = "items_item_id";
+            this.items_item_id.Name = "items_item_id";
+            // 
+            // items_qty
+            // 
+            this.items_qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.items_qty.DataPropertyName = "items_qty";
+            this.items_qty.HeaderText = "QTY";
+            this.items_qty.Name = "items_qty";
+            // 
+            // items_unit_of_measure
+            // 
+            this.items_unit_of_measure.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.items_unit_of_measure.DataPropertyName = "items_unit_of_measure";
+            this.items_unit_of_measure.HeaderText = "UOM";
+            this.items_unit_of_measure.Name = "items_unit_of_measure";
+            // 
+            // items_item_code
+            // 
+            this.items_item_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.items_item_code.DataPropertyName = "items_item_code";
+            this.items_item_code.HeaderText = "ITEM CODE";
+            this.items_item_code.Name = "items_item_code";
+            // 
+            // items_serial_no
+            // 
+            this.items_serial_no.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.items_serial_no.DataPropertyName = "items_serial_no";
+            this.items_serial_no.HeaderText = "SERIAL NO";
+            this.items_serial_no.Name = "items_serial_no";
             // 
             // dataBindingItem
             // 
@@ -932,90 +1016,6 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.dataBindingFile.DataMember = "dr_file";
             this.dataBindingFile.DataSource = this.ds_dr_file;
             // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(950, 6);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(77, 13);
-            this.label17.TabIndex = 121;
-            this.label17.Text = "TOTAL COST:";
-            // 
-            // txt_total_cost
-            // 
-            this.txt_total_cost.Location = new System.Drawing.Point(1033, 3);
-            this.txt_total_cost.Name = "txt_total_cost";
-            this.txt_total_cost.Size = new System.Drawing.Size(200, 20);
-            this.txt_total_cost.TabIndex = 120;
-            // 
-            // splitContainer1
-            // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.dg_costs);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.txt_total_cost);
-            this.splitContainer1.Panel2.Controls.Add(this.label17);
-            this.splitContainer1.Size = new System.Drawing.Size(1236, 326);
-            this.splitContainer1.SplitterDistance = 284;
-            this.splitContainer1.TabIndex = 1;
-            // 
-            // items_id
-            // 
-            this.items_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.items_id.DataPropertyName = "items_id";
-            this.items_id.HeaderText = "items_id";
-            this.items_id.Name = "items_id";
-            // 
-            // items_delivery_receipt_id
-            // 
-            this.items_delivery_receipt_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.items_delivery_receipt_id.DataPropertyName = "items_delivery_receipt_id";
-            this.items_delivery_receipt_id.HeaderText = "items_delivery_receipt_id";
-            this.items_delivery_receipt_id.Name = "items_delivery_receipt_id";
-            // 
-            // items_item_id
-            // 
-            this.items_item_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.items_item_id.DataPropertyName = "items_item_id";
-            this.items_item_id.HeaderText = "items_item_id";
-            this.items_item_id.Name = "items_item_id";
-            // 
-            // items_qty
-            // 
-            this.items_qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.items_qty.DataPropertyName = "items_qty";
-            this.items_qty.HeaderText = "QTY";
-            this.items_qty.Name = "items_qty";
-            // 
-            // items_unit_of_measure
-            // 
-            this.items_unit_of_measure.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.items_unit_of_measure.DataPropertyName = "items_unit_of_measure";
-            this.items_unit_of_measure.HeaderText = "UOM";
-            this.items_unit_of_measure.Name = "items_unit_of_measure";
-            // 
-            // items_item_code
-            // 
-            this.items_item_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.items_item_code.DataPropertyName = "items_item_code";
-            this.items_item_code.HeaderText = "ITEM CODE";
-            this.items_item_code.Name = "items_item_code";
-            // 
-            // items_serial_no
-            // 
-            this.items_serial_no.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.items_serial_no.DataPropertyName = "items_serial_no";
-            this.items_serial_no.HeaderText = "SERIAL NO";
-            this.items_serial_no.Name = "items_serial_no";
-            // 
             // DeliveryReceiptUC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1025,6 +1025,11 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.Size = new System.Drawing.Size(1242, 946);
             this.Load += new System.EventHandler(this.DeliveryReceiptUC_Load);
             this.pnl_footer.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dg_costs)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataBindingCost)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ds_dr_cost)).EndInit();
@@ -1045,11 +1050,6 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             ((System.ComponentModel.ISupportInitialize)(this.ds_dr_file)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dr_file)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataBindingFile)).EndInit();
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            this.splitContainer1.Panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

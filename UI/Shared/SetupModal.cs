@@ -45,15 +45,6 @@ namespace smpc_dispatching.UI.Shared
 
         }
 
-
-        // Fetch Setup
-        private async void GetSetup()
-        {
-            //serviceSetup = new GeneralSetupServices(this.url);
-            //var data = await serviceSetup.GetAsDatatable();
-            //dg_setup.DataSource = data;
-
-        }
         private void BtnToogle(bool isEdit)
         {
             btn_new.Visible = !isEdit;

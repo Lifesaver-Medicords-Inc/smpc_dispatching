@@ -1,4 +1,60 @@
-.bin/*
-.obj/*
+# Visual Studio
+.vs/
 .vs/*
-./Core/Logs/*
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build
+bin/
+obj/
+out/
+build/
+
+# Publish
+publish/
+dist/
+**/publish/
+
+# NuGet
+packages/
+*.nupkg
+*.snupkg
+
+# Logs / temp
+*.log
+logs/
+*.tmp
+*.temp
+
+# Environment / secrets
+.env
+.env.*
+appsettings.Development.json
+secrets.json
+
+# Database
+*.mdf
+*.ldf
+*.sqlite
+*.db
+
+# Rider / JetBrains
+.idea/
+*.sln.iml
+*.DotSettings.user
+
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Testing
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# Crash dumps
+*.dmp

@@ -12,11 +12,14 @@ using System.Windows.Forms;
 using smpc_dispatching.Core.Enum;
 using smpc_dispatching.Core.Helpers;
 using System.Threading.Tasks;
+using smpc_dispatching.Core.Services;
+using Microsoft.Reporting.WinForms;
 
 namespace smpc_dispatching.UI.Views.ItemRelease
 {
     public partial class ItemReleaseUC : UserControl
     {
+        private readonly PrintService _printService;
         private readonly ISalesOrderIRViewService<SalesOrderViewModel> _salesOrderIRViewService;
         private readonly IItemReleaseService _itemReleaseService;
         private readonly IServiceProvider _serviceProvider;
@@ -56,13 +59,14 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             public const string BinLocation = "bin_location";
         }
 
-        public ItemReleaseUC(IServiceProvider serviceProvider)
+        public ItemReleaseUC(IServiceProvider serviceProvider, PrintService printService)
         {
             InitializeComponent();
 
             _serviceProvider = serviceProvider;
             _itemReleaseService = serviceProvider.GetRequiredService<IItemReleaseService>();
             _salesOrderIRViewService = serviceProvider.GetRequiredService<ISalesOrderIRViewService<SalesOrderViewModel>>();
+            _printService = printService;
 
             _pnls = new[] { pnl_header, pnl_footer };
             dgv_details.AutoGenerateColumns = false;
@@ -480,9 +484,9 @@ namespace smpc_dispatching.UI.Views.ItemRelease
                 toolStrip1,
                 visibleButtons: canEdit
                     ? new[] { "btn_save", "btn_close" }
-                    : new[] { "btn_prev", "btn_next", "btn_search", "btn_edit", "btn_delete" },
+                    : new[] { "btn_prev", "btn_next", "btn_search", "btn_edit", "btn_delete", "btn_print" },
                 hiddenButtons: canEdit
-                    ? new[] { "btn_prev", "btn_next", "btn_search", "btn_edit", "btn_delete" }
+                    ? new[] { "btn_prev", "btn_next", "btn_search", "btn_edit", "btn_delete", "btn_print" }
                     : new[] { "btn_save", "btn_close" }
             );
         }
@@ -632,6 +636,26 @@ namespace smpc_dispatching.UI.Views.ItemRelease
         {
             chk_is_forward.Checked = false;
             await ForwardRequestAsync();
+        }
+
+        private void btn_print_Click(object sender, EventArgs e)
+        {
+            if (_currentIRIndex < 0 || _itemReleases == null) return;
+
+            var current = _itemReleases[_currentIRIndex];
+
+            // Header — single DR record as a list
+            var headerSource = new List<ItemReleaseModel> { current };
+
+            // Details — items and already loaded in the current record
+            var itemsSource = current.item_release_details
+                ?? new List<ItemReleaseDetailsModel>();
+
+            _printService.Show(ReportPath.ItemRelease, new List<ReportDataSource>
+            {
+                new ReportDataSource("DataSet1", headerSource),
+                new ReportDataSource("DataSet2", itemsSource),
+            });
         }
     }
 }

@@ -29,6 +29,7 @@ namespace smpc_dispatching.Core.Models {
         public uint sales_order_id { get; set; }
         public uint sales_order_details_id { get; set; }
         public uint item_id { get; set; }
+        public string item_code { get; set; }
         public string item_description { get; set; }
         public uint required_qty { get; set; }
         public string required_uom { get; set; }
