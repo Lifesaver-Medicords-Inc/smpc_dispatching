@@ -8,6 +8,8 @@ namespace smpc_dispatching.Core.Models {
         [JsonProperty("id")]
         public int items_id { get; set; }
         [JsonProperty("delivery_receipt_id")]
+        public int items_sales_order_details_id { get; set; }
+        [JsonProperty("sales_order_details_id")]
         public int items_delivery_receipt_id { get; set; }
         [JsonProperty("item_id")]
         public int items_item_id { get; set; }

@@ -630,6 +630,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             // visibility
             dg_items.Columns[nameof(DeliveryReceiptItemModel.items_id)].Visible = false;
             dg_items.Columns[nameof(DeliveryReceiptItemModel.items_delivery_receipt_id)].Visible = false;
+            dg_items.Columns[nameof(DeliveryReceiptItemModel.items_sales_order_details_id)].Visible = false;
             dg_items.Columns[nameof(DeliveryReceiptItemModel.items_item_id)].Visible = false;
 
             dg_costs.Columns[nameof(DeliveryReceiptCostModel.costs_id)].Visible = false;

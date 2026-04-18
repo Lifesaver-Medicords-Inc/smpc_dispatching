@@ -27,6 +27,8 @@ namespace smpc_dispatching.Core.Models
     {
         [JsonProperty("item_release_id")]
         public uint items_item_release_id { get; set; }
+        [JsonProperty("sales_order_details_id")]
+        public uint items_sales_order_details_id { get; set; }
 
         [JsonProperty("item_id")]
         public uint items_item_id { get; set; }

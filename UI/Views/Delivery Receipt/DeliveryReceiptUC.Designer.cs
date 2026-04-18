@@ -95,21 +95,14 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.btn_edit = new System.Windows.Forms.ToolStripButton();
             this.btn_delete = new System.Windows.Forms.ToolStripButton();
             this.btn_print = new System.Windows.Forms.ToolStripButton();
+            this.btn_search = new System.Windows.Forms.ToolStripButton();
             this.btn_save = new System.Windows.Forms.ToolStripButton();
             this.btn_close = new System.Windows.Forms.ToolStripButton();
-            this.btn_search = new System.Windows.Forms.ToolStripButton();
             this.btn_next = new System.Windows.Forms.ToolStripButton();
             this.btn_prev = new System.Windows.Forms.ToolStripButton();
             this.panel6 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.dg_items = new System.Windows.Forms.DataGridView();
-            this.items_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.items_delivery_receipt_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.items_item_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.items_qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.items_unit_of_measure = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.items_item_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.items_serial_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataBindingItem = new System.Windows.Forms.BindingSource(this.components);
             this.ds_dr_item = new System.Data.DataSet();
             this.tbl_dr_items = new System.Data.DataTable();
@@ -135,6 +128,14 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.dataColumn14 = new System.Data.DataColumn();
             this.dataColumn15 = new System.Data.DataColumn();
             this.dataBindingFile = new System.Windows.Forms.BindingSource(this.components);
+            this.items_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.items_delivery_receipt_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.items_sales_order_details_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.items_item_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.items_qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.items_unit_of_measure = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.items_item_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.items_serial_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pnl_footer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -719,6 +720,14 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.btn_print.Text = "Print";
             this.btn_print.Click += new System.EventHandler(this.btn_print_Click);
             // 
+            // btn_search
+            // 
+            this.btn_search.Image = ((System.Drawing.Image)(resources.GetObject("btn_search.Image")));
+            this.btn_search.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btn_search.Name = "btn_search";
+            this.btn_search.Size = new System.Drawing.Size(62, 22);
+            this.btn_search.Text = "Search";
+            // 
             // btn_save
             // 
             this.btn_save.Image = ((System.Drawing.Image)(resources.GetObject("btn_save.Image")));
@@ -738,14 +747,6 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.btn_close.Text = "Close";
             this.btn_close.Visible = false;
             this.btn_close.Click += new System.EventHandler(this.btn_close_Click);
-            // 
-            // btn_search
-            // 
-            this.btn_search.Image = ((System.Drawing.Image)(resources.GetObject("btn_search.Image")));
-            this.btn_search.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btn_search.Name = "btn_search";
-            this.btn_search.Size = new System.Drawing.Size(62, 22);
-            this.btn_search.Text = "Search";
             // 
             // btn_next
             // 
@@ -805,6 +806,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.dg_items.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.items_id,
             this.items_delivery_receipt_id,
+            this.items_sales_order_details_id,
             this.items_item_id,
             this.items_qty,
             this.items_unit_of_measure,
@@ -817,55 +819,6 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.dg_items.Name = "dg_items";
             this.dg_items.Size = new System.Drawing.Size(1236, 200);
             this.dg_items.TabIndex = 1;
-            // 
-            // items_id
-            // 
-            this.items_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.items_id.DataPropertyName = "items_id";
-            this.items_id.HeaderText = "items_id";
-            this.items_id.Name = "items_id";
-            // 
-            // items_delivery_receipt_id
-            // 
-            this.items_delivery_receipt_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.items_delivery_receipt_id.DataPropertyName = "items_delivery_receipt_id";
-            this.items_delivery_receipt_id.HeaderText = "items_delivery_receipt_id";
-            this.items_delivery_receipt_id.Name = "items_delivery_receipt_id";
-            // 
-            // items_item_id
-            // 
-            this.items_item_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.items_item_id.DataPropertyName = "items_item_id";
-            this.items_item_id.HeaderText = "items_item_id";
-            this.items_item_id.Name = "items_item_id";
-            // 
-            // items_qty
-            // 
-            this.items_qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.items_qty.DataPropertyName = "items_qty";
-            this.items_qty.HeaderText = "QTY";
-            this.items_qty.Name = "items_qty";
-            // 
-            // items_unit_of_measure
-            // 
-            this.items_unit_of_measure.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.items_unit_of_measure.DataPropertyName = "items_unit_of_measure";
-            this.items_unit_of_measure.HeaderText = "UOM";
-            this.items_unit_of_measure.Name = "items_unit_of_measure";
-            // 
-            // items_item_code
-            // 
-            this.items_item_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.items_item_code.DataPropertyName = "items_item_code";
-            this.items_item_code.HeaderText = "ITEM CODE";
-            this.items_item_code.Name = "items_item_code";
-            // 
-            // items_serial_no
-            // 
-            this.items_serial_no.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.items_serial_no.DataPropertyName = "items_serial_no";
-            this.items_serial_no.HeaderText = "SERIAL NO";
-            this.items_serial_no.Name = "items_serial_no";
             // 
             // dataBindingItem
             // 
@@ -1016,6 +969,61 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.dataBindingFile.DataMember = "dr_file";
             this.dataBindingFile.DataSource = this.ds_dr_file;
             // 
+            // items_id
+            // 
+            this.items_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.items_id.DataPropertyName = "items_id";
+            this.items_id.HeaderText = "items_id";
+            this.items_id.Name = "items_id";
+            // 
+            // items_delivery_receipt_id
+            // 
+            this.items_delivery_receipt_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.items_delivery_receipt_id.DataPropertyName = "items_delivery_receipt_id";
+            this.items_delivery_receipt_id.HeaderText = "items_delivery_receipt_id";
+            this.items_delivery_receipt_id.Name = "items_delivery_receipt_id";
+            // 
+            // items_sales_order_details_id
+            // 
+            this.items_sales_order_details_id.DataPropertyName = "items_sales_order_details_id";
+            this.items_sales_order_details_id.HeaderText = "sales_order_details_id";
+            this.items_sales_order_details_id.Name = "items_sales_order_details_id";
+            // 
+            // items_item_id
+            // 
+            this.items_item_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.items_item_id.DataPropertyName = "items_item_id";
+            this.items_item_id.HeaderText = "items_item_id";
+            this.items_item_id.Name = "items_item_id";
+            // 
+            // items_qty
+            // 
+            this.items_qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.items_qty.DataPropertyName = "items_qty";
+            this.items_qty.HeaderText = "QTY";
+            this.items_qty.Name = "items_qty";
+            // 
+            // items_unit_of_measure
+            // 
+            this.items_unit_of_measure.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.items_unit_of_measure.DataPropertyName = "items_unit_of_measure";
+            this.items_unit_of_measure.HeaderText = "UOM";
+            this.items_unit_of_measure.Name = "items_unit_of_measure";
+            // 
+            // items_item_code
+            // 
+            this.items_item_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.items_item_code.DataPropertyName = "items_item_code";
+            this.items_item_code.HeaderText = "ITEM CODE";
+            this.items_item_code.Name = "items_item_code";
+            // 
+            // items_serial_no
+            // 
+            this.items_serial_no.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.items_serial_no.DataPropertyName = "items_serial_no";
+            this.items_serial_no.HeaderText = "SERIAL NO";
+            this.items_serial_no.Name = "items_serial_no";
+            // 
             // DeliveryReceiptUC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1154,6 +1162,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.DataGridViewTextBoxColumn items_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn items_delivery_receipt_id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn items_sales_order_details_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn items_item_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn items_qty;
         private System.Windows.Forms.DataGridViewTextBoxColumn items_unit_of_measure;
