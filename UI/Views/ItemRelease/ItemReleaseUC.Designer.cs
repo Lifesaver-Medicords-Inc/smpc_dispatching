@@ -51,6 +51,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.btn_search = new System.Windows.Forms.ToolStripButton();
             this.btn_edit = new System.Windows.Forms.ToolStripButton();
             this.btn_delete = new System.Windows.Forms.ToolStripButton();
+            this.btn_print = new System.Windows.Forms.ToolStripButton();
             this.btn_save = new System.Windows.Forms.ToolStripButton();
             this.btn_close = new System.Windows.Forms.ToolStripButton();
             this.btn_next = new System.Windows.Forms.ToolStripButton();
@@ -72,7 +73,6 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.btn_cancel_request = new System.Windows.Forms.Button();
             this.pnl_body = new System.Windows.Forms.Panel();
             this.dgv_details = new System.Windows.Forms.DataGridView();
-            this.btn_print = new System.Windows.Forms.ToolStripButton();
             this.number = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ir_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -138,6 +138,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.txt_sales_order_id.Size = new System.Drawing.Size(200, 20);
             this.txt_sales_order_id.TabIndex = 99;
             this.txt_sales_order_id.Tag = "";
+            this.txt_sales_order_id.Visible = false;
             // 
             // dtp_request_date
             // 
@@ -176,6 +177,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.txt_id.Size = new System.Drawing.Size(200, 20);
             this.txt_id.TabIndex = 29;
             this.txt_id.Tag = "";
+            this.txt_id.Visible = false;
             // 
             // label13
             // 
@@ -288,6 +290,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.btn_search.Name = "btn_search";
             this.btn_search.Size = new System.Drawing.Size(62, 22);
             this.btn_search.Text = "Search";
+            this.btn_search.Click += new System.EventHandler(this.btn_search_Click);
             // 
             // btn_edit
             // 
@@ -305,6 +308,15 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.btn_delete.Name = "btn_delete";
             this.btn_delete.Size = new System.Drawing.Size(60, 22);
             this.btn_delete.Text = "Delete";
+            // 
+            // btn_print
+            // 
+            this.btn_print.Image = ((System.Drawing.Image)(resources.GetObject("btn_print.Image")));
+            this.btn_print.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btn_print.Name = "btn_print";
+            this.btn_print.Size = new System.Drawing.Size(52, 22);
+            this.btn_print.Text = "Print";
+            this.btn_print.Click += new System.EventHandler(this.btn_print_Click);
             // 
             // btn_save
             // 
@@ -332,7 +344,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.btn_next.Image = ((System.Drawing.Image)(resources.GetObject("btn_next.Image")));
             this.btn_next.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btn_next.Name = "btn_next";
-            this.btn_next.Size = new System.Drawing.Size(52, 22);
+            this.btn_next.Size = new System.Drawing.Size(51, 22);
             this.btn_next.Text = "Next";
             this.btn_next.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.btn_next.Click += new System.EventHandler(this.btn_next_Click);
@@ -528,7 +540,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgv_details.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dgv_details.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_details.ColumnHeadersHeight = 40;
             this.dgv_details.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.number,
             this.id,
@@ -553,15 +565,6 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.dgv_details.Size = new System.Drawing.Size(1242, 521);
             this.dgv_details.TabIndex = 1;
             this.dgv_details.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_details_CellClick);
-            // 
-            // btn_print
-            // 
-            this.btn_print.Image = ((System.Drawing.Image)(resources.GetObject("btn_print.Image")));
-            this.btn_print.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btn_print.Name = "btn_print";
-            this.btn_print.Size = new System.Drawing.Size(52, 22);
-            this.btn_print.Text = "Print";
-            this.btn_print.Click += new System.EventHandler(this.btn_print_Click);
             // 
             // number
             // 
@@ -608,7 +611,6 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.sales_order_id.HeaderText = "SO ID";
             this.sales_order_id.Name = "sales_order_id";
             this.sales_order_id.ReadOnly = true;
-            this.sales_order_id.Visible = false;
             // 
             // sales_order_details_id
             // 

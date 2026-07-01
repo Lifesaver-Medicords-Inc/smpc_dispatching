@@ -29,13 +29,24 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
         private readonly ICostTypeService<SetupModel> _costTypeService;
         private readonly IShipTypeService<ShipTypeModel> _shipTypeService;
 
+        private readonly ISalesOrderIRViewService<SalesOrderViewModel> _salesOrderIRViewService;
+        private readonly ISalesOrderService _salesOrderService;
+        private readonly IBpiService _bpiService;
+        private readonly IItemReleaseService _itemReleaseService;
+
         private Panel[] _pnls;
         private BindingList<DeliveryReceiptItemModel> _bindingListItem;
         private BindingList<DeliveryReceiptCostModel> _bindingListCost/* = new BindingList<DeliveryReceiptCostModel>()*/;
         private List<DeliveryReceiptModel> _deliveryReceipts;
         private List<SalesOrderWithApprovedIRModel> _IrApprovedSo;
         private List<SalesOrderWithApprovedIRDetailsModel> _IrDetailsApprovedSo;
+        private DataTable _soirTable;
         private DataTable _soTable;
+        private DataTable _bpiTable;
+        private DataTable _bpiAddressTable;
+        private DataTable _bpiGeneralTable;
+        private DataTable _itemReleases;
+        private BindingList<ItemReleaseDetailsModel> _detailsBinding;
         private bool isLoading = false;
         private int _currentIndex = 0;
         private int _previousIRIndex = -1;
@@ -71,24 +82,77 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             _salesOrderWithApprovedIRService = serviceProvider.GetRequiredService<ISalesOrderWithApprovedIRService<SalesOrderWithApprovedIRModel>>();
             _salesOrderWithApprovedIRDetailsService = serviceProvider.GetRequiredService<ISalesOrderWithApprovedIRDetailsService>();
             _shipTypeService = serviceProvider.GetRequiredService<IShipTypeService<ShipTypeModel>>();
-
+            _salesOrderIRViewService = serviceProvider.GetRequiredService<ISalesOrderIRViewService<SalesOrderViewModel>>();
+            _salesOrderService = serviceProvider.GetRequiredService<ISalesOrderService>();
+            _bpiService = serviceProvider.GetRequiredService<IBpiService>();
+            _itemReleaseService = serviceProvider.GetRequiredService<IItemReleaseService>();
 
             _pnls = new[] { pnl_header };
             ToggleButton();
 
             isLoading = true;
             cmb_sales_order_id.Enabled = false;
-            SetupGridFormat();
+            //SetupGridFormat();
         }
         private async void DeliveryReceiptUC_Load(object sender, EventArgs e)
         {
             InitializeDgCosts();
+
             await LoadCostType();
             await LoadIRApprovedSO();
             await LoadShipType();
             
             await LoadDeliveryReceipts();
+            await LoadReferenceDocument();
+            await LoadBPI();
+            await LoadSalesOrder();
+            await LoadItemRelease();
+
+            //Initial for the combobox
+            var uniqueDocs = _itemReleases.AsEnumerable()
+                .Select(r => r.Field<string>("reference_doc_no"))
+                .Where(d => !string.IsNullOrWhiteSpace(d))
+                .Distinct()
+                .OrderBy(d => d)
+                .ToList();
+
+            cmb_sales_order_id.DataSource = uniqueDocs;
+            cmb_sales_order_id.SelectedIndex = -1;
         }
+
+        private async Task LoadItemRelease()
+        {
+            var response = await _itemReleaseService.GetAllAsync(null);
+            _itemReleases = response.Data?.ToList() != null ? Helpers.ToDataTable(response.Data.ToList()) : new DataTable();
+        }
+
+        private async Task LoadBPI()
+        { 
+            var response = await _bpiService.GetAllAsync(null);
+
+            if (response?.Data == null) return;
+
+            _bpiTable = Helpers.ToDataTable(response.Data.Bpi.ToList());
+            _bpiAddressTable = Helpers.ToDataTable(response.Data.Address.ToList());
+            _bpiGeneralTable = Helpers.ToDataTable(response.Data.General.ToList());
+        }
+
+        private async Task LoadSalesOrder()
+        {
+            var response = await _salesOrderService.GetAllAsync(null);
+
+            if (response?.Data == null) return;
+
+            _soTable = Helpers.ToDataTable(response.Data.ToList());
+        }
+        private async Task LoadReferenceDocument()
+        {
+            var response = await _salesOrderIRViewService.GetAllAsync(null);
+            if (response?.Data == null) return;
+
+            _soirTable = Helpers.ToDataTable(response.Data.ToList());
+        }
+
         private async Task LoadDeliveryReceipts()
         {
             var response = await _deliveryReceiptService.GetAllAsync(null);
@@ -309,7 +373,6 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             SetMode(DRMode.Create);
             GenerateCostTypeRow();
 
-
             _bindingListItem = new BindingList<DeliveryReceiptItemModel>();
             dg_items.DataSource = _bindingListItem;
 
@@ -377,9 +440,6 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
                         txt_doc_no.ReadOnly = true;
                         cmb_sales_order_id.Enabled = true;
                         dg_items.Enabled = false;
-
-                       
-
                     }
                 }
 
@@ -580,9 +640,68 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
         private void cmb_reference_doc_no_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (isLoading) { isLoading = false; return; }
-            var selected = cmb_sales_order_id.SelectedItem as SalesOrderWithApprovedIRModel;
-            if (selected == null) return;
-            BindSalesOrder(selected.sales_order_no);
+
+            string selectedDoc = cmb_sales_order_id.SelectedItem?.ToString();
+
+            if (selectedDoc == null) return;
+
+            var filteredRows = _soirTable.AsEnumerable()
+                .Where(r => r.Field<string>("ref_doc_no") == selectedDoc)
+                .ToList();
+
+            var selectedItemRelease = _itemReleases.AsEnumerable()
+                .FirstOrDefault(r => r.Field<string>("reference_doc_no") == selectedDoc);
+
+            //var selectedSalesOrderDetails = _IrDetailsApprovedSo?.FirstOrDefault(x => x.sales_order_no == selectedDoc);
+
+            var selectedSalesOrder = _soTable.AsEnumerable()
+                .FirstOrDefault(r => r.Field<string>("Doc") == selectedDoc);
+
+            var selectedBPI = _bpiTable.AsEnumerable()
+                .FirstOrDefault(r => r.Field<int>("Id") == selectedSalesOrder?.Field<uint>("CustomerID"));
+
+            var selectedBPIAddress = _bpiAddressTable.AsEnumerable()
+                .FirstOrDefault(r => r.Field<int>("AddressBasedId") == selectedBPI?.Field<int>("Id"));
+
+            var selectedBPIGeneral = _bpiGeneralTable.AsEnumerable()
+                .FirstOrDefault(r => r.Field<int>("GeneralBasedId") == selectedBPI?.Field<int>("Id"));
+
+            txt_customer_name.Text = selectedBPI?.Field<string>("Name");
+            txt_customer_code.Text = selectedSalesOrder?.Field<string>("CustomerCode");
+            txt_address.Text = selectedBPIAddress?.Field<string>("Location");
+            txt_tin_no.Text = selectedBPI?.Field<string>("Tin");
+
+            txt_sales_executive.Text = selectedSalesOrder?.Field<string>("SalesExecutive");
+            txt_item_release_no.Text = selectedItemRelease?.Field<int>("doc_no").ToString();
+
+            if (!filteredRows.Any())
+            {
+                dg_items.DataSource = null;
+                return;
+            }
+
+            _detailsBinding = GetDetailsFromDataTable(filteredRows);
+            dg_items.DataSource = _detailsBinding;
+        }
+        private BindingList<ItemReleaseDetailsModel> GetDetailsFromDataTable(IEnumerable<DataRow> rows)
+        {
+            var list = new BindingList<ItemReleaseDetailsModel>();
+            foreach (var r in rows)
+            {
+                list.Add(new ItemReleaseDetailsModel
+                {
+                    item_id = Convert.ToUInt32(r["item_id"]),
+                    item_code = r["item_code"].ToString() ?? string.Empty,
+                    item_description = r["item_description"]?.ToString() ?? string.Empty,
+                    required_qty = Convert.ToUInt32(r["required_qty"] ?? 0),
+                    required_uom = r["required_uom"]?.ToString() ?? string.Empty,
+                    released_qty = Convert.ToUInt32(r["released_qty"] ?? 0),
+                    released_uom = r["release_uom"]?.ToString() ?? string.Empty,
+                    serial_no = r["serial_no"]?.ToString() ?? string.Empty,
+                    delivery_preference = r["delivery_preference"]?.ToString() ?? string.Empty,
+                });
+            }
+            return list;
         }
         private static List<ShipTypeModel> AddShipTypeDefaultValue(List<ShipTypeModel> list, string defaultText = "-- SELECT --")
         {
@@ -639,9 +758,6 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             dg_costs.Columns[nameof(DeliveryReceiptCostModel.costs_amount)].DefaultCellStyle.Format = "C2";
             dg_costs.Columns[nameof(DeliveryReceiptCostModel.costs_total_cost)].DefaultCellStyle.Format = "C2";
             dg_costs.Columns[nameof(DeliveryReceiptCostModel.costs_total_cost)].ReadOnly = true;
-
-
-
         }
 
         private void dg_costs_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)

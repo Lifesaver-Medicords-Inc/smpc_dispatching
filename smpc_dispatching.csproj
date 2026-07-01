@@ -266,6 +266,7 @@
     <Compile Include="Core\Enum\CacheData.cs" />
     <Compile Include="Core\Enum\Endpoint.cs" />
     <Compile Include="Core\Enum\ReportPath.cs" />
+    <Compile Include="Core\Interfaces\IBpiService.cs" />
     <Compile Include="Core\Interfaces\ICalendarScheduleDetails.cs" />
     <Compile Include="Core\Interfaces\ICalendarScheduleModel.cs" />
     <Compile Include="Core\Interfaces\ICostTypeService.cs" />
@@ -273,6 +274,7 @@
     <Compile Include="Core\Interfaces\IGeneralSetupService.cs" />
     <Compile Include="Core\Interfaces\IGetByIdService.cs" />
     <Compile Include="Core\Interfaces\IGetViewService.cs" />
+    <Compile Include="Core\Interfaces\IItemBinLocation.cs" />
     <Compile Include="Core\Interfaces\IItemListService.cs" />
     <Compile Include="Core\Interfaces\IItemStockAndLocationService.cs" />
     <Compile Include="Core\Interfaces\IPrintableDocument.cs" />
@@ -283,15 +285,19 @@
     <Compile Include="Core\Interfaces\ISalesOrderWithApprovedIRService.cs" />
     <Compile Include="Core\Interfaces\IShipTypeService.cs" />
     <Compile Include="Core\Interfaces\IVehicleService.cs" />
+    <Compile Include="Core\Models\BPI.cs" />
     <Compile Include="Core\Models\DeliveryReceiptCostModel.cs" />
     <Compile Include="Core\Models\DeliveryReceiptFileModel.cs" />
+    <Compile Include="Core\Models\ItemBinLocationModel.cs" />
     <Compile Include="Core\Models\ItemListModel.cs" />
     <Compile Include="Core\Models\SalesCalendarScheduleModel.cs" />
     <Compile Include="Core\Models\SalesOrderWithApprovedIRModel.cs" />
     <Compile Include="Core\Models\ShipTypeModel.cs" />
     <Compile Include="Core\Services\BaseApiService.cs" />
     <Compile Include="Core\Services\BasePrintableDocument.cs" />
+    <Compile Include="Core\Services\BPIService.cs" />
     <Compile Include="Core\Services\CostTypeService.cs" />
+    <Compile Include="Core\Services\ItemBinLocation.cs" />
     <Compile Include="Core\Services\ItemListService.cs" />
     <Compile Include="Core\Services\ItemStockAndLocationService.cs" />
     <Compile Include="Core\Services\PrintService.cs" />

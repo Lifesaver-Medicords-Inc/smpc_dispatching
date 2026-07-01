@@ -268,9 +268,9 @@ namespace smpc_dispatching.UI.Shared.CalendarEvent
                 return;
 
             _categoryLookup = response.Data
-                .Where(c => c.Id.HasValue && c.Id.Value > 0)
+                .Where(c => c.id.HasValue && c.id.Value > 0)
                 .ToDictionary(
-                c => (int)c.Id.Value,
+                c => (int)c.id.Value,
                 c => c
                 );
         }

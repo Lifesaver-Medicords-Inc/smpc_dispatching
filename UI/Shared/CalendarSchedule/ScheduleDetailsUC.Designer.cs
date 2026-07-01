@@ -147,6 +147,7 @@
             this.label8.Size = new System.Drawing.Size(20, 13);
             this.label8.TabIndex = 16;
             this.label8.Text = "ID";
+            this.label8.Visible = false;
             // 
             // txt_Id
             // 
@@ -154,6 +155,7 @@
             this.txt_Id.Name = "txt_Id";
             this.txt_Id.Size = new System.Drawing.Size(100, 20);
             this.txt_Id.TabIndex = 0;
+            this.txt_Id.Visible = false;
             // 
             // label2
             // 

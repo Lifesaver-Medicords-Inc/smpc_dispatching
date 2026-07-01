@@ -20,6 +20,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
 
         private readonly int _itemId;
         private readonly IItemStockAndLocationService<ItemStockAndLocationModel> _service;
+        private readonly IItemBinLocation<ItemBinLocationModel> _itemBinLocation;
         private DataTable _itemTable;
         private decimal _alreadyIssuedQty;
 
@@ -31,14 +32,6 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
         }
         private readonly Dictionary<string, BinStock> _remainingStock = new Dictionary<string, BinStock>();
 
-        private static class DgvCol
-        {
-            public const string IssuedQty = "issued_qty";
-            public const string IssuedUom = "issued_uom";
-            public const string StockQty = "stock_qty";
-            public const string StockUom = "stock_uom";
-            public const string BinLocation = "bin_location";
-        }
 
         public PickActivity(IServiceProvider serviceProvider, int itemId, decimal alreadyIssuedQty = 0, Dictionary<string, decimal> alreadyIssuedPerBin = null)
         {
@@ -46,6 +39,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
 
             _itemId = itemId;
             _service = serviceProvider.GetRequiredService<IItemStockAndLocationService<ItemStockAndLocationModel>>();
+            _itemBinLocation = serviceProvider.GetRequiredService<IItemBinLocation<ItemBinLocationModel>>();
             _alreadyIssuedQty = alreadyIssuedQty;
 
             // Initialize already issued stock per bin
@@ -72,7 +66,8 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
             {
                 Helpers.Loading.ShowLoading(dgv_item, "Fetching data...");
 
-                var response = await _service.GetAsync(_itemId);
+                var response = await _itemBinLocation.GetAsync(_itemId);
+
                 if (response?.Data == null || !response.Data.Any())
                 {
                     Helpers.ShowDialogMessage("error", "No stock found.");
@@ -84,21 +79,21 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
                 // Convert model list to DataTable
                 _itemTable = Helpers.ToDataTable(response.Data.ToList());
 
-                // Add UI-only columns for issued quantity
-                if (!_itemTable.Columns.Contains(DgvCol.IssuedQty))
-                    _itemTable.Columns.Add(DgvCol.IssuedQty, typeof(decimal));
-                if (!_itemTable.Columns.Contains(DgvCol.IssuedUom))
-                    _itemTable.Columns.Add(DgvCol.IssuedUom, typeof(string));
+                //// Add UI-only columns for issued quantity
+                //if (!_itemTable.Columns.Contains(DgvCol.IssuedQty))
+                //    _itemTable.Columns.Add(DgvCol.IssuedQty, typeof(decimal));
+                //if (!_itemTable.Columns.Contains(DgvCol.IssuedUom))
+                //    _itemTable.Columns.Add(DgvCol.IssuedUom, typeof(string));
 
-                // Initialize issued quantity and UOM
-                foreach (DataRow row in _itemTable.Rows)
-                {
-                    row[DgvCol.IssuedQty] = 0m;
-                    row[DgvCol.IssuedUom] = row[DgvCol.StockUom]?.ToString() ?? "";
-                }
+                //// Initialize issued quantity and UOM
+                //foreach (DataRow row in _itemTable.Rows)
+                //{
+                //    row[DgvCol.IssuedQty] = 0m;
+                //    row[DgvCol.IssuedUom] = row[DgvCol.StockUom]?.ToString() ?? "";
+                //}
 
-                InitializeRemainingStock();
-                SetupColumns();
+                //InitializeRemainingStock();
+                //SetupColumns();
 
                 dgv_item.DataSource = _itemTable;
             }
@@ -116,8 +111,8 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
         {
             foreach (DataRow row in _itemTable.Rows)
             {
-                string bin = row[DgvCol.BinLocation]?.ToString() ?? "";
-                decimal stock = Convert.ToDecimal(row[DgvCol.StockQty]);
+                string bin = row["BinLocation"]?.ToString() ?? "";
+                decimal stock = Convert.ToDecimal(row["StockQty"]);
 
                 if (!_remainingStock.ContainsKey(bin))
                     _remainingStock[bin] = new BinStock { Remaining = stock, Issued = 0 };
@@ -125,8 +120,8 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
                     _remainingStock[bin].Remaining = stock - _remainingStock[bin].Issued;
 
                 // Fill back issued qty
-                row[DgvCol.IssuedQty] = _remainingStock[bin].Issued;
-                row[DgvCol.StockQty] = Math.Max(0, _remainingStock[bin].Remaining);
+                row["ReleaseQty"] = _remainingStock[bin].Issued;
+                row["StockQty"] = Math.Max(0, _remainingStock[bin].Remaining);
             }
         }
 
@@ -136,40 +131,40 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
 
             dgv_item.Columns.Add(new DataGridViewTextBoxColumn
             {
-                Name = DgvCol.IssuedQty,
+                Name = "ReleaseQty",
                 HeaderText = "QTY",
-                DataPropertyName = DgvCol.IssuedQty
+                DataPropertyName = "ReleaseQty"
             });
 
             dgv_item.Columns.Add(new DataGridViewTextBoxColumn
             {
-                Name = DgvCol.IssuedUom,
+                Name = "ReleaseUom",
                 HeaderText = "UOM",
-                DataPropertyName = DgvCol.StockUom,
+                DataPropertyName = "ReleaseUom",
                 ReadOnly = true
             });
 
             dgv_item.Columns.Add(new DataGridViewTextBoxColumn
             {
-                Name = DgvCol.StockQty,
+                Name = "StockQty",
                 HeaderText = "QTY",
-                DataPropertyName = DgvCol.StockQty,
+                DataPropertyName = "StockQty",
                 ReadOnly = true
             });
 
             dgv_item.Columns.Add(new DataGridViewTextBoxColumn
             {
-                Name = DgvCol.StockUom,
+                Name = "StockUom",
                 HeaderText = "UOM",
-                DataPropertyName = DgvCol.StockUom,
+                DataPropertyName = "StockUom",
                 ReadOnly = true
             });
 
             dgv_item.Columns.Add(new DataGridViewTextBoxColumn
             {
-                Name = DgvCol.BinLocation,
+                Name = "BinLocation",
                 HeaderText = "BIN LOCATION",
-                DataPropertyName = DgvCol.BinLocation,
+                DataPropertyName = "BinLocation",
                 ReadOnly = true,
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
             });
@@ -177,8 +172,8 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
 
         private void dgv_item_Paint(object sender, PaintEventArgs e)
         {
-            DrawGroupHeader(e, 0, 1, "QTY TO RELEASE");
-            DrawGroupHeader(e, 2, 3, "QTY AVAILABLE");
+            DrawGroupHeader(e, 1, 2, "QTY TO RELEASE");
+            DrawGroupHeader(e, 3, 4, "QTY AVAILABLE");
         }
 
         private void DrawGroupHeader(PaintEventArgs e, int startCol, int endCol, string text)
@@ -230,7 +225,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
 
         private void dgv_item_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
-            var issuedCol = dgv_item.Columns.Cast<DataGridViewColumn>().FirstOrDefault(c => c.Name == DgvCol.IssuedQty);
+            var issuedCol = dgv_item.Columns.Cast<DataGridViewColumn>().FirstOrDefault(c => c.Name == "ReleaseQty");
             if (issuedCol == null || e.ColumnIndex != issuedCol.Index) return;
 
             dgv_item.Rows[e.RowIndex].Tag = Convert.ToDecimal(dgv_item.Rows[e.RowIndex].Cells[issuedCol.Index].Value ?? 0);
@@ -238,47 +233,36 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
 
         private void dgv_item_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            var issuedCol = dgv_item.Columns.Cast<DataGridViewColumn>().FirstOrDefault(c => c.Name == DgvCol.IssuedQty);
-            var binCol = dgv_item.Columns.Cast<DataGridViewColumn>().FirstOrDefault(c => c.Name == DgvCol.BinLocation);
-
-            if (issuedCol == null || binCol == null || e.ColumnIndex != issuedCol.Index) return;
 
             var row = dgv_item.Rows[e.RowIndex];
-            string bin = row.Cells[binCol.Index].Value?.ToString() ?? "";
-            if (!_remainingStock.ContainsKey(bin)) return;
+            var editedColName = dgv_item.Columns[e.ColumnIndex].Name;
 
-            decimal oldIssued = Convert.ToDecimal(row.Tag ?? 0);
-            decimal newIssued = Convert.ToDecimal(row.Cells[issuedCol.Index].Value ?? 0);
-
-            // Restore previous issued qty
-            _remainingStock[bin].Remaining += oldIssued;
-            _remainingStock[bin].Issued -= oldIssued;
-
-            // Clamp new issued qty
-            if (newIssued > _remainingStock[bin].Remaining)
+            // Only react when the release qty was the cell just edited
+            if (editedColName == "ReleaseQty") 
             {
-                Helpers.ShowDialogMessage("error", "Issued quantity cannot exceed available stock.");
-                newIssued = 0;
-                row.Cells[issuedCol.Index].Value = 0;
-            }
+                // 1. Auto-fill uomRelease from StockUom
+                var stockUom = row.Cells["StockUom"].Value?.ToString();
+                row.Cells["ReleaseUom"].Value = stockUom;
+                // 2. Validate StockQty > ReleaseQty
+                decimal stockQty = Convert.ToDecimal(row.Cells["StockQty"].Value ?? 0);
+                decimal releaseQty = Convert.ToDecimal(row.Cells["ReleaseQty"].Value ?? 0);
 
-            _remainingStock[bin].Remaining -= newIssued;
-            _remainingStock[bin].Issued += newIssued;
+                if (releaseQty > stockQty)
+                {
+                    MessageBox.Show($"Release qty ({releaseQty}) cannot exceed available stock ({stockQty}).",
+                                     "Invalid Quantity", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-            // Update stock display for all rows of same bin
-            foreach (DataGridViewRow r in dgv_item.Rows)
-            {
-                string rBin = r.Cells[binCol.Index].Value?.ToString() ?? "";
-                if (rBin == bin)
-                    r.Cells[dgv_item.Columns[DgvCol.StockQty].Index].Value = Math.Max(0, _remainingStock[bin].Remaining);
+                    // Reset or clamp the value
+                    row.Cells["ReleaseQty"].Value = stockQty;
+                }
             }
         }
 
         private void btn_save_Click(object sender, EventArgs e)
         {
-            var issuedCol = dgv_item.Columns.Cast<DataGridViewColumn>().FirstOrDefault(c => c.Name == DgvCol.IssuedQty);
-            var binCol = dgv_item.Columns.Cast<DataGridViewColumn>().FirstOrDefault(c => c.Name == DgvCol.BinLocation);
-            var uomCol = dgv_item.Columns.Cast<DataGridViewColumn>().FirstOrDefault(c => c.Name == DgvCol.IssuedUom);
+            var issuedCol = dgv_item.Columns.Cast<DataGridViewColumn>().FirstOrDefault(c => c.Name == "ReleaseQty");
+            var binCol = dgv_item.Columns.Cast<DataGridViewColumn>().FirstOrDefault(c => c.Name == "BinLocation");
+            var uomCol = dgv_item.Columns.Cast<DataGridViewColumn>().FirstOrDefault(c => c.Name == "ReleaseUom");
 
             if (issuedCol == null || binCol == null || uomCol == null) return;
 
@@ -300,6 +284,6 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
             IssuedUom = dgv_item.Rows[0].Cells[uomCol.Index].Value?.ToString();
             DialogResult = DialogResult.OK;
             Close();
-        }
+         }
     }
 }

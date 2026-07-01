@@ -46,7 +46,7 @@ namespace smpc_dispatching.Core.Services {
         }
 
         public async Task<HttpResponseModel<SalesOrderModel>> UpdateAsync(SalesOrderModel entity) {
-            var res = await _httpService.Put<HttpResponseModel<SalesOrderModel>>($"sales-orders/{entity.Id}", entity);
+            var res = await _httpService.Put<HttpResponseModel<SalesOrderModel>>($"sales-orders/{entity.id}", entity);
             return res;
         }
     }

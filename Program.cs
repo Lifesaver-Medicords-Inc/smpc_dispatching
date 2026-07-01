@@ -18,8 +18,10 @@ using smpc_dispatching.UI.Views.Sales;
 using smpc_dispatching.UI.Views.SalesOrder;
 using System;
 using System.Globalization;
+using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Forms.Design;
 
 namespace smpc_dispatching {
     static class Program {
@@ -39,7 +41,7 @@ namespace smpc_dispatching {
             LoggerConfig.Configure();
 
             // change else for Development and Production
-            var env = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Production";
+            var env = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Development";
 
             // Build configuration
             Configuration = new ConfigurationBuilder()
@@ -68,8 +70,6 @@ namespace smpc_dispatching {
                 var loginForm = serviceProvider.GetRequiredService<LoginForm>();
                 Application.Run(loginForm);
             }
-
-
         }
         private static void ConfigureServices(ServiceCollection services) {
 
@@ -96,6 +96,10 @@ namespace smpc_dispatching {
             services.AddScoped<IItemStockAndLocationService<ItemStockAndLocationModel>, ItemStockAndLocationService>();
             services.AddScoped<ISalesOrderIRViewService<SalesOrderViewModel>, SalesOrderIRViewService>();
             services.AddScoped<ISalesOrderService, SalesOrderService>();
+            services.AddScoped<IBpiService, BPIService>();
+            services.AddScoped<IItemBinLocation<ItemBinLocationModel>, ItemBinLocation>();
+            services.AddScoped<IHttpService, HttpService>();
+
             services.AddScoped<IGeoService, GeoService>();
             services.AddScoped(typeof(IDrawFolderTreeService<>), typeof(DrawFolderTreeService<>));
 

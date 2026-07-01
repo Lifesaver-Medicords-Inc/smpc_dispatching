@@ -51,7 +51,7 @@ namespace smpc_dispatching.Core.Services
 
         public async Task<HttpResponseModel<CalendarCategoryModel>> UpdateAsync(CalendarCategoryModel entity)
         {
-            var res = await _httpService.Put<HttpResponseModel<CalendarCategoryModel>>($"calendar-categories/{entity.Id}", entity);
+            var res = await _httpService.Put<HttpResponseModel<CalendarCategoryModel>>($"calendar-categories/{entity.id}", entity);
             return res;
         }
     }

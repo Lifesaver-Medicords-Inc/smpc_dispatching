@@ -8,15 +8,16 @@ using System.Threading.Tasks;
 
 namespace smpc_dispatching.Core.Services
 {
-    public class SalesOrderIRViewService : ISalesOrderIRViewService<SalesOrderViewModel>
+    public class BPIService : IBpiService
     {
         private readonly IHttpService _httpService;
 
-        public SalesOrderIRViewService(IHttpService httpService)
+        public BPIService(IHttpService httpService)
         {
             _httpService = httpService;
         }
-        public async Task<HttpResponseModel<IEnumerable<SalesOrderViewModel>>>GetAllAsync(Dictionary<string, string> query)
+
+        public async Task<HttpResponseModel<BPIGeneral>> GetAllAsync(Dictionary<string, string> query)
         {
             var queryParams = string.Empty;
 
@@ -27,8 +28,7 @@ namespace smpc_dispatching.Core.Services
                     .Select(kv => $"{Uri.EscapeDataString(kv.Key)}={Uri.EscapeDataString(kv.Value)}"));
             }
 
-            var res = await _httpService.Get<HttpResponseModel<IEnumerable<SalesOrderViewModel>>>($"item-releases/sales-order-details/{queryParams}");
-            return res;
+            return await _httpService.Get<HttpResponseModel<BPIGeneral>>($"bpi/{queryParams}");
         }
     }
 }

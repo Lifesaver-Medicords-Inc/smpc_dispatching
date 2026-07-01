@@ -19,6 +19,12 @@ namespace smpc_dispatching.UI.Views.ItemRelease
 {
     public partial class ItemReleaseUC : UserControl
     {
+        Dictionary<string, string[]> columnGroupsMain = new Dictionary<string, string[]>() 
+        {
+            { "Required", new string[] { "required_qty", "required_uom" } },
+            { "Release", new string[] { "released_qty", "released_uom" } },
+        };
+
         private readonly PrintService _printService;
         private readonly ISalesOrderIRViewService<SalesOrderViewModel> _salesOrderIRViewService;
         private readonly IItemReleaseService _itemReleaseService;
@@ -46,6 +52,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             public const string Id = "id";
             public const string ItemReleaseId = "item_release_id";
             public const string ItemId = "item_id";
+            public const string ItemCode = "item_code";
             public const string SalesOrderId = "sales_order_id";
             public const string SalesOrderDetailsId = "sales_order_details_id";
             public const string ItemDescription = "item_description";
@@ -87,11 +94,12 @@ namespace smpc_dispatching.UI.Views.ItemRelease
 
             // If warehouse user, allow editing of txt_received_by
             txt_received_by.ReadOnly = !_isWarehouseUser;
+
+            Helpers.EnableGroupHeaders(dgv_details, columnGroupsMain);
         }
 
         private async void ItemReleaseUC_Load(object sender, EventArgs e)
         {
-            
             try
             {
                 SetMode(IRMode.View);
@@ -165,8 +173,6 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             bool showButtons = !_isWarehouseUser;
             btn_forward.Visible = showButtons && !(current.is_forward ?? false);
             btn_cancel_request.Visible = showButtons && (current.is_forward ?? false);
-
-            
         }
         #endregion
 
@@ -223,6 +229,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
                 {
                     sales_order_id = Convert.ToUInt32(r["sales_order_id"]),
                     sales_order_details_id = Convert.ToUInt32(r["sales_order_details_id"]),
+                    item_code = r["item_code"]?.ToString() ?? string.Empty,
                     item_id = Convert.ToUInt32(r["item_id"]),
                     item_description = r["item_description"]?.ToString() ?? string.Empty,
                     required_qty = Convert.ToUInt32(r["required_qty"] ?? 0),
@@ -331,7 +338,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
         }
         #endregion
 
-        #region Save
+         #region Save
         private async void btn_save_Click(object sender, EventArgs e)
         {
             btn_save.Enabled = false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
@@ -345,15 +352,15 @@ namespace smpc_dispatching.UI.Views.ItemRelease
                 var parentData = Helpers.BuildModelFromPanels<ItemReleaseModel>(_pnls);
                 var childData = _detailsBinding?.Where(d => d.item_id != 0).ToList();
 
-                if (cmb_reference_doc_no.SelectedItem == null || parentData == null || childData == null || !childData.Any())
+                bool isNew = string.IsNullOrWhiteSpace(txt_id.Text);
+
+                if ((cmb_reference_doc_no.SelectedItem == null || parentData == null || childData == null || !childData.Any()) && isNew)
                 {
                     Helpers.ShowDialogMessage("error", "Please select Reference Doc No or at least one item.");
                     return;
                 }
 
                 parentData.item_release_details = childData;
-
-                bool isNew = string.IsNullOrWhiteSpace(txt_id.Text);
 
                 if (isNew)
                 {
@@ -365,9 +372,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
                         return;
                     }
                 }
-                
-
-                if (!isNew)
+                else
                 {
                     if (_isWarehouseUser)
                     {
@@ -380,7 +385,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
 
                     parentData.id = uint.Parse(txt_id.Text);
                     // ✅ explicitly set is_forward
-                    parentData.is_forward = btn_forward.Visible; // or true/false based on your logic
+                    parentData.is_forward = btn_forward.Visible;
 
                     var response = await _itemReleaseService.UpdateAsync(parentData);
                     if (!response.Success)
@@ -389,6 +394,8 @@ namespace smpc_dispatching.UI.Views.ItemRelease
                         return;
                     }
                 }
+               
+                
 
                 Helpers.ShowDialogMessage("success", "Item Release saved successfully.");
 
@@ -465,6 +472,9 @@ namespace smpc_dispatching.UI.Views.ItemRelease
 
                 // Navigation buttons (optional)
                 //SetNavigationButtons(canEdit);
+
+                // Combobox
+                cmb_reference_doc_no.Enabled = canEdit && !_isEditMode;
 
                 if (canEdit)
                 {
@@ -657,5 +667,10 @@ namespace smpc_dispatching.UI.Views.ItemRelease
                 new ReportDataSource("DataSet2", itemsSource),
             });
         }
+
+        private void btn_search_Click(object sender, EventArgs e)
+        {
+
+        }
     }
-}
+} 

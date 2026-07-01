@@ -36,6 +36,15 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
             this.dgv_item = new System.Windows.Forms.DataGridView();
             this.pnl_footer = new System.Windows.Forms.Panel();
             this.btn_save = new System.Windows.Forms.Button();
+            this.Selected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ReleaseQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ReleaseUom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StockQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StockUom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BinLocation = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BinId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.WarehouseId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ITEMID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -87,6 +96,8 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
             this.dgv_item.AllowUserToAddRows = false;
             this.dgv_item.AllowUserToDeleteRows = false;
             this.dgv_item.AllowUserToResizeColumns = false;
+            this.dgv_item.AllowUserToResizeRows = false;
+            this.dgv_item.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -97,11 +108,23 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
             this.dgv_item.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgv_item.ColumnHeadersHeight = 50;
             this.dgv_item.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.dgv_item.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Selected,
+            this.ReleaseQty,
+            this.ReleaseUom,
+            this.StockQty,
+            this.StockUom,
+            this.BinLocation,
+            this.BinId,
+            this.WarehouseId,
+            this.ITEMID});
             this.dgv_item.EnableHeadersVisualStyles = false;
             this.dgv_item.Location = new System.Drawing.Point(0, 0);
             this.dgv_item.Name = "dgv_item";
+            this.dgv_item.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv_item.Size = new System.Drawing.Size(800, 421);
             this.dgv_item.TabIndex = 5;
+            this.dgv_item.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_item_CellEndEdit);
             // 
             // pnl_footer
             // 
@@ -123,6 +146,76 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
             this.btn_save.Text = "SAVE";
             this.btn_save.UseVisualStyleBackColor = false;
             this.btn_save.Click += new System.EventHandler(this.btn_save_Click);
+            // 
+            // Selected
+            // 
+            this.Selected.HeaderText = "SELECTED";
+            this.Selected.Name = "Selected";
+            this.Selected.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Selected.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // ReleaseQty
+            // 
+            this.ReleaseQty.DataPropertyName = "ReleaseQty";
+            this.ReleaseQty.HeaderText = "QTY";
+            this.ReleaseQty.Name = "ReleaseQty";
+            // 
+            // ReleaseUom
+            // 
+            this.ReleaseUom.DataPropertyName = "ReleaseUom";
+            this.ReleaseUom.HeaderText = "UOM";
+            this.ReleaseUom.Name = "ReleaseUom";
+            // 
+            // StockQty
+            // 
+            this.StockQty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.StockQty.DataPropertyName = "StockQty";
+            this.StockQty.HeaderText = "QTY";
+            this.StockQty.Name = "StockQty";
+            this.StockQty.ReadOnly = true;
+            // 
+            // StockUom
+            // 
+            this.StockUom.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.StockUom.DataPropertyName = "StockUom";
+            this.StockUom.HeaderText = "UOM";
+            this.StockUom.Name = "StockUom";
+            this.StockUom.ReadOnly = true;
+            // 
+            // BinLocation
+            // 
+            this.BinLocation.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.BinLocation.DataPropertyName = "BinLocation";
+            this.BinLocation.HeaderText = "BIN LOCATION";
+            this.BinLocation.Name = "BinLocation";
+            this.BinLocation.ReadOnly = true;
+            // 
+            // BinId
+            // 
+            this.BinId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.BinId.DataPropertyName = "BinId";
+            this.BinId.HeaderText = "BIN ID";
+            this.BinId.Name = "BinId";
+            this.BinId.ReadOnly = true;
+            this.BinId.Visible = false;
+            // 
+            // WarehouseId
+            // 
+            this.WarehouseId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.WarehouseId.DataPropertyName = "WarehouseId";
+            this.WarehouseId.HeaderText = "WAREHOUSEID";
+            this.WarehouseId.Name = "WarehouseId";
+            this.WarehouseId.ReadOnly = true;
+            this.WarehouseId.Visible = false;
+            // 
+            // ITEMID
+            // 
+            this.ITEMID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ITEMID.DataPropertyName = "ITEMID";
+            this.ITEMID.HeaderText = "ITEMID";
+            this.ITEMID.Name = "ITEMID";
+            this.ITEMID.ReadOnly = true;
+            this.ITEMID.Visible = false;
             // 
             // PickActivity
             // 
@@ -154,5 +247,14 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
         private System.Windows.Forms.Panel pnl_dgv;
         private System.Windows.Forms.Panel pnl_footer;
         private System.Windows.Forms.Button btn_save;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Selected;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ReleaseQty;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ReleaseUom;
+        private System.Windows.Forms.DataGridViewTextBoxColumn StockQty;
+        private System.Windows.Forms.DataGridViewTextBoxColumn StockUom;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BinLocation;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BinId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn WarehouseId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ITEMID;
     }
 }

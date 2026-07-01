@@ -19,8 +19,7 @@ namespace smpc_dispatching.Core.Services
 
         public async Task<HttpResponseModel<List<ItemStockAndLocationModel>>> GetAsync(int itemId)
         {
-            return await _httpService.Get<HttpResponseModel<List<ItemStockAndLocationModel>>>($"/api/item-releases/item-stock-and-locations/{itemId}"
-            );
+            return await _httpService.Get<HttpResponseModel<List<ItemStockAndLocationModel>>>($"/api/item-releases/item-stock-and-locations/{itemId}");
         }
     }
 }

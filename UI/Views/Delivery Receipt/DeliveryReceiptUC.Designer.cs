@@ -95,21 +95,14 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.btn_edit = new System.Windows.Forms.ToolStripButton();
             this.btn_delete = new System.Windows.Forms.ToolStripButton();
             this.btn_print = new System.Windows.Forms.ToolStripButton();
+            this.btn_search = new System.Windows.Forms.ToolStripButton();
             this.btn_save = new System.Windows.Forms.ToolStripButton();
             this.btn_close = new System.Windows.Forms.ToolStripButton();
-            this.btn_search = new System.Windows.Forms.ToolStripButton();
             this.btn_next = new System.Windows.Forms.ToolStripButton();
             this.btn_prev = new System.Windows.Forms.ToolStripButton();
             this.panel6 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.dg_items = new System.Windows.Forms.DataGridView();
-            this.items_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.items_delivery_receipt_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.items_item_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.items_qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.items_unit_of_measure = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.items_item_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.items_serial_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataBindingItem = new System.Windows.Forms.BindingSource(this.components);
             this.ds_dr_item = new System.Data.DataSet();
             this.tbl_dr_items = new System.Data.DataTable();
@@ -135,6 +128,19 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.dataColumn14 = new System.Data.DataColumn();
             this.dataColumn15 = new System.Data.DataColumn();
             this.dataBindingFile = new System.Windows.Forms.BindingSource(this.components);
+            this.released_qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.released_uom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_description = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.serial_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_release_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.sales_order_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.sales_order_details_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.required_qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.required_uom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.delivery_preference = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pnl_footer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -380,6 +386,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.label16.Size = new System.Drawing.Size(56, 13);
             this.label16.TabIndex = 137;
             this.label16.Text = "CUST ID: ";
+            this.label16.Visible = false;
             // 
             // txt_customer_id
             // 
@@ -387,6 +394,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.txt_customer_id.Name = "txt_customer_id";
             this.txt_customer_id.Size = new System.Drawing.Size(50, 20);
             this.txt_customer_id.TabIndex = 136;
+            this.txt_customer_id.Visible = false;
             // 
             // label12
             // 
@@ -396,6 +404,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.label12.Size = new System.Drawing.Size(38, 13);
             this.label12.TabIndex = 135;
             this.label12.Text = "IR ID: ";
+            this.label12.Visible = false;
             // 
             // txt_item_release_id
             // 
@@ -403,6 +412,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.txt_item_release_id.Name = "txt_item_release_id";
             this.txt_item_release_id.Size = new System.Drawing.Size(50, 20);
             this.txt_item_release_id.TabIndex = 134;
+            this.txt_item_release_id.Visible = false;
             // 
             // label11
             // 
@@ -412,6 +422,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.label11.Size = new System.Drawing.Size(40, 13);
             this.label11.TabIndex = 133;
             this.label11.Text = "S0 ID: ";
+            this.label11.Visible = false;
             // 
             // txt_sales_order_idsss
             // 
@@ -419,10 +430,12 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.txt_sales_order_idsss.Name = "txt_sales_order_idsss";
             this.txt_sales_order_idsss.Size = new System.Drawing.Size(50, 20);
             this.txt_sales_order_idsss.TabIndex = 132;
+            this.txt_sales_order_idsss.Visible = false;
             // 
             // cmb_sales_order_id
             // 
             this.cmb_sales_order_id.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_sales_order_id.Enabled = false;
             this.cmb_sales_order_id.FormattingEnabled = true;
             this.cmb_sales_order_id.Location = new System.Drawing.Point(1023, 116);
             this.cmb_sales_order_id.Name = "cmb_sales_order_id";
@@ -443,6 +456,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             // 
             // txt_item_release_no
             // 
+            this.txt_item_release_no.Enabled = false;
             this.txt_item_release_no.Location = new System.Drawing.Point(1023, 138);
             this.txt_item_release_no.Name = "txt_item_release_no";
             this.txt_item_release_no.Size = new System.Drawing.Size(200, 20);
@@ -456,6 +470,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.label9.Size = new System.Drawing.Size(24, 13);
             this.label9.TabIndex = 127;
             this.label9.Text = "ID: ";
+            this.label9.Visible = false;
             // 
             // txt_id
             // 
@@ -463,6 +478,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.txt_id.Name = "txt_id";
             this.txt_id.Size = new System.Drawing.Size(50, 20);
             this.txt_id.TabIndex = 126;
+            this.txt_id.Visible = false;
             // 
             // dtp_delivery_date
             // 
@@ -511,6 +527,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             // 
             // txt_sales_executive
             // 
+            this.txt_sales_executive.Enabled = false;
             this.txt_sales_executive.Location = new System.Drawing.Point(1023, 159);
             this.txt_sales_executive.Name = "txt_sales_executive";
             this.txt_sales_executive.Size = new System.Drawing.Size(200, 20);
@@ -518,6 +535,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             // 
             // txt_doc_no
             // 
+            this.txt_doc_no.Enabled = false;
             this.txt_doc_no.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txt_doc_no.Location = new System.Drawing.Point(1023, 95);
             this.txt_doc_no.Name = "txt_doc_no";
@@ -552,6 +570,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             // 
             // txt_address
             // 
+            this.txt_address.Enabled = false;
             this.txt_address.Location = new System.Drawing.Point(139, 137);
             this.txt_address.Name = "txt_address";
             this.txt_address.Size = new System.Drawing.Size(200, 20);
@@ -610,6 +629,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             // 
             // txt_customer_name
             // 
+            this.txt_customer_name.Enabled = false;
             this.txt_customer_name.Location = new System.Drawing.Point(139, 95);
             this.txt_customer_name.Name = "txt_customer_name";
             this.txt_customer_name.Size = new System.Drawing.Size(200, 20);
@@ -617,6 +637,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             // 
             // txt_tin_no
             // 
+            this.txt_tin_no.Enabled = false;
             this.txt_tin_no.Location = new System.Drawing.Point(139, 158);
             this.txt_tin_no.Name = "txt_tin_no";
             this.txt_tin_no.Size = new System.Drawing.Size(200, 20);
@@ -642,6 +663,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             // 
             // txt_customer_code
             // 
+            this.txt_customer_code.Enabled = false;
             this.txt_customer_code.Location = new System.Drawing.Point(139, 116);
             this.txt_customer_code.Name = "txt_customer_code";
             this.txt_customer_code.Size = new System.Drawing.Size(200, 20);
@@ -719,6 +741,14 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.btn_print.Text = "Print";
             this.btn_print.Click += new System.EventHandler(this.btn_print_Click);
             // 
+            // btn_search
+            // 
+            this.btn_search.Image = ((System.Drawing.Image)(resources.GetObject("btn_search.Image")));
+            this.btn_search.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btn_search.Name = "btn_search";
+            this.btn_search.Size = new System.Drawing.Size(62, 22);
+            this.btn_search.Text = "Search";
+            // 
             // btn_save
             // 
             this.btn_save.Image = ((System.Drawing.Image)(resources.GetObject("btn_save.Image")));
@@ -739,21 +769,13 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.btn_close.Visible = false;
             this.btn_close.Click += new System.EventHandler(this.btn_close_Click);
             // 
-            // btn_search
-            // 
-            this.btn_search.Image = ((System.Drawing.Image)(resources.GetObject("btn_search.Image")));
-            this.btn_search.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btn_search.Name = "btn_search";
-            this.btn_search.Size = new System.Drawing.Size(62, 22);
-            this.btn_search.Text = "Search";
-            // 
             // btn_next
             // 
             this.btn_next.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.btn_next.Image = ((System.Drawing.Image)(resources.GetObject("btn_next.Image")));
             this.btn_next.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btn_next.Name = "btn_next";
-            this.btn_next.Size = new System.Drawing.Size(52, 22);
+            this.btn_next.Size = new System.Drawing.Size(51, 22);
             this.btn_next.Text = "Next";
             this.btn_next.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.btn_next.Click += new System.EventHandler(this.btn_next_Click);
@@ -803,69 +825,25 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.dg_items.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dg_items.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dg_items.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.items_id,
-            this.items_delivery_receipt_id,
-            this.items_item_id,
-            this.items_qty,
-            this.items_unit_of_measure,
-            this.items_item_code,
-            this.items_serial_no});
+            this.released_qty,
+            this.released_uom,
+            this.item_code,
+            this.item_description,
+            this.serial_no,
+            this.id,
+            this.item_release_id,
+            this.sales_order_id,
+            this.sales_order_details_id,
+            this.item_id,
+            this.required_qty,
+            this.required_uom,
+            this.delivery_preference});
             this.dg_items.DataSource = this.dataBindingItem;
             this.dg_items.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dg_items.EnableHeadersVisualStyles = false;
             this.dg_items.Location = new System.Drawing.Point(0, 0);
             this.dg_items.Name = "dg_items";
             this.dg_items.Size = new System.Drawing.Size(1236, 200);
             this.dg_items.TabIndex = 1;
-            // 
-            // items_id
-            // 
-            this.items_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.items_id.DataPropertyName = "items_id";
-            this.items_id.HeaderText = "items_id";
-            this.items_id.Name = "items_id";
-            // 
-            // items_delivery_receipt_id
-            // 
-            this.items_delivery_receipt_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.items_delivery_receipt_id.DataPropertyName = "items_delivery_receipt_id";
-            this.items_delivery_receipt_id.HeaderText = "items_delivery_receipt_id";
-            this.items_delivery_receipt_id.Name = "items_delivery_receipt_id";
-            // 
-            // items_item_id
-            // 
-            this.items_item_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.items_item_id.DataPropertyName = "items_item_id";
-            this.items_item_id.HeaderText = "items_item_id";
-            this.items_item_id.Name = "items_item_id";
-            // 
-            // items_qty
-            // 
-            this.items_qty.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.items_qty.DataPropertyName = "items_qty";
-            this.items_qty.HeaderText = "QTY";
-            this.items_qty.Name = "items_qty";
-            // 
-            // items_unit_of_measure
-            // 
-            this.items_unit_of_measure.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.items_unit_of_measure.DataPropertyName = "items_unit_of_measure";
-            this.items_unit_of_measure.HeaderText = "UOM";
-            this.items_unit_of_measure.Name = "items_unit_of_measure";
-            // 
-            // items_item_code
-            // 
-            this.items_item_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.items_item_code.DataPropertyName = "items_item_code";
-            this.items_item_code.HeaderText = "ITEM CODE";
-            this.items_item_code.Name = "items_item_code";
-            // 
-            // items_serial_no
-            // 
-            this.items_serial_no.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.items_serial_no.DataPropertyName = "items_serial_no";
-            this.items_serial_no.HeaderText = "SERIAL NO";
-            this.items_serial_no.Name = "items_serial_no";
             // 
             // dataBindingItem
             // 
@@ -1016,6 +994,98 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.dataBindingFile.DataMember = "dr_file";
             this.dataBindingFile.DataSource = this.ds_dr_file;
             // 
+            // released_qty
+            // 
+            this.released_qty.DataPropertyName = "released_qty";
+            this.released_qty.HeaderText = "QTY";
+            this.released_qty.Name = "released_qty";
+            // 
+            // released_uom
+            // 
+            this.released_uom.DataPropertyName = "released_uom";
+            this.released_uom.HeaderText = "UOM";
+            this.released_uom.Name = "released_uom";
+            // 
+            // item_code
+            // 
+            this.item_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.item_code.DataPropertyName = "item_code";
+            this.item_code.HeaderText = "ITEM CODE";
+            this.item_code.Name = "item_code";
+            // 
+            // item_description
+            // 
+            this.item_description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.item_description.DataPropertyName = "item_description";
+            this.item_description.HeaderText = "ITEM DESCRIPTION";
+            this.item_description.Name = "item_description";
+            // 
+            // serial_no
+            // 
+            this.serial_no.DataPropertyName = "serial_no";
+            this.serial_no.HeaderText = "SERIAL NUMBER/S";
+            this.serial_no.Name = "serial_no";
+            // 
+            // id
+            // 
+            this.id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.id.DataPropertyName = "id";
+            this.id.HeaderText = "id";
+            this.id.Name = "id";
+            this.id.Visible = false;
+            // 
+            // item_release_id
+            // 
+            this.item_release_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.item_release_id.DataPropertyName = "item_release_id";
+            this.item_release_id.HeaderText = "item_release_id";
+            this.item_release_id.Name = "item_release_id";
+            this.item_release_id.Visible = false;
+            // 
+            // sales_order_id
+            // 
+            this.sales_order_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.sales_order_id.DataPropertyName = "sales_order_id";
+            this.sales_order_id.HeaderText = "sales_order_id";
+            this.sales_order_id.Name = "sales_order_id";
+            this.sales_order_id.Visible = false;
+            // 
+            // sales_order_details_id
+            // 
+            this.sales_order_details_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.sales_order_details_id.DataPropertyName = "sales_order_details_id";
+            this.sales_order_details_id.HeaderText = "sales_order_details_id";
+            this.sales_order_details_id.Name = "sales_order_details_id";
+            this.sales_order_details_id.Visible = false;
+            // 
+            // item_id
+            // 
+            this.item_id.DataPropertyName = "item_id";
+            this.item_id.HeaderText = "item_id";
+            this.item_id.Name = "item_id";
+            this.item_id.Visible = false;
+            // 
+            // required_qty
+            // 
+            this.required_qty.DataPropertyName = "required_qty";
+            this.required_qty.HeaderText = "required_qty";
+            this.required_qty.Name = "required_qty";
+            this.required_qty.Visible = false;
+            // 
+            // required_uom
+            // 
+            this.required_uom.DataPropertyName = "required_uom";
+            this.required_uom.HeaderText = "required_uom";
+            this.required_uom.Name = "required_uom";
+            this.required_uom.Visible = false;
+            // 
+            // delivery_preference
+            // 
+            this.delivery_preference.DataPropertyName = "delivery_preference";
+            this.delivery_preference.HeaderText = "delivery_preference";
+            this.delivery_preference.Name = "delivery_preference";
+            this.delivery_preference.Visible = false;
+            // 
             // DeliveryReceiptUC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1152,12 +1222,18 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TextBox txt_total_cost;
         private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.DataGridViewTextBoxColumn items_id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn items_delivery_receipt_id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn items_item_id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn items_qty;
-        private System.Windows.Forms.DataGridViewTextBoxColumn items_unit_of_measure;
-        private System.Windows.Forms.DataGridViewTextBoxColumn items_item_code;
-        private System.Windows.Forms.DataGridViewTextBoxColumn items_serial_no;
+        private System.Windows.Forms.DataGridViewTextBoxColumn released_qty;
+        private System.Windows.Forms.DataGridViewTextBoxColumn released_uom;
+        private System.Windows.Forms.DataGridViewTextBoxColumn item_code;
+        private System.Windows.Forms.DataGridViewTextBoxColumn item_description;
+        private System.Windows.Forms.DataGridViewTextBoxColumn serial_no;
+        private System.Windows.Forms.DataGridViewTextBoxColumn id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn item_release_id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn sales_order_id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn sales_order_details_id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn item_id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn required_qty;
+        private System.Windows.Forms.DataGridViewTextBoxColumn required_uom;
+        private System.Windows.Forms.DataGridViewTextBoxColumn delivery_preference;
     }
 }
