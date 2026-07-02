@@ -1,48 +1,42 @@
-﻿using System;
+using smpc_dispatching.Core.Helpers;
+using smpc_dispatching.Core.Interfaces;
+using smpc_dispatching.Core.Models;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace smpc_dispatching.UI.Shared
 {
-    public partial class SetupModal : Form
+    // Generic "code + name" setup CRUD screen, docked into a tab like the
+    // other nav views. Reusable for any simple lookup table by pointing it
+    // at a REST resource that returns SetupModel-shaped records
+    // (id, code, name), e.g. "calendar-cost-types".
+    public partial class SetupModal : UserControl
     {
-        
-        private string url { get; }
-        private string title { get; }
-        private bool showSelectedField;
-        private DataTable dataTable { get; set; }
+        private readonly IHttpService _httpService;
+        private readonly string _apiUrl;
 
-        public SetupModal(string setupTitle, string api, DataTable dt, bool isVisible = false)
+        public SetupModal(string setupTitle, string apiUrl, IHttpService httpService)
         {
             InitializeComponent();
             lbl_setup_title.Text = setupTitle;
-            this.url = api;
-            this.title = setupTitle;
-            this.showSelectedField = isVisible;
-            //if (dt != null){
-            //    if (dt.Columns["select"] != null) {    // Check if select column already exist
-            //        dt.Columns.Remove("select");            // Remove select column if exist 
-            //        return;
-            //    }
-            //}
-            this.dataTable = dt;
-
-
+            _apiUrl = apiUrl.Trim('/');
+            _httpService = httpService;
         }
 
-
-        //Load of Data
-        private void SetupModal_Load(object sender, EventArgs e)
+        private async void SetupModal_Load(object sender, EventArgs e)
         {
-            dg_setup.DataSource = this.dataTable;
-            dg_setup.Columns["is_selected"].Visible = this.showSelectedField;
+            BtnToogle(false);
+            await LoadSetup();
+        }
 
+        private async Task LoadSetup()
+        {
+            var response = await _httpService.Get<HttpResponseModel<IEnumerable<SetupModel>>>($"/api/{_apiUrl}/");
+            var items = response?.Data?.ToList() ?? new List<SetupModel>();
+            dg_setup.DataSource = Helpers.ToDataTable(items);
         }
 
         private void BtnToogle(bool isEdit)
@@ -52,97 +46,116 @@ namespace smpc_dispatching.UI.Shared
             btn_save.Visible = isEdit;
             btn_cancel.Visible = isEdit;
             panel_records.Enabled = isEdit;
+            dg_setup.Enabled = !isEdit;
         }
-        private bool ValidateField(out string messages)
+
+        private bool HasValidationErrors(out string messages)
         {
-            bool isValid = false;
+            bool hasError = false;
             messages = string.Empty;
 
-            if (string.IsNullOrEmpty(txt_code.Text))
+            if (string.IsNullOrWhiteSpace(txt_code.Text))
             {
-                messages += "Code cannot be empty \n";
-                isValid = true;
+                messages += "Code cannot be empty\n";
+                hasError = true;
             }
 
-            if (string.IsNullOrEmpty(txt_name.Text))
+            if (string.IsNullOrWhiteSpace(txt_name.Text))
             {
-                messages += "Name cannot be empty \n";
-                isValid = true;
+                messages += "Name cannot be empty\n";
+                hasError = true;
             }
 
-            return isValid;
+            return hasError;
         }
 
-        private void dg_setup_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void ClearRecordFields()
         {
-            //if (e.RowIndex == -1) return;
-
-            //Panel[] pnlList = { panel_records };
-            //DataTable dt = Helpers.ConvertDataGridViewToDataTable(dg_setup);
-            //Helpers.BindControls(pnlList, dt, e.RowIndex);
-            //btn_edit.Enabled = true;
+            Helpers.ResetControls(panel_records);
+            txt_id.Text = string.Empty;
         }
 
         private void btn_new_Click(object sender, EventArgs e)
         {
-            //Helpers.ResetControls(panel_records);
-            //BtnToogle(true);
-            //dg_setup.ClearSelection();
+            ClearRecordFields();
+            dg_setup.ClearSelection();
+            BtnToogle(true);
+            txt_code.Focus();
         }
 
         private void btn_edit_Click(object sender, EventArgs e)
         {
+            if (dg_setup.CurrentRow == null)
+            {
+                Helpers.ShowDialogMessage("warning", "Please select a record to edit.");
+                return;
+            }
+
+            var row = dg_setup.CurrentRow;
+            txt_id.Text = row.Cells["id"].Value?.ToString();
+            txt_code.Text = row.Cells["code"].Value?.ToString();
+            txt_name.Text = row.Cells["name"].Value?.ToString();
+
             BtnToogle(true);
+            txt_code.Focus();
         }
 
         private void btn_cancel_Click(object sender, EventArgs e)
         {
-            //Helpers.ResetControls(panel_records);
-            //BtnToogle(false);
+            ClearRecordFields();
+            BtnToogle(false);
         }
 
         private async void btn_save_Click(object sender, EventArgs e)
         {
-            //string message;
+            if (HasValidationErrors(out string errorMessage))
+            {
+                Helpers.ShowDialogMessage("error", errorMessage);
+                return;
+            }
 
-            //string errorFieldMessage;
-            //ApiResponseModel response = new ApiResponseModel();
-            //serviceSetup = new GeneralSetupServices(this.url);
+            btn_save.Enabled = false;
+            try
+            {
+                var model = new SetupModel
+                {
+                    code = txt_code.Text.Trim(),
+                    name = txt_name.Text.Trim(),
+                };
 
+                bool isNew = string.IsNullOrWhiteSpace(txt_id.Text);
+                HttpResponseModel<SetupModel> response;
 
-            //bool isErrorField = ValidateField(out errorFieldMessage);
+                if (isNew)
+                {
+                    response = await _httpService.Post<HttpResponseModel<SetupModel>>($"/api/{_apiUrl}/", model);
+                }
+                else
+                {
+                    model.id = int.Parse(txt_id.Text);
+                    response = await _httpService.Put<HttpResponseModel<SetupModel>>($"/api/{_apiUrl}/{model.id}", model);
+                }
 
-            //if (isErrorField)
-            //{
-            //    Helpers.ShowDialogMessage("error", errorFieldMessage);
-            //    return;
-            //}
+                if (response == null || !response.Success)
+                {
+                    Helpers.ShowDialogMessage("error", $"Failed to save {lbl_setup_title.Text}.\n{response?.Message}");
+                    return;
+                }
 
-            //var data = Helpers.GetControlsValues(panel_records);
-
-            //if (txt_id.Text.Equals(""))
-            //{
-            //    data.Remove("id");
-            //    response = await serviceSetup.Insert(data);
-            //    message = response.Success ? "Insert Data Succesfully" : "Failed to add" + this.title + "\n" + response.message;
-            //}
-            //else
-            //{
-            //    response = await serviceSetup.Update(data);
-            //    message = response.Success ? "Update Data Succesfully" : "Failed to update " + this.title;
-            //}
-
-            //if (!response.Success)
-            //{
-            //    Helpers.ShowDialogMessage("error", message);
-            //    return;
-            //}
-            //Helpers.ShowDialogMessage("success", message);
-            //Helpers.ResetControls(panel_records);
-            //GetSetup();
-            //BtnToogle(false);
-
+                Helpers.ShowDialogMessage("success", $"{lbl_setup_title.Text} saved successfully.");
+                ClearRecordFields();
+                BtnToogle(false);
+                await LoadSetup();
+            }
+            finally
+            {
+                btn_save.Enabled = true;
+            }
         }
 
+        private void dg_setup_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Row selection only — editing is entered explicitly via btn_edit_Click.
+        }
     }
 }

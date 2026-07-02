@@ -82,6 +82,14 @@ namespace smpc_dispatching.Core.Services
                 return;
             }
 
+            // Setup-style routes are dialogs (e.g. SetupModal), not tab content.
+            if (newView is Form dialogForm)
+            {
+                dialogForm.ShowDialog();
+                dialogForm.Dispose();
+                return;
+            }
+
             if (_container is TabControl tabControl)
             {
                 // Give each new tab a unique name (e.g. "Sales Order (2)")

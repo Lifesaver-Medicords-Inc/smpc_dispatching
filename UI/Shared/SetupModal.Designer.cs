@@ -89,6 +89,8 @@ namespace smpc_dispatching.UI.Shared
             // 
             this.dg_setup.AllowUserToAddRows = false;
             this.dg_setup.AllowUserToDeleteRows = false;
+            this.dg_setup.AutoGenerateColumns = false;
+            this.dg_setup.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dg_setup_CellClick);
             this.dg_setup.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dg_setup.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id,
@@ -209,9 +211,10 @@ namespace smpc_dispatching.UI.Shared
             this.btn_cancel.Text = "CANCEL";
             this.btn_cancel.UseVisualStyleBackColor = true;
             this.btn_cancel.Visible = false;
-            // 
+            this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
+            //
             // btn_save
-            // 
+            //
             this.btn_save.Location = new System.Drawing.Point(11, 8);
             this.btn_save.Name = "btn_save";
             this.btn_save.Size = new System.Drawing.Size(73, 22);
@@ -219,19 +222,20 @@ namespace smpc_dispatching.UI.Shared
             this.btn_save.Text = "SAVE";
             this.btn_save.UseVisualStyleBackColor = true;
             this.btn_save.Visible = false;
-            // 
+            this.btn_save.Click += new System.EventHandler(this.btn_save_Click);
+            //
             // btn_edit
-            // 
+            //
             this.btn_edit.Location = new System.Drawing.Point(79, 8);
             this.btn_edit.Name = "btn_edit";
             this.btn_edit.Size = new System.Drawing.Size(73, 22);
             this.btn_edit.TabIndex = 113;
             this.btn_edit.Text = "EDIT";
             this.btn_edit.UseVisualStyleBackColor = true;
-            // 
+            this.btn_edit.Click += new System.EventHandler(this.btn_edit_Click);
+            //
             // btn_new
-            // 
-            this.btn_new.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            //
             this.btn_new.BackColor = System.Drawing.Color.LimeGreen;
             this.btn_new.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.btn_new.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
@@ -245,16 +249,17 @@ namespace smpc_dispatching.UI.Shared
             this.btn_new.TabIndex = 112;
             this.btn_new.Text = "NEW";
             this.btn_new.UseVisualStyleBackColor = false;
-            // 
+            this.btn_new.Click += new System.EventHandler(this.btn_new_Click);
+            //
             // SetupModal
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(400, 506);
             this.Controls.Add(this.panel_dg);
             this.Controls.Add(this.panel_header);
             this.Name = "SetupModal";
-            this.Text = "SetupModal";
+            this.Size = new System.Drawing.Size(400, 506);
+            this.Load += new System.EventHandler(this.SetupModal_Load);
             this.panel_header.ResumeLayout(false);
             this.panel_header.PerformLayout();
             this.panel_dg.ResumeLayout(false);

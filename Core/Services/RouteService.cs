@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using smpc_dispatching.Core.Interfaces;
 using smpc_dispatching.Core.Models;
+using smpc_dispatching.UI.Shared;
 using smpc_dispatching.UI.Views.Delivery_Receipt;
 using smpc_dispatching.UI.Views.Engineering;
 using smpc_dispatching.UI.Views.ItemRelease;
@@ -79,6 +80,16 @@ namespace smpc_dispatching.Core.Services
                 ViewFactory = () => _serviceProvider.GetRequiredService<ItemReleaseUC>()
             };
 
+            _pages["SETUP_COST_TYPE"] = new ViewControlModel
+            {
+                Code = "SETUP_COST_TYPE",
+                Parent = "Setup",
+                Title = "Cost Type",
+                ViewFactory = () => new SetupModal(
+                    "Cost Type",
+                    "calendar-cost-types",
+                    _serviceProvider.GetRequiredService<IHttpService>())
+            };
         }
 
         // --- Public Methods ---

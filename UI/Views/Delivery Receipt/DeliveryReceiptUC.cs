@@ -153,7 +153,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             _soirTable = Helpers.ToDataTable(response.Data.ToList());
         }
 
-        private async Task LoadDeliveryReceipts()
+        private async Task LoadDeliveryReceipts(int? focusId = null)
         {
             var response = await _deliveryReceiptService.GetAllAsync(null);
             _deliveryReceipts = response?.Data?.ToList() ?? new List<DeliveryReceiptModel>();
@@ -161,8 +161,19 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             if (_deliveryReceipts.Count == 0)
             {
                 _currentIndex = -1;
+                dg_items.DataSource = null;
+                _costRows.Clear();
+                SetMode(DRMode.View);
                 return;
             }
+
+            // Land on the record we just created/updated instead of a stale index
+            // (which could be -1, clearing the screen without returning to View mode).
+            if (focusId.HasValue)
+                _currentIndex = _deliveryReceipts.FindIndex(d => d.id == focusId.Value);
+
+            if (_currentIndex < 0 || _currentIndex >= _deliveryReceipts.Count)
+                _currentIndex = _deliveryReceipts.Count - 1;
 
             BindDeliveryReceipt(_currentIndex);
         }
@@ -220,10 +231,11 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             var current = _deliveryReceipts[index];
             Helpers.BindHelpers.BindParentToPanels(current, _pnls, "DR#");
 
-            _bindingListItem = new BindingList<DeliveryReceiptItemModel>(
-                current.delivery_receipt_items ?? new List<DeliveryReceiptItemModel>()
-            );
-            dg_items.DataSource = _bindingListItem;
+            // dg_items' fixed columns only resolve ItemReleaseDetailsModel's property
+            // names (see GetDetailsFromDataTable) — convert the saved DeliveryReceiptItemModel
+            // rows into that shape, otherwise every cell renders blank.
+            _detailsBinding = ToItemReleaseDetailsList(current.delivery_receipt_items);
+            dg_items.DataSource = _detailsBinding;
 
             // Update _costRows in-place instead of creating a new BindingList
             _costRows.Clear();
@@ -309,7 +321,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             {
                 if (!await ValidateInput(_pnls)) return;
                 var deliveryReceipt = Helpers.BuildModelFromPanels<DeliveryReceiptModel>(_pnls);
-                var deliveryReceiptItem = Helpers.DatagridviewMapper.BuildModelsFromData<DeliveryReceiptItemModel>(dg_items);
+                var deliveryReceiptItem = BuildDeliveryReceiptItemsFromGrid();
                 var deliveryReceiptCosts = Helpers.DatagridviewMapper.BuildModelsFromData < DeliveryReceiptCostModel>(dg_costs);
 
                 deliveryReceipt.delivery_receipt_items = deliveryReceiptItem;
@@ -317,6 +329,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
 
 
                 bool isNew = string.IsNullOrWhiteSpace(txt_id.Text);
+                int savedId;
 
                 if (isNew)
                 {
@@ -326,9 +339,9 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
                         Helpers.ShowDialogMessage("error", "Delivery Receipt saving failed.");
                         return;
                     }
-                    
+                    savedId = response.Data.id;
                 }
-                if (!isNew)
+                else
                 {
                     deliveryReceipt.id = int.Parse(txt_id.Text);
                     // ✅ explicitly set is_forward
@@ -339,10 +352,11 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
                         Helpers.ShowDialogMessage("error", "Item Release saving failed.");
                         return;
                     }
+                    savedId = deliveryReceipt.id;
                 }
                 Helpers.ShowDialogMessage("success", "Delivery Receipt saved successfully.");
 
-                await LoadDeliveryReceipts();
+                await LoadDeliveryReceipts(savedId);
 
             }
             catch (Exception ex)
@@ -683,6 +697,10 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             _detailsBinding = GetDetailsFromDataTable(filteredRows);
             dg_items.DataSource = _detailsBinding;
         }
+        // dg_items has AutoGenerateColumns = false with columns whose DataPropertyName is
+        // hard-wired (in the Designer) to ItemReleaseDetailsModel's property names
+        // (item_code, required_qty, released_qty, ...). Binding any other model type here
+        // makes every cell resolve to nothing, so this must stay ItemReleaseDetailsModel.
         private BindingList<ItemReleaseDetailsModel> GetDetailsFromDataTable(IEnumerable<DataRow> rows)
         {
             var list = new BindingList<ItemReleaseDetailsModel>();
@@ -690,6 +708,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             {
                 list.Add(new ItemReleaseDetailsModel
                 {
+                    sales_order_details_id = Convert.ToUInt32(r["sales_order_details_id"] ?? 0),
                     item_id = Convert.ToUInt32(r["item_id"]),
                     item_code = r["item_code"].ToString() ?? string.Empty,
                     item_description = r["item_description"]?.ToString() ?? string.Empty,
@@ -702,6 +721,58 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
                 });
             }
             return list;
+        }
+        // Converts saved DeliveryReceiptItemModel rows (from the API) into the
+        // ItemReleaseDetailsModel shape dg_items' fixed columns expect for display.
+        private BindingList<ItemReleaseDetailsModel> ToItemReleaseDetailsList(List<DeliveryReceiptItemModel> items)
+        {
+            var list = new BindingList<ItemReleaseDetailsModel>();
+            foreach (var item in items ?? new List<DeliveryReceiptItemModel>())
+            {
+                list.Add(new ItemReleaseDetailsModel
+                {
+                    sales_order_details_id = (uint)item.items_sales_order_details_id,
+                    item_id = (uint)item.items_item_id,
+                    item_code = item.items_item_code ?? string.Empty,
+                    item_description = item.items_item_description ?? string.Empty,
+                    released_qty = (uint)item.items_qty,
+                    released_uom = item.items_unit_of_measure ?? string.Empty,
+                    serial_no = item.items_serial_no ?? string.Empty,
+                });
+            }
+            return list;
+        }
+        // Helpers.DatagridviewMapper.BuildModelsFromData<DeliveryReceiptItemModel> can't be used
+        // here: it matches by DataGridView column Name, but dg_items' columns are hard-wired to
+        // ItemReleaseDetailsModel's names (item_code, released_qty, ...), never the items_*
+        // names DeliveryReceiptItemModel uses. Read the known columns directly instead.
+        private List<DeliveryReceiptItemModel> BuildDeliveryReceiptItemsFromGrid()
+        {
+            var items = new List<DeliveryReceiptItemModel>();
+
+            int ToInt(object value) => value == null || value == DBNull.Value ? 0 : Convert.ToInt32(value);
+            string ToStr(object value) => value == null || value == DBNull.Value ? string.Empty : value.ToString();
+
+            foreach (DataGridViewRow row in dg_items.Rows)
+            {
+                if (row.IsNewRow) continue;
+
+                int itemId = ToInt(row.Cells["item_id"].Value);
+                if (itemId == 0) continue;
+
+                items.Add(new DeliveryReceiptItemModel
+                {
+                    items_item_id = itemId,
+                    items_sales_order_details_id = ToInt(row.Cells["sales_order_details_id"].Value),
+                    items_item_code = ToStr(row.Cells["item_code"].Value),
+                    items_item_description = ToStr(row.Cells["item_description"].Value),
+                    items_qty = ToInt(row.Cells["released_qty"].Value),
+                    items_unit_of_measure = ToStr(row.Cells["released_uom"].Value),
+                    items_serial_no = ToStr(row.Cells["serial_no"].Value),
+                });
+            }
+
+            return items;
         }
         private static List<ShipTypeModel> AddShipTypeDefaultValue(List<ShipTypeModel> list, string defaultText = "-- SELECT --")
         {

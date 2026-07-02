@@ -406,7 +406,7 @@
       <DependentUpon>MapLocPinForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Shared\SetupModal.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UI\Shared\SetupModal.Designer.cs">
       <DependentUpon>SetupModal.cs</DependentUpon>

@@ -35,13 +35,6 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.pnl_footer = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.dg_costs = new System.Windows.Forms.DataGridView();
-            this.costs_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.costs_delivery_receipt_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.costs_cost_type_id = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.costs_description = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.costs_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.costs_multiplier = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.costs_total_cost = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataBindingCost = new System.Windows.Forms.BindingSource(this.components);
             this.ds_dr_cost = new System.Data.DataSet();
             this.tbl_dr_cost = new System.Data.DataTable();
@@ -103,6 +96,27 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.panel6 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.dg_items = new System.Windows.Forms.DataGridView();
+            this.released_qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.released_uom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_description = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.serial_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_release_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.sales_order_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.sales_order_details_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.item_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.required_qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.required_uom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.delivery_preference = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.itemsidDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.itemsitemidDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.itemsqtyDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.itemsunitofmeasureDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.itemsitemcodeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.itemsdescriptionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.itemsserialnoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.itemsdeliveryreceiptidDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataBindingItem = new System.Windows.Forms.BindingSource(this.components);
             this.ds_dr_item = new System.Data.DataSet();
             this.tbl_dr_items = new System.Data.DataTable();
@@ -128,19 +142,13 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.dataColumn14 = new System.Data.DataColumn();
             this.dataColumn15 = new System.Data.DataColumn();
             this.dataBindingFile = new System.Windows.Forms.BindingSource(this.components);
-            this.released_qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.released_uom = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_code = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_description = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.serial_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_release_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.sales_order_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.sales_order_details_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.item_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.required_qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.required_uom = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.delivery_preference = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.costs_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.costs_delivery_receipt_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.costs_cost_type_id = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.costs_description = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.costs_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.costs_multiplier = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.costs_total_cost = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pnl_footer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -214,57 +222,6 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.dg_costs.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dg_costs_CellEndEdit);
             this.dg_costs.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dg_costs_DataError);
             this.dg_costs.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dg_costs_UserDeletingRow);
-            // 
-            // costs_id
-            // 
-            this.costs_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.costs_id.DataPropertyName = "costs_id";
-            this.costs_id.HeaderText = "costs_id";
-            this.costs_id.Name = "costs_id";
-            // 
-            // costs_delivery_receipt_id
-            // 
-            this.costs_delivery_receipt_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.costs_delivery_receipt_id.DataPropertyName = "costs_delivery_receipt_id";
-            this.costs_delivery_receipt_id.HeaderText = "costs_delivery_receipt_id";
-            this.costs_delivery_receipt_id.Name = "costs_delivery_receipt_id";
-            // 
-            // costs_cost_type_id
-            // 
-            this.costs_cost_type_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.costs_cost_type_id.DataPropertyName = "costs_cost_type_id";
-            this.costs_cost_type_id.HeaderText = "COST TYPE";
-            this.costs_cost_type_id.Name = "costs_cost_type_id";
-            this.costs_cost_type_id.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.costs_cost_type_id.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // costs_description
-            // 
-            this.costs_description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.costs_description.DataPropertyName = "costs_description";
-            this.costs_description.HeaderText = "DESCRIPTION";
-            this.costs_description.Name = "costs_description";
-            // 
-            // costs_amount
-            // 
-            this.costs_amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.costs_amount.DataPropertyName = "costs_amount";
-            this.costs_amount.HeaderText = "AMOUNT";
-            this.costs_amount.Name = "costs_amount";
-            // 
-            // costs_multiplier
-            // 
-            this.costs_multiplier.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.costs_multiplier.DataPropertyName = "costs_multiplier";
-            this.costs_multiplier.HeaderText = "MULTIPLIER";
-            this.costs_multiplier.Name = "costs_multiplier";
-            // 
-            // costs_total_cost
-            // 
-            this.costs_total_cost.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.costs_total_cost.DataPropertyName = "costs_total_cost";
-            this.costs_total_cost.HeaderText = "TOTAL COST";
-            this.costs_total_cost.Name = "costs_total_cost";
             // 
             // dataBindingCost
             // 
@@ -837,13 +794,169 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.item_id,
             this.required_qty,
             this.required_uom,
-            this.delivery_preference});
+            this.delivery_preference,
+            this.itemsidDataGridViewTextBoxColumn,
+            this.itemsitemidDataGridViewTextBoxColumn,
+            this.itemsqtyDataGridViewTextBoxColumn,
+            this.itemsunitofmeasureDataGridViewTextBoxColumn,
+            this.itemsitemcodeDataGridViewTextBoxColumn,
+            this.itemsdescriptionDataGridViewTextBoxColumn,
+            this.itemsserialnoDataGridViewTextBoxColumn,
+            this.itemsdeliveryreceiptidDataGridViewTextBoxColumn});
             this.dg_items.DataSource = this.dataBindingItem;
             this.dg_items.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dg_items.Location = new System.Drawing.Point(0, 0);
             this.dg_items.Name = "dg_items";
             this.dg_items.Size = new System.Drawing.Size(1236, 200);
             this.dg_items.TabIndex = 1;
+            // 
+            // released_qty
+            // 
+            this.released_qty.DataPropertyName = "released_qty";
+            this.released_qty.HeaderText = "QTY";
+            this.released_qty.Name = "released_qty";
+            // 
+            // released_uom
+            // 
+            this.released_uom.DataPropertyName = "released_uom";
+            this.released_uom.HeaderText = "UOM";
+            this.released_uom.Name = "released_uom";
+            // 
+            // item_code
+            // 
+            this.item_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.item_code.DataPropertyName = "item_code";
+            this.item_code.HeaderText = "ITEM CODE";
+            this.item_code.Name = "item_code";
+            // 
+            // item_description
+            // 
+            this.item_description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.item_description.DataPropertyName = "item_description";
+            this.item_description.HeaderText = "ITEM DESCRIPTION";
+            this.item_description.Name = "item_description";
+            // 
+            // serial_no
+            // 
+            this.serial_no.DataPropertyName = "serial_no";
+            this.serial_no.HeaderText = "SERIAL NUMBER/S";
+            this.serial_no.Name = "serial_no";
+            // 
+            // id
+            // 
+            this.id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.id.DataPropertyName = "id";
+            this.id.HeaderText = "id";
+            this.id.Name = "id";
+            this.id.Visible = false;
+            // 
+            // item_release_id
+            // 
+            this.item_release_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.item_release_id.DataPropertyName = "item_release_id";
+            this.item_release_id.HeaderText = "item_release_id";
+            this.item_release_id.Name = "item_release_id";
+            this.item_release_id.Visible = false;
+            // 
+            // sales_order_id
+            // 
+            this.sales_order_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.sales_order_id.DataPropertyName = "sales_order_id";
+            this.sales_order_id.HeaderText = "sales_order_id";
+            this.sales_order_id.Name = "sales_order_id";
+            this.sales_order_id.Visible = false;
+            // 
+            // sales_order_details_id
+            // 
+            this.sales_order_details_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.sales_order_details_id.DataPropertyName = "sales_order_details_id";
+            this.sales_order_details_id.HeaderText = "sales_order_details_id";
+            this.sales_order_details_id.Name = "sales_order_details_id";
+            this.sales_order_details_id.Visible = false;
+            // 
+            // item_id
+            // 
+            this.item_id.DataPropertyName = "item_id";
+            this.item_id.HeaderText = "item_id";
+            this.item_id.Name = "item_id";
+            this.item_id.Visible = false;
+            // 
+            // required_qty
+            // 
+            this.required_qty.DataPropertyName = "required_qty";
+            this.required_qty.HeaderText = "required_qty";
+            this.required_qty.Name = "required_qty";
+            this.required_qty.Visible = false;
+            // 
+            // required_uom
+            // 
+            this.required_uom.DataPropertyName = "required_uom";
+            this.required_uom.HeaderText = "required_uom";
+            this.required_uom.Name = "required_uom";
+            this.required_uom.Visible = false;
+            // 
+            // delivery_preference
+            // 
+            this.delivery_preference.DataPropertyName = "delivery_preference";
+            this.delivery_preference.HeaderText = "delivery_preference";
+            this.delivery_preference.Name = "delivery_preference";
+            this.delivery_preference.Visible = false;
+            // 
+            // itemsidDataGridViewTextBoxColumn
+            // 
+            this.itemsidDataGridViewTextBoxColumn.DataPropertyName = "items_id";
+            this.itemsidDataGridViewTextBoxColumn.HeaderText = "items_id";
+            this.itemsidDataGridViewTextBoxColumn.Name = "itemsidDataGridViewTextBoxColumn";
+            this.itemsidDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // itemsitemidDataGridViewTextBoxColumn
+            // 
+            this.itemsitemidDataGridViewTextBoxColumn.DataPropertyName = "items_item_id";
+            this.itemsitemidDataGridViewTextBoxColumn.HeaderText = "items_item_id";
+            this.itemsitemidDataGridViewTextBoxColumn.Name = "itemsitemidDataGridViewTextBoxColumn";
+            this.itemsitemidDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // itemsqtyDataGridViewTextBoxColumn
+            // 
+            this.itemsqtyDataGridViewTextBoxColumn.DataPropertyName = "items_qty";
+            this.itemsqtyDataGridViewTextBoxColumn.HeaderText = "items_qty";
+            this.itemsqtyDataGridViewTextBoxColumn.Name = "itemsqtyDataGridViewTextBoxColumn";
+            this.itemsqtyDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // itemsunitofmeasureDataGridViewTextBoxColumn
+            // 
+            this.itemsunitofmeasureDataGridViewTextBoxColumn.DataPropertyName = "items_unit_of_measure";
+            this.itemsunitofmeasureDataGridViewTextBoxColumn.HeaderText = "items_unit_of_measure";
+            this.itemsunitofmeasureDataGridViewTextBoxColumn.Name = "itemsunitofmeasureDataGridViewTextBoxColumn";
+            this.itemsunitofmeasureDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // itemsitemcodeDataGridViewTextBoxColumn
+            // 
+            this.itemsitemcodeDataGridViewTextBoxColumn.DataPropertyName = "items_item_code";
+            this.itemsitemcodeDataGridViewTextBoxColumn.HeaderText = "items_item_code";
+            this.itemsitemcodeDataGridViewTextBoxColumn.Name = "itemsitemcodeDataGridViewTextBoxColumn";
+            this.itemsitemcodeDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // itemsdescriptionDataGridViewTextBoxColumn
+            // 
+            this.itemsdescriptionDataGridViewTextBoxColumn.DataPropertyName = "items_description";
+            this.itemsdescriptionDataGridViewTextBoxColumn.HeaderText = "items_description";
+            this.itemsdescriptionDataGridViewTextBoxColumn.Name = "itemsdescriptionDataGridViewTextBoxColumn";
+            this.itemsdescriptionDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // itemsserialnoDataGridViewTextBoxColumn
+            // 
+            this.itemsserialnoDataGridViewTextBoxColumn.DataPropertyName = "items_serial_no";
+            this.itemsserialnoDataGridViewTextBoxColumn.HeaderText = "items_serial_no";
+            this.itemsserialnoDataGridViewTextBoxColumn.Name = "itemsserialnoDataGridViewTextBoxColumn";
+            this.itemsserialnoDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // itemsdeliveryreceiptidDataGridViewTextBoxColumn
+            // 
+            this.itemsdeliveryreceiptidDataGridViewTextBoxColumn.DataPropertyName = "items_delivery_receipt_id";
+            this.itemsdeliveryreceiptidDataGridViewTextBoxColumn.HeaderText = "items_delivery_receipt_id";
+            this.itemsdeliveryreceiptidDataGridViewTextBoxColumn.Name = "itemsdeliveryreceiptidDataGridViewTextBoxColumn";
+            this.itemsdeliveryreceiptidDataGridViewTextBoxColumn.Visible = false;
             // 
             // dataBindingItem
             // 
@@ -994,97 +1107,58 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.dataBindingFile.DataMember = "dr_file";
             this.dataBindingFile.DataSource = this.ds_dr_file;
             // 
-            // released_qty
+            // costs_id
             // 
-            this.released_qty.DataPropertyName = "released_qty";
-            this.released_qty.HeaderText = "QTY";
-            this.released_qty.Name = "released_qty";
+            this.costs_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.costs_id.DataPropertyName = "costs_id";
+            this.costs_id.HeaderText = "costs_id";
+            this.costs_id.Name = "costs_id";
+            this.costs_id.Visible = false;
             // 
-            // released_uom
+            // costs_delivery_receipt_id
             // 
-            this.released_uom.DataPropertyName = "released_uom";
-            this.released_uom.HeaderText = "UOM";
-            this.released_uom.Name = "released_uom";
+            this.costs_delivery_receipt_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.costs_delivery_receipt_id.DataPropertyName = "costs_delivery_receipt_id";
+            this.costs_delivery_receipt_id.HeaderText = "costs_delivery_receipt_id";
+            this.costs_delivery_receipt_id.Name = "costs_delivery_receipt_id";
+            this.costs_delivery_receipt_id.Visible = false;
             // 
-            // item_code
+            // costs_cost_type_id
             // 
-            this.item_code.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.item_code.DataPropertyName = "item_code";
-            this.item_code.HeaderText = "ITEM CODE";
-            this.item_code.Name = "item_code";
+            this.costs_cost_type_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.costs_cost_type_id.DataPropertyName = "costs_cost_type_id";
+            this.costs_cost_type_id.HeaderText = "COST TYPE";
+            this.costs_cost_type_id.Name = "costs_cost_type_id";
+            this.costs_cost_type_id.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.costs_cost_type_id.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
-            // item_description
+            // costs_description
             // 
-            this.item_description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.item_description.DataPropertyName = "item_description";
-            this.item_description.HeaderText = "ITEM DESCRIPTION";
-            this.item_description.Name = "item_description";
+            this.costs_description.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.costs_description.DataPropertyName = "costs_description";
+            this.costs_description.HeaderText = "DESCRIPTION";
+            this.costs_description.Name = "costs_description";
             // 
-            // serial_no
+            // costs_amount
             // 
-            this.serial_no.DataPropertyName = "serial_no";
-            this.serial_no.HeaderText = "SERIAL NUMBER/S";
-            this.serial_no.Name = "serial_no";
+            this.costs_amount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.costs_amount.DataPropertyName = "costs_amount";
+            this.costs_amount.HeaderText = "AMOUNT";
+            this.costs_amount.Name = "costs_amount";
             // 
-            // id
+            // costs_multiplier
             // 
-            this.id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.id.DataPropertyName = "id";
-            this.id.HeaderText = "id";
-            this.id.Name = "id";
-            this.id.Visible = false;
+            this.costs_multiplier.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.costs_multiplier.DataPropertyName = "costs_multiplier";
+            this.costs_multiplier.HeaderText = "MULTIPLIER";
+            this.costs_multiplier.Name = "costs_multiplier";
             // 
-            // item_release_id
+            // costs_total_cost
             // 
-            this.item_release_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.item_release_id.DataPropertyName = "item_release_id";
-            this.item_release_id.HeaderText = "item_release_id";
-            this.item_release_id.Name = "item_release_id";
-            this.item_release_id.Visible = false;
-            // 
-            // sales_order_id
-            // 
-            this.sales_order_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.sales_order_id.DataPropertyName = "sales_order_id";
-            this.sales_order_id.HeaderText = "sales_order_id";
-            this.sales_order_id.Name = "sales_order_id";
-            this.sales_order_id.Visible = false;
-            // 
-            // sales_order_details_id
-            // 
-            this.sales_order_details_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.sales_order_details_id.DataPropertyName = "sales_order_details_id";
-            this.sales_order_details_id.HeaderText = "sales_order_details_id";
-            this.sales_order_details_id.Name = "sales_order_details_id";
-            this.sales_order_details_id.Visible = false;
-            // 
-            // item_id
-            // 
-            this.item_id.DataPropertyName = "item_id";
-            this.item_id.HeaderText = "item_id";
-            this.item_id.Name = "item_id";
-            this.item_id.Visible = false;
-            // 
-            // required_qty
-            // 
-            this.required_qty.DataPropertyName = "required_qty";
-            this.required_qty.HeaderText = "required_qty";
-            this.required_qty.Name = "required_qty";
-            this.required_qty.Visible = false;
-            // 
-            // required_uom
-            // 
-            this.required_uom.DataPropertyName = "required_uom";
-            this.required_uom.HeaderText = "required_uom";
-            this.required_uom.Name = "required_uom";
-            this.required_uom.Visible = false;
-            // 
-            // delivery_preference
-            // 
-            this.delivery_preference.DataPropertyName = "delivery_preference";
-            this.delivery_preference.HeaderText = "delivery_preference";
-            this.delivery_preference.Name = "delivery_preference";
-            this.delivery_preference.Visible = false;
+            this.costs_total_cost.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.costs_total_cost.DataPropertyName = "costs_total_cost";
+            this.costs_total_cost.HeaderText = "TOTAL COST";
+            this.costs_total_cost.Name = "costs_total_cost";
             // 
             // DeliveryReceiptUC
             // 
@@ -1212,13 +1286,6 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
         private System.Windows.Forms.TextBox txt_sales_order_idsss;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.TextBox txt_customer_id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn costs_id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn costs_delivery_receipt_id;
-        private System.Windows.Forms.DataGridViewComboBoxColumn costs_cost_type_id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn costs_description;
-        private System.Windows.Forms.DataGridViewTextBoxColumn costs_amount;
-        private System.Windows.Forms.DataGridViewTextBoxColumn costs_multiplier;
-        private System.Windows.Forms.DataGridViewTextBoxColumn costs_total_cost;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TextBox txt_total_cost;
         private System.Windows.Forms.Label label17;
@@ -1235,5 +1302,20 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
         private System.Windows.Forms.DataGridViewTextBoxColumn required_qty;
         private System.Windows.Forms.DataGridViewTextBoxColumn required_uom;
         private System.Windows.Forms.DataGridViewTextBoxColumn delivery_preference;
+        private System.Windows.Forms.DataGridViewTextBoxColumn itemsidDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn itemsitemidDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn itemsqtyDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn itemsunitofmeasureDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn itemsitemcodeDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn itemsdescriptionDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn itemsserialnoDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn itemsdeliveryreceiptidDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn costs_id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn costs_delivery_receipt_id;
+        private System.Windows.Forms.DataGridViewComboBoxColumn costs_cost_type_id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn costs_description;
+        private System.Windows.Forms.DataGridViewTextBoxColumn costs_amount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn costs_multiplier;
+        private System.Windows.Forms.DataGridViewTextBoxColumn costs_total_cost;
     }
 }
