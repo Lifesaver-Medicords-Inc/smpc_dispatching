@@ -25,13 +25,14 @@
         private void InitializeComponent() {
             this.MainSplitContainer = new System.Windows.Forms.SplitContainer();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lbl_view_all = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.SearchTextBox = new System.Windows.Forms.TextBox();
-            this.dg_schedule = new System.Windows.Forms.DataGridView();
+            this.flp_schedule_items = new System.Windows.Forms.FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.MainSplitContainer)).BeginInit();
             this.MainSplitContainer.Panel1.SuspendLayout();
             this.MainSplitContainer.Panel2.SuspendLayout();
@@ -40,7 +41,6 @@
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dg_schedule)).BeginInit();
             this.SuspendLayout();
             // 
             // MainSplitContainer
@@ -58,13 +58,14 @@
             // 
             // MainSplitContainer.Panel2
             // 
-            this.MainSplitContainer.Panel2.Controls.Add(this.dg_schedule);
+            this.MainSplitContainer.Panel2.Controls.Add(this.flp_schedule_items);
             this.MainSplitContainer.Size = new System.Drawing.Size(1247, 600);
             this.MainSplitContainer.SplitterDistance = 76;
             this.MainSplitContainer.TabIndex = 0;
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.lbl_view_all);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
@@ -72,6 +73,20 @@
             this.panel1.Padding = new System.Windows.Forms.Padding(2, 4, 2, 2);
             this.panel1.Size = new System.Drawing.Size(1247, 30);
             this.panel1.TabIndex = 1;
+            // 
+            // lbl_view_all
+            // 
+            this.lbl_view_all.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbl_view_all.AutoSize = true;
+            this.lbl_view_all.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lbl_view_all.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_view_all.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.lbl_view_all.Location = new System.Drawing.Point(1180, 6);
+            this.lbl_view_all.Name = "lbl_view_all";
+            this.lbl_view_all.Size = new System.Drawing.Size(65, 13);
+            this.lbl_view_all.TabIndex = 2;
+            this.lbl_view_all.Text = "VIEW ALL";
+            this.lbl_view_all.Click += new System.EventHandler(this.lbl_view_all_Click);
             // 
             // label1
             // 
@@ -133,16 +148,17 @@
             this.SearchTextBox.Size = new System.Drawing.Size(410, 26);
             this.SearchTextBox.TabIndex = 1;
             // 
-            // dg_schedule
+            // flp_schedule_items
             // 
-            this.dg_schedule.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dg_schedule.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dg_schedule.Location = new System.Drawing.Point(0, 0);
-            this.dg_schedule.Name = "dg_schedule";
-            this.dg_schedule.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dg_schedule.Size = new System.Drawing.Size(1247, 520);
-            this.dg_schedule.TabIndex = 0;
-            this.dg_schedule.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dg_schedule_CellClick);
+            this.flp_schedule_items.AutoScroll = true;
+            this.flp_schedule_items.BackColor = System.Drawing.Color.White;
+            this.flp_schedule_items.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flp_schedule_items.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flp_schedule_items.Location = new System.Drawing.Point(0, 0);
+            this.flp_schedule_items.Name = "flp_schedule_items";
+            this.flp_schedule_items.Size = new System.Drawing.Size(1247, 520);
+            this.flp_schedule_items.TabIndex = 0;
+            this.flp_schedule_items.WrapContents = false;
             // 
             // ScheduleListUserControl
             // 
@@ -163,7 +179,6 @@
             this.flowLayoutPanel2.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dg_schedule)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -178,6 +193,7 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox SearchTextBox;
-        private System.Windows.Forms.DataGridView dg_schedule;
+        private System.Windows.Forms.Label lbl_view_all;
+        private System.Windows.Forms.FlowLayoutPanel flp_schedule_items;
     }
 }

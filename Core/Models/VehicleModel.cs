@@ -2,6 +2,9 @@
 
 namespace smpc_dispatching.Core.Models {
     public class VehicleModel : BaseModel {
+        [JsonProperty("warehouse_id")]
+        public int WarehouseId { get; set; }
+
         [JsonProperty("type")]
         public string Type { get; set; }
 

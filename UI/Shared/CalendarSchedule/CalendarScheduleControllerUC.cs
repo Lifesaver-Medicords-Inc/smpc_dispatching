@@ -3,7 +3,6 @@ using smpc_dispatching.Core.Interfaces;
 using smpc_dispatching.Core.Models;
 using smpc_dispatching.UI.Shared.Calendar;
 using smpc_dispatching.UI.Views.Engineering;
-using smpc_dispatching.UI.Views.Logistics;
 using smpc_dispatching.UI.Views.Sales;
 using System;
 using System.Collections.Generic;
@@ -20,7 +19,6 @@ namespace smpc_dispatching.UI.Shared.CalendarEvent
         private readonly ScheduleCalendarUC _scheduleCalendarUserControl;
         private readonly ScheduleListUserControl _scheduleListUserControl;
         private readonly ScheduleDetailsUserControl _scheduleDetailsUserControl;
-        private readonly LogisticsCalendarScheduleDetailsUC logisticsCalendarScheduleDetailsUC;
         private readonly ICalendarScheduleService<SalesCalendarScheduleContent> _calendarScheduleService;
         private readonly ICalendarCategoryService _calendarCategoryService;
         private Dictionary<int, CalendarCategoryModel> _categoryLookup = new Dictionary<int, CalendarCategoryModel>();
@@ -49,10 +47,14 @@ namespace smpc_dispatching.UI.Shared.CalendarEvent
 
             // CALENDAR
             _scheduleCalendarUserControl = serviceProvider.GetRequiredService<ScheduleCalendarUC>();
-            // SCHEDULE LIST
-            _scheduleListUserControl = serviceProvider.GetRequiredService<ScheduleListUserControl>();
             // SCHEDULE DETAILS
             _scheduleDetailsUserControl = serviceProvider.GetRequiredService<ScheduleDetailsUserControl>();
+            _scheduleDetailsUserControl.OnSaved += LoadSchedulesAsync;
+
+            // SCHEDULE LIST
+            _scheduleListUserControl = serviceProvider.GetRequiredService<ScheduleListUserControl>();
+            _scheduleListUserControl.OnScheduleListChanged += LoadSchedulesAsync;
+            _scheduleListUserControl.OnEditRequested += _ => _scheduleDetailsUserControl.EnterEditMode();
             //_salesScheduleCalendarDetails = serviceProvider.GetRequiredService<SalesCalendarScheduleDetailsUC>();
             //_engineeringScheduleCalendarDetails = serviceProvider.GetRequiredService<EngineeringScheduleCalendarDetailsUC>();
             //_logisticsScheduleCalendarDetails = serviceProvider.GetRequiredService<LogisticsCalendarScheduleDetailsUC>();
@@ -255,7 +257,7 @@ namespace smpc_dispatching.UI.Shared.CalendarEvent
                 case "ENGINEERING_CALENDAR":
                     return _scheduleDetailsUserControl;
                 case "LOGISTICS_CALENDAR":
-                    return logisticsCalendarScheduleDetailsUC;
+                    return _scheduleDetailsUserControl;
                 default:
                     return _scheduleDetailsUserControl;
             }

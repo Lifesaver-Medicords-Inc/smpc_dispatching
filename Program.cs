@@ -123,6 +123,7 @@ namespace smpc_dispatching {
             services.AddTransient<ItemReleaseItems>();
             services.AddTransient<PickActivity>();
             services.AddTransient<DeliveryReceiptUC>();
+            services.AddTransient<VehicleSetupUC>();
 
         }
     }

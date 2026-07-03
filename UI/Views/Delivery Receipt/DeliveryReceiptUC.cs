@@ -614,6 +614,11 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             // Only validate if editing a column that requires cost type first
             if (columnName != nameof(DeliveryReceiptCostModel.costs_cost_type_id))
             {
+                // e.RowIndex can point at the DataGridView's blank "new row" placeholder,
+                // which hasn't been committed to _costRows yet — nothing to validate there.
+                if (e.RowIndex < 0 || e.RowIndex >= _costRows.Count)
+                    return;
+
                 var costRow = _costRows[e.RowIndex];
 
                 if (costRow.costs_cost_type_id == 0)

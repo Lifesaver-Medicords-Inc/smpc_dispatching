@@ -90,6 +90,25 @@ namespace smpc_dispatching.Core.Services
                     "calendar-cost-types",
                     _serviceProvider.GetRequiredService<IHttpService>())
             };
+
+            _pages["SETUP_CALENDAR_CATEGORY"] = new ViewControlModel
+            {
+                Code = "SETUP_CALENDAR_CATEGORY",
+                Parent = "Setup",
+                Title = "Category",
+                ViewFactory = () => new SetupModal(
+                    "Category",
+                    "calendar-categories",
+                    _serviceProvider.GetRequiredService<IHttpService>())
+            };
+
+            _pages["SETUP_VEHICLE"] = new ViewControlModel
+            {
+                Code = "SETUP_VEHICLE",
+                Parent = "Setup",
+                Title = "Vehicle",
+                ViewFactory = () => _serviceProvider.GetRequiredService<VehicleSetupUC>()
+            };
         }
 
         // --- Public Methods ---

@@ -411,6 +411,18 @@
     <Compile Include="UI\Shared\SetupModal.Designer.cs">
       <DependentUpon>SetupModal.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Shared\VehicleDetailsModal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Shared\VehicleDetailsModal.Designer.cs">
+      <DependentUpon>VehicleDetailsModal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Shared\VehicleSetupUC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Shared\VehicleSetupUC.Designer.cs">
+      <DependentUpon>VehicleSetupUC.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Views\Delivery Receipt\DeliveryReceiptUC.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -537,6 +549,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Shared\SetupModal.resx">
       <DependentUpon>SetupModal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Shared\VehicleSetupUC.resx">
+      <DependentUpon>VehicleSetupUC.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Views\Delivery Receipt\DeliveryReceiptUC.resx">
       <DependentUpon>DeliveryReceiptUC.cs</DependentUpon>

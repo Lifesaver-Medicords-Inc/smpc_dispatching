@@ -20,6 +20,9 @@ namespace smpc_dispatching.UI.Shared.CalendarEvent {
         private List<CalendarCategoryModel> _categories;
         private List<VehicleModel> _vehicles;
 
+        // Raised after a successful save so the schedule list/calendar can refresh.
+        public event Func<Task> OnSaved;
+
         public ScheduleDetailsUserControl(ICalendarScheduleService<SalesCalendarScheduleContent> calendarSchedule, ICalendarCategoryService calendarCategoryService, IVehicleService vehicleService, IServiceProvider serviceProvider)
         {
             InitializeComponent();
@@ -163,8 +166,10 @@ namespace smpc_dispatching.UI.Shared.CalendarEvent {
             }
 
             MessageBox.Show("Success!");
-            // RELOAD NEW ADDED DATA
             BtnToggle(false);
+
+            if (OnSaved != null)
+                await OnSaved.Invoke();
         }
 
         private void btn_new_Click(object sender, EventArgs e)
@@ -181,6 +186,13 @@ namespace smpc_dispatching.UI.Shared.CalendarEvent {
         }
 
         private void btn_edit_Click(object sender, EventArgs e)
+        {
+            BtnToggle(true);
+        }
+
+        // Called when a card's edit icon is clicked. Note: this only opens the panel
+        // for input — it does not yet load the selected schedule's existing values.
+        public void EnterEditMode()
         {
             BtnToggle(true);
         }
