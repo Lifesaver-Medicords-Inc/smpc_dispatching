@@ -770,7 +770,7 @@ namespace smpc_dispatching.Core.Helpers
                     //    val = comboBox.Text.ToString();
                     //}
 
-                    if (comboBox.Tag.ToString() == "DYNAMIC")
+                    if (comboBox.Tag?.ToString() == "DYNAMIC")
                     {
                         key = key + "_id";
                         values.Add(key, comboBox.SelectedValue);
@@ -875,7 +875,7 @@ namespace smpc_dispatching.Core.Helpers
                         string key = comboBox.Name.Replace("cmb_", "");
                         string val = "";
 
-                        if (comboBox.Tag.ToString() == "DYNAMIC")
+                        if (comboBox.Tag?.ToString() == "DYNAMIC")
                         {
                             key = key + "_id";
                             values.Add(key, comboBox.SelectedValue);
@@ -1181,7 +1181,7 @@ namespace smpc_dispatching.Core.Helpers
                                 Console.WriteLine($"This is a  combobox: {comboBox.Name} ");
                                 string key = comboBox.Name.Replace("cmb_", "") + "_id";
 
-                                if (comboBox.Tag.ToString() == "DYNAMIC")
+                                if (comboBox.Tag?.ToString() == "DYNAMIC")
                                 {
                                     Console.WriteLine("DYNAMICS:", comboBox.Name);
                                     comboBox.SelectedValue = (string)dt.Rows[selectedIndex][key].ToString();
@@ -1321,7 +1321,7 @@ namespace smpc_dispatching.Core.Helpers
                                 Console.WriteLine($"This is a  combobox: {comboBox.Name} ");
                                 string key = comboBox.Name.Replace("cmb_", "") + "_id";
 
-                                if (comboBox.Tag.ToString() == "DYNAMIC")
+                                if (comboBox.Tag?.ToString() == "DYNAMIC")
                                 {
                                     Console.WriteLine("DYNAMICS:", comboBox.Name);
                                     comboBox.SelectedValue = (string)dt.Rows[selectedIndex][key].ToString();

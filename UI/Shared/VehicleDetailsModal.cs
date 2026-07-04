@@ -1,6 +1,9 @@
 using smpc_dispatching.Core.Helpers;
+using smpc_dispatching.Core.Interfaces;
 using smpc_dispatching.Core.Models;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace smpc_dispatching.UI.Shared
@@ -10,33 +13,55 @@ namespace smpc_dispatching.UI.Shared
     // the actual Create/Update.
     public partial class VehicleDetailsModal : Form
     {
-        private readonly uint? _existingId;
+        private readonly IWarehouseService _warehouseService;
+        private readonly VehicleModel _existing;
+
+        private static readonly string[] _types = { "Motorcycle", "Car", "Truck" };
+        private static readonly string[] _statuses = { "Active", "Inactive", "Maintenance" };
 
         public VehicleModel Result { get; private set; }
 
-        public VehicleDetailsModal(VehicleModel existing = null)
+        public VehicleDetailsModal(IWarehouseService warehouseService, VehicleModel existing = null)
         {
             InitializeComponent();
+            _warehouseService = warehouseService;
+            _existing = existing;
+
+            cmb_type.Items.AddRange(_types);
+            cmb_status.Items.AddRange(_statuses);
 
             if (existing != null)
             {
                 Text = "Edit Vehicle";
-                _existingId = existing.id;
 
-                txt_type.Text = existing.Type;
+                cmb_type.SelectedItem = existing.Type;
                 txt_model.Text = existing.Model;
                 txt_description.Text = existing.Description;
                 txt_plate_no.Text = existing.PlateNo;
                 txt_acquisition_year.Text = existing.AcquisitionYear;
                 txt_capacity.Text = existing.Capacity.ToString();
-                txt_status.Text = existing.Status;
+                cmb_status.SelectedItem = existing.Status;
                 txt_last_maintenance.Text = existing.LastMaintenance;
                 txt_notes.Text = existing.Notes;
-                txt_warehouse_id.Text = existing.WarehouseId.ToString();
             }
             else
             {
                 Text = "New Vehicle";
+            }
+        }
+
+        private async void VehicleDetailsModal_Load(object sender, EventArgs e)
+        {
+            var response = await _warehouseService.GetAllAsync(null);
+            var warehouses = response?.Data?.ToList() ?? new List<WarehouseModel>();
+
+            cmb_warehouse.DataSource = warehouses;
+            cmb_warehouse.DisplayMember = nameof(WarehouseModel.Name);
+            cmb_warehouse.ValueMember = nameof(WarehouseModel.id);
+
+            if (_existing != null)
+            {
+                cmb_warehouse.SelectedValue = (uint)_existing.WarehouseId;
             }
         }
 
@@ -45,9 +70,9 @@ namespace smpc_dispatching.UI.Shared
             bool hasError = false;
             messages = string.Empty;
 
-            if (string.IsNullOrWhiteSpace(txt_type.Text))
+            if (cmb_type.SelectedItem == null)
             {
-                messages += "Type cannot be empty\n";
+                messages += "Type must be selected\n";
                 hasError = true;
             }
 
@@ -69,19 +94,19 @@ namespace smpc_dispatching.UI.Shared
             }
 
             uint.TryParse(txt_capacity.Text, out uint capacity);
-            int.TryParse(txt_warehouse_id.Text, out int warehouseId);
+            int warehouseId = cmb_warehouse.SelectedValue is uint id ? (int)id : 0;
 
             Result = new VehicleModel
             {
-                id = _existingId,
+                id = _existing?.id,
                 WarehouseId = warehouseId,
-                Type = txt_type.Text.Trim(),
+                Type = cmb_type.SelectedItem?.ToString(),
                 Model = txt_model.Text.Trim(),
                 Description = txt_description.Text.Trim(),
                 PlateNo = txt_plate_no.Text.Trim(),
                 AcquisitionYear = txt_acquisition_year.Text.Trim(),
                 Capacity = capacity,
-                Status = txt_status.Text.Trim(),
+                Status = cmb_status.SelectedItem?.ToString(),
                 LastMaintenance = txt_last_maintenance.Text.Trim(),
                 Notes = txt_notes.Text.Trim(),
             };

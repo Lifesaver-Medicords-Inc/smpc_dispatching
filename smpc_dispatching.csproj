@@ -285,6 +285,8 @@
     <Compile Include="Core\Interfaces\ISalesOrderWithApprovedIRService.cs" />
     <Compile Include="Core\Interfaces\IShipTypeService.cs" />
     <Compile Include="Core\Interfaces\IVehicleService.cs" />
+    <Compile Include="Core\Interfaces\IWarehouseService.cs" />
+    <Compile Include="Core\Interfaces\IUserService.cs" />
     <Compile Include="Core\Models\BPI.cs" />
     <Compile Include="Core\Models\DeliveryReceiptCostModel.cs" />
     <Compile Include="Core\Models\DeliveryReceiptFileModel.cs" />
@@ -306,6 +308,8 @@
     <Compile Include="Core\Services\SalesOrderWithApprovedIRService.cs" />
     <Compile Include="Core\Services\ShipTypeService.cs" />
     <Compile Include="Core\Services\VehicleService.cs" />
+    <Compile Include="Core\Services\WarehouseService.cs" />
+    <Compile Include="Core\Services\UserService.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="UI\Shared\PrintPreview.cs">
       <SubType>Form</SubType>
@@ -341,6 +345,7 @@
     <Compile Include="Core\Models\SalesOrderModel.cs" />
     <Compile Include="Core\Models\SetupModel.cs" />
     <Compile Include="Core\Models\VehicleModel.cs" />
+    <Compile Include="Core\Models\WarehouseModel.cs" />
     <Compile Include="Core\Models\ViewControlModel.cs" />
     <Compile Include="Core\Models\UserModel.cs" />
     <Compile Include="Core\Services\AuthService.cs" />

@@ -30,6 +30,9 @@ namespace smpc_dispatching.UI.Shared {
                 System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
 
                 // ✅ Set your preferred map provider (you can change to Google if needed)
+                // OpenStreetMap's tile usage policy requires a Referer identifying the app —
+                // without it, tile requests get rejected with "Access blocked" placeholder tiles.
+                OpenStreetMapProvider.Instance.RefererUrl = "https://smpc-dispatching.local/";
                 MapControl.MapProvider = OpenStreetMapProvider.Instance;
 
                 // ✅ Basic map configuration

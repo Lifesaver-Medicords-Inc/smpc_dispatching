@@ -23,74 +23,47 @@ namespace smpc_dispatching.UI.Shared {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel_dg = new System.Windows.Forms.Panel();
-            this.panel_button = new System.Windows.Forms.Panel();
-            this.btn_edit = new System.Windows.Forms.Button();
-            this.btn_new = new System.Windows.Forms.Button();
             this.dg_vehicle = new System.Windows.Forms.DataGridView();
             this.lbl_title = new System.Windows.Forms.Label();
             this.panel_header = new System.Windows.Forms.Panel();
+            this.btn_edit = new System.Windows.Forms.Button();
+            this.btn_new = new System.Windows.Forms.Button();
             this.panel_dg.SuspendLayout();
-            this.panel_button.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dg_vehicle)).BeginInit();
             this.panel_header.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel_dg
             // 
-            this.panel_dg.Controls.Add(this.panel_button);
             this.panel_dg.Controls.Add(this.dg_vehicle);
             this.panel_dg.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel_dg.Location = new System.Drawing.Point(0, 47);
+            this.panel_dg.Location = new System.Drawing.Point(0, 86);
             this.panel_dg.Name = "panel_dg";
-            this.panel_dg.Size = new System.Drawing.Size(900, 553);
+            this.panel_dg.Size = new System.Drawing.Size(900, 514);
             this.panel_dg.TabIndex = 1;
-            // 
-            // panel_button
-            // 
-            this.panel_button.Controls.Add(this.btn_edit);
-            this.panel_button.Controls.Add(this.btn_new);
-            this.panel_button.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel_button.Location = new System.Drawing.Point(0, 0);
-            this.panel_button.Name = "panel_button";
-            this.panel_button.Size = new System.Drawing.Size(900, 37);
-            this.panel_button.TabIndex = 2;
-            // 
-            // btn_edit
-            // 
-            this.btn_edit.Location = new System.Drawing.Point(79, 8);
-            this.btn_edit.Name = "btn_edit";
-            this.btn_edit.Size = new System.Drawing.Size(73, 22);
-            this.btn_edit.TabIndex = 1;
-            this.btn_edit.Text = "EDIT";
-            this.btn_edit.UseVisualStyleBackColor = true;
-            this.btn_edit.Click += new System.EventHandler(this.btn_edit_Click);
-            // 
-            // btn_new
-            // 
-            this.btn_new.BackColor = System.Drawing.Color.LimeGreen;
-            this.btn_new.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_new.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_new.ForeColor = System.Drawing.Color.Black;
-            this.btn_new.Location = new System.Drawing.Point(11, 8);
-            this.btn_new.Name = "btn_new";
-            this.btn_new.Size = new System.Drawing.Size(73, 22);
-            this.btn_new.TabIndex = 0;
-            this.btn_new.Text = "NEW";
-            this.btn_new.UseVisualStyleBackColor = false;
-            this.btn_new.Click += new System.EventHandler(this.btn_new_Click);
             // 
             // dg_vehicle
             // 
             this.dg_vehicle.AllowUserToAddRows = false;
             this.dg_vehicle.AllowUserToDeleteRows = false;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dg_vehicle.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dg_vehicle.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dg_vehicle.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dg_vehicle.EnableHeadersVisualStyles = false;
             this.dg_vehicle.Location = new System.Drawing.Point(0, 0);
             this.dg_vehicle.Name = "dg_vehicle";
             this.dg_vehicle.RowHeadersVisible = false;
             this.dg_vehicle.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dg_vehicle.Size = new System.Drawing.Size(900, 553);
+            this.dg_vehicle.Size = new System.Drawing.Size(900, 514);
             this.dg_vehicle.TabIndex = 0;
             // 
             // lbl_title
@@ -105,12 +78,38 @@ namespace smpc_dispatching.UI.Shared {
             // 
             // panel_header
             // 
+            this.panel_header.Controls.Add(this.btn_edit);
+            this.panel_header.Controls.Add(this.btn_new);
             this.panel_header.Controls.Add(this.lbl_title);
             this.panel_header.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel_header.Location = new System.Drawing.Point(0, 0);
             this.panel_header.Name = "panel_header";
-            this.panel_header.Size = new System.Drawing.Size(900, 47);
+            this.panel_header.Size = new System.Drawing.Size(900, 86);
             this.panel_header.TabIndex = 0;
+            // 
+            // btn_edit
+            // 
+            this.btn_edit.Location = new System.Drawing.Point(84, 57);
+            this.btn_edit.Name = "btn_edit";
+            this.btn_edit.Size = new System.Drawing.Size(73, 22);
+            this.btn_edit.TabIndex = 3;
+            this.btn_edit.Text = "EDIT";
+            this.btn_edit.UseVisualStyleBackColor = true;
+            this.btn_edit.Click += new System.EventHandler(this.btn_edit_Click);
+            // 
+            // btn_new
+            // 
+            this.btn_new.BackColor = System.Drawing.Color.LimeGreen;
+            this.btn_new.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_new.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_new.ForeColor = System.Drawing.Color.Black;
+            this.btn_new.Location = new System.Drawing.Point(16, 57);
+            this.btn_new.Name = "btn_new";
+            this.btn_new.Size = new System.Drawing.Size(73, 22);
+            this.btn_new.TabIndex = 2;
+            this.btn_new.Text = "NEW";
+            this.btn_new.UseVisualStyleBackColor = false;
+            this.btn_new.Click += new System.EventHandler(this.btn_new_Click);
             // 
             // VehicleSetupUC
             // 
@@ -122,7 +121,6 @@ namespace smpc_dispatching.UI.Shared {
             this.Size = new System.Drawing.Size(900, 600);
             this.Load += new System.EventHandler(this.VehicleSetupUC_Load);
             this.panel_dg.ResumeLayout(false);
-            this.panel_button.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dg_vehicle)).EndInit();
             this.panel_header.ResumeLayout(false);
             this.panel_header.PerformLayout();
@@ -139,10 +137,9 @@ namespace smpc_dispatching.UI.Shared {
         private System.Windows.Forms.DataGridViewTextBoxColumn col_plate_no;
         private System.Windows.Forms.DataGridViewTextBoxColumn col_capacity;
         private System.Windows.Forms.DataGridViewTextBoxColumn col_status;
-        private System.Windows.Forms.Panel panel_button;
-        private System.Windows.Forms.Button btn_edit;
-        private System.Windows.Forms.Button btn_new;
         private System.Windows.Forms.Label lbl_title;
         private System.Windows.Forms.Panel panel_header;
+        private System.Windows.Forms.Button btn_edit;
+        private System.Windows.Forms.Button btn_new;
     }
 }

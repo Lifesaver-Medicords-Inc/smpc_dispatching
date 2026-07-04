@@ -24,7 +24,7 @@ namespace smpc_dispatching.UI.Shared {
         /// </summary>
         private void InitializeComponent() {
             this.lbl_type = new System.Windows.Forms.Label();
-            this.txt_type = new System.Windows.Forms.TextBox();
+            this.cmb_type = new System.Windows.Forms.ComboBox();
             this.lbl_model = new System.Windows.Forms.Label();
             this.txt_model = new System.Windows.Forms.TextBox();
             this.lbl_plate_no = new System.Windows.Forms.Label();
@@ -34,7 +34,7 @@ namespace smpc_dispatching.UI.Shared {
             this.lbl_acquisition_year = new System.Windows.Forms.Label();
             this.txt_acquisition_year = new System.Windows.Forms.TextBox();
             this.lbl_status = new System.Windows.Forms.Label();
-            this.txt_status = new System.Windows.Forms.TextBox();
+            this.cmb_status = new System.Windows.Forms.ComboBox();
             this.lbl_last_maintenance = new System.Windows.Forms.Label();
             this.txt_last_maintenance = new System.Windows.Forms.TextBox();
             this.lbl_description = new System.Windows.Forms.Label();
@@ -42,7 +42,7 @@ namespace smpc_dispatching.UI.Shared {
             this.lbl_notes = new System.Windows.Forms.Label();
             this.txt_notes = new System.Windows.Forms.TextBox();
             this.lbl_warehouse_id = new System.Windows.Forms.Label();
-            this.txt_warehouse_id = new System.Windows.Forms.TextBox();
+            this.cmb_warehouse = new System.Windows.Forms.ComboBox();
             this.btn_save = new System.Windows.Forms.Button();
             this.btn_cancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -56,12 +56,14 @@ namespace smpc_dispatching.UI.Shared {
             this.lbl_type.TabIndex = 0;
             this.lbl_type.Text = "Type";
             //
-            // txt_type
+            // cmb_type
             //
-            this.txt_type.Location = new System.Drawing.Point(140, 15);
-            this.txt_type.Name = "txt_type";
-            this.txt_type.Size = new System.Drawing.Size(220, 20);
-            this.txt_type.TabIndex = 1;
+            this.cmb_type.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_type.FormattingEnabled = true;
+            this.cmb_type.Location = new System.Drawing.Point(140, 15);
+            this.cmb_type.Name = "cmb_type";
+            this.cmb_type.Size = new System.Drawing.Size(220, 21);
+            this.cmb_type.TabIndex = 1;
             //
             // lbl_model
             //
@@ -136,12 +138,14 @@ namespace smpc_dispatching.UI.Shared {
             this.lbl_status.TabIndex = 10;
             this.lbl_status.Text = "Status";
             //
-            // txt_status
+            // cmb_status
             //
-            this.txt_status.Location = new System.Drawing.Point(140, 160);
-            this.txt_status.Name = "txt_status";
-            this.txt_status.Size = new System.Drawing.Size(220, 20);
-            this.txt_status.TabIndex = 11;
+            this.cmb_status.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_status.FormattingEnabled = true;
+            this.cmb_status.Location = new System.Drawing.Point(140, 160);
+            this.cmb_status.Name = "cmb_status";
+            this.cmb_status.Size = new System.Drawing.Size(220, 21);
+            this.cmb_status.TabIndex = 11;
             //
             // lbl_last_maintenance
             //
@@ -198,16 +202,18 @@ namespace smpc_dispatching.UI.Shared {
             this.lbl_warehouse_id.AutoSize = true;
             this.lbl_warehouse_id.Location = new System.Drawing.Point(16, 311);
             this.lbl_warehouse_id.Name = "lbl_warehouse_id";
-            this.lbl_warehouse_id.Size = new System.Drawing.Size(78, 13);
+            this.lbl_warehouse_id.Size = new System.Drawing.Size(64, 13);
             this.lbl_warehouse_id.TabIndex = 18;
-            this.lbl_warehouse_id.Text = "Warehouse Id";
+            this.lbl_warehouse_id.Text = "Warehouse";
             //
-            // txt_warehouse_id
+            // cmb_warehouse
             //
-            this.txt_warehouse_id.Location = new System.Drawing.Point(140, 308);
-            this.txt_warehouse_id.Name = "txt_warehouse_id";
-            this.txt_warehouse_id.Size = new System.Drawing.Size(220, 20);
-            this.txt_warehouse_id.TabIndex = 19;
+            this.cmb_warehouse.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_warehouse.FormattingEnabled = true;
+            this.cmb_warehouse.Location = new System.Drawing.Point(140, 308);
+            this.cmb_warehouse.Name = "cmb_warehouse";
+            this.cmb_warehouse.Size = new System.Drawing.Size(220, 21);
+            this.cmb_warehouse.TabIndex = 19;
             //
             // btn_save
             //
@@ -238,7 +244,7 @@ namespace smpc_dispatching.UI.Shared {
             this.ClientSize = new System.Drawing.Size(384, 391);
             this.Controls.Add(this.btn_cancel);
             this.Controls.Add(this.btn_save);
-            this.Controls.Add(this.txt_warehouse_id);
+            this.Controls.Add(this.cmb_warehouse);
             this.Controls.Add(this.lbl_warehouse_id);
             this.Controls.Add(this.txt_notes);
             this.Controls.Add(this.lbl_notes);
@@ -246,7 +252,7 @@ namespace smpc_dispatching.UI.Shared {
             this.Controls.Add(this.lbl_description);
             this.Controls.Add(this.txt_last_maintenance);
             this.Controls.Add(this.lbl_last_maintenance);
-            this.Controls.Add(this.txt_status);
+            this.Controls.Add(this.cmb_status);
             this.Controls.Add(this.lbl_status);
             this.Controls.Add(this.txt_acquisition_year);
             this.Controls.Add(this.lbl_acquisition_year);
@@ -256,7 +262,7 @@ namespace smpc_dispatching.UI.Shared {
             this.Controls.Add(this.lbl_plate_no);
             this.Controls.Add(this.txt_model);
             this.Controls.Add(this.lbl_model);
-            this.Controls.Add(this.txt_type);
+            this.Controls.Add(this.cmb_type);
             this.Controls.Add(this.lbl_type);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -264,6 +270,7 @@ namespace smpc_dispatching.UI.Shared {
             this.Name = "VehicleDetailsModal";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Vehicle";
+            this.Load += new System.EventHandler(this.VehicleDetailsModal_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -272,7 +279,7 @@ namespace smpc_dispatching.UI.Shared {
         #endregion
 
         private System.Windows.Forms.Label lbl_type;
-        private System.Windows.Forms.TextBox txt_type;
+        private System.Windows.Forms.ComboBox cmb_type;
         private System.Windows.Forms.Label lbl_model;
         private System.Windows.Forms.TextBox txt_model;
         private System.Windows.Forms.Label lbl_plate_no;
@@ -282,7 +289,7 @@ namespace smpc_dispatching.UI.Shared {
         private System.Windows.Forms.Label lbl_acquisition_year;
         private System.Windows.Forms.TextBox txt_acquisition_year;
         private System.Windows.Forms.Label lbl_status;
-        private System.Windows.Forms.TextBox txt_status;
+        private System.Windows.Forms.ComboBox cmb_status;
         private System.Windows.Forms.Label lbl_last_maintenance;
         private System.Windows.Forms.TextBox txt_last_maintenance;
         private System.Windows.Forms.Label lbl_description;
@@ -290,7 +297,7 @@ namespace smpc_dispatching.UI.Shared {
         private System.Windows.Forms.Label lbl_notes;
         private System.Windows.Forms.TextBox txt_notes;
         private System.Windows.Forms.Label lbl_warehouse_id;
-        private System.Windows.Forms.TextBox txt_warehouse_id;
+        private System.Windows.Forms.ComboBox cmb_warehouse;
         private System.Windows.Forms.Button btn_save;
         private System.Windows.Forms.Button btn_cancel;
     }

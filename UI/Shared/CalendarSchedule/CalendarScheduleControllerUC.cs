@@ -54,7 +54,12 @@ namespace smpc_dispatching.UI.Shared.CalendarEvent
             // SCHEDULE LIST
             _scheduleListUserControl = serviceProvider.GetRequiredService<ScheduleListUserControl>();
             _scheduleListUserControl.OnScheduleListChanged += LoadSchedulesAsync;
-            _scheduleListUserControl.OnEditRequested += _ => _scheduleDetailsUserControl.EnterEditMode();
+            _scheduleListUserControl.OnEditRequested += scheduleId =>
+            {
+                var schedule = _schedules.FirstOrDefault(s => s.Id == scheduleId);
+                if (schedule != null)
+                    _scheduleDetailsUserControl.EnterEditMode(schedule);
+            };
             //_salesScheduleCalendarDetails = serviceProvider.GetRequiredService<SalesCalendarScheduleDetailsUC>();
             //_engineeringScheduleCalendarDetails = serviceProvider.GetRequiredService<EngineeringScheduleCalendarDetailsUC>();
             //_logisticsScheduleCalendarDetails = serviceProvider.GetRequiredService<LogisticsCalendarScheduleDetailsUC>();

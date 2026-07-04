@@ -45,7 +45,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.rtxt_Location = new System.Windows.Forms.RichTextBox();
             this.lbl_People = new System.Windows.Forms.Label();
-            this.txt_People = new System.Windows.Forms.TextBox();
+            this.cmb_People = new System.Windows.Forms.ComboBox();
             this.lbl_Vehicle = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
@@ -121,7 +121,7 @@
             this.flowLayoutPanel3.Controls.Add(this.panel1);
             this.flowLayoutPanel3.Controls.Add(this.rtxt_Location);
             this.flowLayoutPanel3.Controls.Add(this.lbl_People);
-            this.flowLayoutPanel3.Controls.Add(this.txt_People);
+            this.flowLayoutPanel3.Controls.Add(this.cmb_People);
             this.flowLayoutPanel3.Controls.Add(this.lbl_Vehicle);
             this.flowLayoutPanel3.Controls.Add(this.panel3);
             this.flowLayoutPanel3.Controls.Add(this.label7);
@@ -220,6 +220,7 @@
             this.btn_add_category.Size = new System.Drawing.Size(30, 22);
             this.btn_add_category.TabIndex = 35;
             this.btn_add_category.UseVisualStyleBackColor = false;
+            this.btn_add_category.Click += new System.EventHandler(this.btn_add_category_Click);
             // 
             // cmb_Category
             // 
@@ -327,13 +328,15 @@
             this.lbl_People.TabIndex = 9;
             this.lbl_People.Text = "PEOPLE";
             // 
-            // txt_People
-            // 
-            this.txt_People.Location = new System.Drawing.Point(7, 404);
-            this.txt_People.Name = "txt_People";
-            this.txt_People.Size = new System.Drawing.Size(370, 20);
-            this.txt_People.TabIndex = 15;
-            // 
+            // cmb_People
+            //
+            this.cmb_People.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_People.FormattingEnabled = true;
+            this.cmb_People.Location = new System.Drawing.Point(7, 404);
+            this.cmb_People.Name = "cmb_People";
+            this.cmb_People.Size = new System.Drawing.Size(370, 21);
+            this.cmb_People.TabIndex = 15;
+            //
             // lbl_Vehicle
             // 
             this.lbl_Vehicle.AutoSize = true;
@@ -364,6 +367,7 @@
             this.button1.Size = new System.Drawing.Size(30, 22);
             this.button1.TabIndex = 35;
             this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // cmb_Vehicle
             // 
@@ -576,7 +580,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.RichTextBox rtxt_Location;
         private System.Windows.Forms.Label lbl_People;
-        private System.Windows.Forms.TextBox txt_People;
+        private System.Windows.Forms.ComboBox cmb_People;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.RichTextBox rtxt_Notes;
         private GMap.NET.WindowsForms.GMapControl gMapControl1;

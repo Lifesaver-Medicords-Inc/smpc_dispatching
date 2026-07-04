@@ -11,6 +11,9 @@ namespace smpc_dispatching.Core.Models {
         public int position_id { set; get; }
          public UserPermissionModel permissions { get; set; }
         public PositionModel position { get; set; }
+
+        [JsonIgnore]
+        public string FullName => $"{first_name} {last_name}".Trim();
     }
     public class UserPermissionModel
     {
