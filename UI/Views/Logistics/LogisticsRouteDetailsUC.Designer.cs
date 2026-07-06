@@ -131,6 +131,7 @@ namespace smpc_dispatching.UI.Views.Logistics
             this.label8.Size = new System.Drawing.Size(20, 13);
             this.label8.TabIndex = 18;
             this.label8.Text = "ID";
+            this.label8.Visible = false;
             // 
             // txt_Id
             // 
@@ -138,6 +139,7 @@ namespace smpc_dispatching.UI.Views.Logistics
             this.txt_Id.Name = "txt_Id";
             this.txt_Id.Size = new System.Drawing.Size(100, 20);
             this.txt_Id.TabIndex = 17;
+            this.txt_Id.Visible = false;
             // 
             // lbl_ShipType
             // 
@@ -148,7 +150,7 @@ namespace smpc_dispatching.UI.Views.Logistics
             this.lbl_ShipType.Name = "lbl_ShipType";
             this.lbl_ShipType.Size = new System.Drawing.Size(72, 13);
             this.lbl_ShipType.TabIndex = 33;
-            this.lbl_ShipType.Text = "SHIP TPYE";
+            this.lbl_ShipType.Text = "SHIP TYPE";
             // 
             // panel2
             // 

@@ -3,6 +3,7 @@ using smpc_dispatching.Core.Interfaces;
 using smpc_dispatching.Core.Models;
 using smpc_dispatching.UI.Shared.Calendar;
 using smpc_dispatching.UI.Views.Engineering;
+using smpc_dispatching.UI.Views.Logistics;
 using smpc_dispatching.UI.Views.Sales;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace smpc_dispatching.UI.Shared.CalendarEvent
         private readonly ScheduleCalendarUC _scheduleCalendarUserControl;
         private readonly ScheduleListUserControl _scheduleListUserControl;
         private readonly ScheduleDetailsUserControl _scheduleDetailsUserControl;
+        private readonly LogisticsCalendarScheduleDetailsUC _logisticsScheduleDetailsUC;
         private readonly ICalendarScheduleService<SalesCalendarScheduleContent> _calendarScheduleService;
         private readonly ICalendarCategoryService _calendarCategoryService;
         private Dictionary<int, CalendarCategoryModel> _categoryLookup = new Dictionary<int, CalendarCategoryModel>();
@@ -51,18 +53,24 @@ namespace smpc_dispatching.UI.Shared.CalendarEvent
             _scheduleDetailsUserControl = serviceProvider.GetRequiredService<ScheduleDetailsUserControl>();
             _scheduleDetailsUserControl.OnSaved += LoadSchedulesAsync;
 
+            _logisticsScheduleDetailsUC = serviceProvider.GetRequiredService<LogisticsCalendarScheduleDetailsUC>();
+            _logisticsScheduleDetailsUC.OnSaved += LoadSchedulesAsync;
+
             // SCHEDULE LIST
             _scheduleListUserControl = serviceProvider.GetRequiredService<ScheduleListUserControl>();
             _scheduleListUserControl.OnScheduleListChanged += LoadSchedulesAsync;
             _scheduleListUserControl.OnEditRequested += scheduleId =>
             {
+                if (GetDepartmentFromRoute() == "LOGISTICS")
+                {
+                    _ = _logisticsScheduleDetailsUC.EnterEditModeAsync(scheduleId);
+                    return;
+                }
+
                 var schedule = _schedules.FirstOrDefault(s => s.Id == scheduleId);
                 if (schedule != null)
                     _scheduleDetailsUserControl.EnterEditMode(schedule);
             };
-            //_salesScheduleCalendarDetails = serviceProvider.GetRequiredService<SalesCalendarScheduleDetailsUC>();
-            //_engineeringScheduleCalendarDetails = serviceProvider.GetRequiredService<EngineeringScheduleCalendarDetailsUC>();
-            //_logisticsScheduleCalendarDetails = serviceProvider.GetRequiredService<LogisticsCalendarScheduleDetailsUC>();
 
             CalendarSwitchViewBtn.Text = !IsMonthView ? "MONTH" : "WEEK";
         }
@@ -262,7 +270,7 @@ namespace smpc_dispatching.UI.Shared.CalendarEvent
                 case "ENGINEERING_CALENDAR":
                     return _scheduleDetailsUserControl;
                 case "LOGISTICS_CALENDAR":
-                    return _scheduleDetailsUserControl;
+                    return _logisticsScheduleDetailsUC;
                 default:
                     return _scheduleDetailsUserControl;
             }

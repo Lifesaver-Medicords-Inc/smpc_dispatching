@@ -88,6 +88,7 @@ namespace smpc_dispatching {
             services.AddScoped<IVehicleService, VehicleService>();
             services.AddScoped<IWarehouseService, WarehouseService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ILogisticsScheduleService, LogisticsScheduleService>();
             services.AddScoped<IDeliveryReceiptService, DeliveryReceiptService>();
             services.AddScoped<ISalesOrderWithApprovedIRService<SalesOrderWithApprovedIRModel>, SalesOrderWithApprovedIRService>();
             services.AddScoped<ISalesOrderWithApprovedIRDetailsService, SalesOrderWithApprovedIRDetailsService>();

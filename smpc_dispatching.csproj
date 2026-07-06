@@ -287,6 +287,8 @@
     <Compile Include="Core\Interfaces\IVehicleService.cs" />
     <Compile Include="Core\Interfaces\IWarehouseService.cs" />
     <Compile Include="Core\Interfaces\IUserService.cs" />
+    <Compile Include="Core\Interfaces\ILogisticsScheduleService.cs" />
+    <Compile Include="Core\Models\LogisticsScheduleModel.cs" />
     <Compile Include="Core\Models\BPI.cs" />
     <Compile Include="Core\Models\DeliveryReceiptCostModel.cs" />
     <Compile Include="Core\Models\DeliveryReceiptFileModel.cs" />
@@ -310,6 +312,7 @@
     <Compile Include="Core\Services\VehicleService.cs" />
     <Compile Include="Core\Services\WarehouseService.cs" />
     <Compile Include="Core\Services\UserService.cs" />
+    <Compile Include="Core\Services\LogisticsScheduleService.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="UI\Shared\PrintPreview.cs">
       <SubType>Form</SubType>
@@ -476,6 +479,12 @@
     <Compile Include="UI\Views\Logistics\LogisticsRouteDetailsUC.Designer.cs">
       <DependentUpon>LogisticsRouteDetailsUC.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Views\Logistics\LogisticsRoutePanelUC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Views\Logistics\LogisticsRoutePanelUC.Designer.cs">
+      <DependentUpon>LogisticsRoutePanelUC.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Views\Logistics\LogisticsViewUC.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -581,6 +590,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Views\Logistics\LogisticsRouteDetailsUC.resx">
       <DependentUpon>LogisticsRouteDetailsUC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Views\Logistics\LogisticsRoutePanelUC.resx">
+      <DependentUpon>LogisticsRoutePanelUC.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Views\Logistics\LogisticsViewUC.resx">
       <DependentUpon>LogisticsViewUC.cs</DependentUpon>

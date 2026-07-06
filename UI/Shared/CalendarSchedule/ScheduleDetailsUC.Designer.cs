@@ -329,19 +329,19 @@
             this.lbl_People.Text = "PEOPLE";
             // 
             // cmb_People
-            //
+            // 
             this.cmb_People.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_People.FormattingEnabled = true;
             this.cmb_People.Location = new System.Drawing.Point(7, 404);
             this.cmb_People.Name = "cmb_People";
             this.cmb_People.Size = new System.Drawing.Size(370, 21);
             this.cmb_People.TabIndex = 15;
-            //
+            // 
             // lbl_Vehicle
             // 
             this.lbl_Vehicle.AutoSize = true;
             this.lbl_Vehicle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_Vehicle.Location = new System.Drawing.Point(7, 432);
+            this.lbl_Vehicle.Location = new System.Drawing.Point(7, 433);
             this.lbl_Vehicle.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.lbl_Vehicle.Name = "lbl_Vehicle";
             this.lbl_Vehicle.Size = new System.Drawing.Size(59, 13);
@@ -352,7 +352,7 @@
             // 
             this.panel3.Controls.Add(this.button1);
             this.panel3.Controls.Add(this.cmb_Vehicle);
-            this.panel3.Location = new System.Drawing.Point(7, 448);
+            this.panel3.Location = new System.Drawing.Point(7, 449);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(373, 26);
             this.panel3.TabIndex = 19;
@@ -385,7 +385,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(7, 482);
+            this.label7.Location = new System.Drawing.Point(7, 483);
             this.label7.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(49, 13);
@@ -397,7 +397,7 @@
             this.rtxt_Notes.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.rtxt_Notes.Dock = System.Windows.Forms.DockStyle.Left;
             this.rtxt_Notes.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rtxt_Notes.Location = new System.Drawing.Point(7, 500);
+            this.rtxt_Notes.Location = new System.Drawing.Point(7, 501);
             this.rtxt_Notes.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
             this.rtxt_Notes.Name = "rtxt_Notes";
             this.rtxt_Notes.Size = new System.Drawing.Size(373, 64);
@@ -412,7 +412,7 @@
             this.gMapControl1.GrayScaleMode = false;
             this.gMapControl1.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
             this.gMapControl1.LevelsKeepInMemory = 5;
-            this.gMapControl1.Location = new System.Drawing.Point(7, 570);
+            this.gMapControl1.Location = new System.Drawing.Point(7, 571);
             this.gMapControl1.MarkersEnabled = true;
             this.gMapControl1.MaxZoom = 2;
             this.gMapControl1.MinZoom = 2;
@@ -434,7 +434,7 @@
             // 
             this.panel4.Controls.Add(this.button2);
             this.panel4.Controls.Add(this.comboBox2);
-            this.panel4.Location = new System.Drawing.Point(7, 726);
+            this.panel4.Location = new System.Drawing.Point(7, 727);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(373, 26);
             this.panel4.TabIndex = 21;
@@ -464,7 +464,7 @@
             // 
             // flowLayoutPanel1
             // 
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(7, 758);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(7, 759);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(200, 100);
             this.flowLayoutPanel1.TabIndex = 22;
