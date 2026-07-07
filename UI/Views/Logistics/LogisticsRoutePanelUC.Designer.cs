@@ -41,7 +41,7 @@ namespace smpc_dispatching.UI.Views.Logistics {
             this.col_description = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.col_multiplier = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.col_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.col_receipt = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.col_receipt = new System.Windows.Forms.DataGridViewButtonColumn();
             this.btn_add_cost = new System.Windows.Forms.LinkLabel();
             this.pnl_divider = new System.Windows.Forms.Panel();
             this.txt_location = new System.Windows.Forms.TextBox();
@@ -132,13 +132,13 @@ namespace smpc_dispatching.UI.Views.Logistics {
             this.lbl_departed.Size = new System.Drawing.Size(66, 13);
             this.lbl_departed.TabIndex = 10;
             this.lbl_departed.Text = "DEPARTED";
-            //
+            // 
             // dtp_departed
-            //
+            // 
             this.dtp_departed.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dtp_departed.ShowUpDown = true;
             this.dtp_departed.Location = new System.Drawing.Point(377, 32);
             this.dtp_departed.Name = "dtp_departed";
+            this.dtp_departed.ShowUpDown = true;
             this.dtp_departed.Size = new System.Drawing.Size(90, 20);
             this.dtp_departed.TabIndex = 11;
             // 
@@ -150,13 +150,13 @@ namespace smpc_dispatching.UI.Views.Logistics {
             this.lbl_arrived.Size = new System.Drawing.Size(55, 13);
             this.lbl_arrived.TabIndex = 12;
             this.lbl_arrived.Text = "ARRIVED";
-            //
+            // 
             // dtp_arrived
-            //
+            // 
             this.dtp_arrived.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dtp_arrived.ShowUpDown = true;
             this.dtp_arrived.Location = new System.Drawing.Point(377, 60);
             this.dtp_arrived.Name = "dtp_arrived";
+            this.dtp_arrived.ShowUpDown = true;
             this.dtp_arrived.Size = new System.Drawing.Size(90, 20);
             this.dtp_arrived.TabIndex = 13;
             // 
@@ -168,13 +168,13 @@ namespace smpc_dispatching.UI.Views.Logistics {
             this.lbl_returned.Size = new System.Drawing.Size(68, 13);
             this.lbl_returned.TabIndex = 14;
             this.lbl_returned.Text = "RETURNED";
-            //
+            // 
             // dtp_returned
-            //
+            // 
             this.dtp_returned.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dtp_returned.ShowUpDown = true;
             this.dtp_returned.Location = new System.Drawing.Point(377, 88);
             this.dtp_returned.Name = "dtp_returned";
+            this.dtp_returned.ShowUpDown = true;
             this.dtp_returned.Size = new System.Drawing.Size(90, 20);
             this.dtp_returned.TabIndex = 15;
             // 
@@ -186,9 +186,9 @@ namespace smpc_dispatching.UI.Views.Logistics {
             this.lbl_client_supplier.Size = new System.Drawing.Size(103, 13);
             this.lbl_client_supplier.TabIndex = 16;
             this.lbl_client_supplier.Text = "CLIENT/SUPPLIER";
-            //
+            // 
             // cmb_client_supplier
-            //
+            // 
             this.cmb_client_supplier.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_client_supplier.FormattingEnabled = true;
             this.cmb_client_supplier.Location = new System.Drawing.Point(121, 155);
@@ -199,7 +199,7 @@ namespace smpc_dispatching.UI.Views.Logistics {
             // lbl_location
             // 
             this.lbl_location.AutoSize = true;
-            this.lbl_location.Location = new System.Drawing.Point(55, 203);
+            this.lbl_location.Location = new System.Drawing.Point(55, 193);
             this.lbl_location.Name = "lbl_location";
             this.lbl_location.Size = new System.Drawing.Size(61, 13);
             this.lbl_location.TabIndex = 18;
@@ -270,7 +270,8 @@ namespace smpc_dispatching.UI.Views.Logistics {
             this.dg_costs.RowHeadersVisible = false;
             this.dg_costs.Size = new System.Drawing.Size(651, 128);
             this.dg_costs.TabIndex = 26;
-            // 
+            this.dg_costs.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dg_costs_CellClick);
+            //
             // col_cost_type
             // 
             this.col_cost_type.HeaderText = "COST TYPE";
@@ -299,7 +300,9 @@ namespace smpc_dispatching.UI.Views.Logistics {
             // 
             this.col_receipt.HeaderText = "RECEIPT";
             this.col_receipt.Name = "col_receipt";
-            this.col_receipt.Width = 60;
+            this.col_receipt.Text = "UPLOAD";
+            this.col_receipt.UseColumnTextForButtonValue = false;
+            this.col_receipt.Width = 80;
             // 
             // btn_add_cost
             // 
@@ -414,7 +417,7 @@ namespace smpc_dispatching.UI.Views.Logistics {
         private System.Windows.Forms.DataGridViewTextBoxColumn col_description;
         private System.Windows.Forms.DataGridViewTextBoxColumn col_multiplier;
         private System.Windows.Forms.DataGridViewTextBoxColumn col_amount;
-        private System.Windows.Forms.DataGridViewTextBoxColumn col_receipt;
+        private System.Windows.Forms.DataGridViewButtonColumn col_receipt;
         private System.Windows.Forms.TextBox txt_location;
         private System.Windows.Forms.Button btn_pin_location;
     }

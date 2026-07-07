@@ -22,6 +22,7 @@ namespace smpc_dispatching.UI.Views.Logistics
         private readonly IUserService _userService;
         private readonly IBpiService _bpiService;
         private readonly ISalesOrderService _salesOrderService;
+        private readonly IReceiptUploadService _receiptUploadService;
 
         private List<CalendarCategoryModel> _categories;
         private List<VehicleModel> _vehicles;
@@ -48,6 +49,7 @@ namespace smpc_dispatching.UI.Views.Logistics
             IUserService userService,
             IBpiService bpiService,
             ISalesOrderService salesOrderService,
+            IReceiptUploadService receiptUploadService,
             IServiceProvider serviceProvider)
         {
             InitializeComponent();
@@ -58,6 +60,7 @@ namespace smpc_dispatching.UI.Views.Logistics
             _userService = userService;
             _bpiService = bpiService;
             _salesOrderService = salesOrderService;
+            _receiptUploadService = receiptUploadService;
 
             _externalControls = new Control[]
             {
@@ -65,8 +68,8 @@ namespace smpc_dispatching.UI.Views.Logistics
                 lbl_sales_invoice_doc_no, txt_SalesInvoiceDocNo,
                 lbl_client_supplier, cmb_ClientSupplier,
                 lbl_courier, txt_Courier,
-                lbl_pickup_time, txt_PickupTime,
-                lbl_arrival_time, txt_ArrivalTime
+                lbl_pickup_time, dtp_PickupTime,
+                lbl_arrival_time, dtp_ArrivalTime
             };
 
             _internalControls = new Control[] { btn_add_route, flowLayoutPanel_routes };
@@ -174,6 +177,23 @@ namespace smpc_dispatching.UI.Views.Logistics
                         {
                             routePanel.LocationText = mapForm.SelectedAddress;
                         }
+                    }
+                };
+
+                routePanel.ReceiptUploadRequested += async (s, rowIndex) =>
+                {
+                    using (var dialog = new OpenFileDialog { Filter = "All Files|*.*", Title = "Select Receipt" })
+                    {
+                        if (dialog.ShowDialog(host) != DialogResult.OK) return;
+
+                        var res = await _receiptUploadService.UploadAsync(dialog.FileName);
+                        if (res == null || !res.Success || res.Data == null)
+                        {
+                            MessageBox.Show("Failed to upload receipt.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
+                        routePanel.SetReceiptUploadResult(rowIndex, res.Data.OriginalName, res.Data.FilePath);
                     }
                 };
 
@@ -442,6 +462,12 @@ namespace smpc_dispatching.UI.Views.Logistics
             return value.StartsWith(prefix) ? value.Substring(prefix.Length) : value;
         }
 
+        private static void SetTime(DateTimePicker picker, string time)
+        {
+            if (!string.IsNullOrWhiteSpace(time) && DateTime.TryParse(time, out var parsed))
+                picker.Value = parsed;
+        }
+
         private void BtnToggle(bool isEdit)
         {
             btn_new.Visible = !isEdit;
@@ -468,8 +494,8 @@ namespace smpc_dispatching.UI.Views.Logistics
             txt_Trucking.Text = string.Empty;
             txt_Courier.Text = string.Empty;
             txt_DriverName.Text = string.Empty;
-            txt_PickupTime.Text = string.Empty;
-            txt_ArrivalTime.Text = string.Empty;
+            dtp_PickupTime.Value = DateTime.Now;
+            dtp_ArrivalTime.Value = DateTime.Now;
             cmb_ReferenceDocNo.SelectedIndex = -1;
             txt_SalesInvoiceDocNo.Text = string.Empty;
             txt_DeliveryReceiptDocNo.Text = string.Empty;
@@ -546,8 +572,8 @@ namespace smpc_dispatching.UI.Views.Logistics
                 schedule.Trucking = txt_Trucking.Text;
                 schedule.Courier = txt_Courier.Text;
                 schedule.DriverName = txt_DriverName.Text;
-                schedule.PickupTime = txt_PickupTime.Text;
-                schedule.ArrivalTime = txt_ArrivalTime.Text;
+                schedule.PickupTime = dtp_PickupTime.Value.ToString("hh:mm tt");
+                schedule.ArrivalTime = dtp_ArrivalTime.Value.ToString("hh:mm tt");
                 schedule.SalesInvoiceDocNo = txt_SalesInvoiceDocNo.Text;
                 schedule.DeliveryReceiptDocNo = txt_DeliveryReceiptDocNo.Text;
             }
@@ -607,12 +633,23 @@ namespace smpc_dispatching.UI.Views.Logistics
             cmb_People.Text = schedule.People;
             cmb_Vehicle.SelectedValue = (uint)schedule.VehicleId;
 
-            cmb_ClientSupplier.Text = schedule.ClientSupplier;
+            // Schedules auto-created from a delivery receipt come with the sales
+            // order linked (sales_order_id) but no client_supplier of their own —
+            // fall back to that sales order's customer so the field isn't blank.
+            if (string.IsNullOrWhiteSpace(schedule.ClientSupplier) && schedule.SalesOrderId > 0)
+            {
+                var salesOrder = _salesOrders?.FirstOrDefault(so => so.OrderID == (uint)schedule.SalesOrderId);
+                cmb_ClientSupplier.Text = salesOrder?.CustomerName ?? string.Empty;
+            }
+            else
+            {
+                cmb_ClientSupplier.Text = schedule.ClientSupplier;
+            }
             txt_Trucking.Text = schedule.Trucking;
             txt_Courier.Text = schedule.Courier;
             txt_DriverName.Text = schedule.DriverName;
-            txt_PickupTime.Text = schedule.PickupTime;
-            txt_ArrivalTime.Text = schedule.ArrivalTime;
+            SetTime(dtp_PickupTime, schedule.PickupTime);
+            SetTime(dtp_ArrivalTime, schedule.ArrivalTime);
             cmb_ReferenceDocNo.Text = FormatSalesOrderDocNo(schedule.ReferenceDocNo);
             txt_SalesInvoiceDocNo.Text = schedule.SalesInvoiceDocNo;
             txt_DeliveryReceiptDocNo.Text = FormatDeliveryReceiptDocNo(schedule.DeliveryReceiptDocNo);

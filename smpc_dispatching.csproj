@@ -288,7 +288,9 @@
     <Compile Include="Core\Interfaces\IWarehouseService.cs" />
     <Compile Include="Core\Interfaces\IUserService.cs" />
     <Compile Include="Core\Interfaces\ILogisticsScheduleService.cs" />
+    <Compile Include="Core\Interfaces\IReceiptUploadService.cs" />
     <Compile Include="Core\Models\LogisticsScheduleModel.cs" />
+    <Compile Include="Core\Models\ReceiptUploadModel.cs" />
     <Compile Include="Core\Models\BPI.cs" />
     <Compile Include="Core\Models\DeliveryReceiptCostModel.cs" />
     <Compile Include="Core\Models\DeliveryReceiptFileModel.cs" />
@@ -313,6 +315,7 @@
     <Compile Include="Core\Services\WarehouseService.cs" />
     <Compile Include="Core\Services\UserService.cs" />
     <Compile Include="Core\Services\LogisticsScheduleService.cs" />
+    <Compile Include="Core\Services\ReceiptUploadService.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="UI\Shared\PrintPreview.cs">
       <SubType>Form</SubType>

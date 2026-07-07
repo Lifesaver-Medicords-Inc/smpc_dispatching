@@ -57,9 +57,9 @@ namespace smpc_dispatching.UI.Views.Logistics
             this.lbl_courier = new System.Windows.Forms.Label();
             this.txt_Courier = new System.Windows.Forms.TextBox();
             this.lbl_pickup_time = new System.Windows.Forms.Label();
-            this.txt_PickupTime = new System.Windows.Forms.TextBox();
+            this.dtp_PickupTime = new System.Windows.Forms.DateTimePicker();
             this.lbl_arrival_time = new System.Windows.Forms.Label();
-            this.txt_ArrivalTime = new System.Windows.Forms.TextBox();
+            this.dtp_ArrivalTime = new System.Windows.Forms.DateTimePicker();
             this.btn_add_route = new System.Windows.Forms.LinkLabel();
             this.flowLayoutPanel_routes = new System.Windows.Forms.FlowLayoutPanel();
             this.lbl_notes = new System.Windows.Forms.Label();
@@ -219,9 +219,9 @@ namespace smpc_dispatching.UI.Views.Logistics
             this.flowLayoutPanel_fields.Controls.Add(this.lbl_courier);
             this.flowLayoutPanel_fields.Controls.Add(this.txt_Courier);
             this.flowLayoutPanel_fields.Controls.Add(this.lbl_pickup_time);
-            this.flowLayoutPanel_fields.Controls.Add(this.txt_PickupTime);
+            this.flowLayoutPanel_fields.Controls.Add(this.dtp_PickupTime);
             this.flowLayoutPanel_fields.Controls.Add(this.lbl_arrival_time);
-            this.flowLayoutPanel_fields.Controls.Add(this.txt_ArrivalTime);
+            this.flowLayoutPanel_fields.Controls.Add(this.dtp_ArrivalTime);
             this.flowLayoutPanel_fields.Controls.Add(this.btn_add_route);
             this.flowLayoutPanel_fields.Controls.Add(this.flowLayoutPanel_routes);
             this.flowLayoutPanel_fields.Controls.Add(this.lbl_notes);
@@ -506,13 +506,15 @@ namespace smpc_dispatching.UI.Views.Logistics
             this.lbl_pickup_time.TabIndex = 20;
             this.lbl_pickup_time.Text = "PICKUP TIME";
             // 
-            // txt_PickupTime
-            // 
-            this.txt_PickupTime.Location = new System.Drawing.Point(3, 501);
-            this.txt_PickupTime.Margin = new System.Windows.Forms.Padding(3, 0, 3, 10);
-            this.txt_PickupTime.Name = "txt_PickupTime";
-            this.txt_PickupTime.Size = new System.Drawing.Size(300, 20);
-            this.txt_PickupTime.TabIndex = 21;
+            // dtp_PickupTime
+            //
+            this.dtp_PickupTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dtp_PickupTime.Location = new System.Drawing.Point(3, 501);
+            this.dtp_PickupTime.Margin = new System.Windows.Forms.Padding(3, 0, 3, 10);
+            this.dtp_PickupTime.Name = "dtp_PickupTime";
+            this.dtp_PickupTime.ShowUpDown = true;
+            this.dtp_PickupTime.Size = new System.Drawing.Size(300, 20);
+            this.dtp_PickupTime.TabIndex = 21;
             // 
             // lbl_arrival_time
             // 
@@ -524,13 +526,15 @@ namespace smpc_dispatching.UI.Views.Logistics
             this.lbl_arrival_time.TabIndex = 22;
             this.lbl_arrival_time.Text = "ARRIVAL TIME";
             // 
-            // txt_ArrivalTime
-            // 
-            this.txt_ArrivalTime.Location = new System.Drawing.Point(3, 544);
-            this.txt_ArrivalTime.Margin = new System.Windows.Forms.Padding(3, 0, 3, 10);
-            this.txt_ArrivalTime.Name = "txt_ArrivalTime";
-            this.txt_ArrivalTime.Size = new System.Drawing.Size(300, 20);
-            this.txt_ArrivalTime.TabIndex = 23;
+            // dtp_ArrivalTime
+            //
+            this.dtp_ArrivalTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dtp_ArrivalTime.Location = new System.Drawing.Point(3, 544);
+            this.dtp_ArrivalTime.Margin = new System.Windows.Forms.Padding(3, 0, 3, 10);
+            this.dtp_ArrivalTime.Name = "dtp_ArrivalTime";
+            this.dtp_ArrivalTime.ShowUpDown = true;
+            this.dtp_ArrivalTime.Size = new System.Drawing.Size(300, 20);
+            this.dtp_ArrivalTime.TabIndex = 23;
             // 
             // btn_add_route
             // 
@@ -680,9 +684,9 @@ namespace smpc_dispatching.UI.Views.Logistics
         private System.Windows.Forms.Label lbl_driver_name;
         private System.Windows.Forms.TextBox txt_DriverName;
         private System.Windows.Forms.Label lbl_pickup_time;
-        private System.Windows.Forms.TextBox txt_PickupTime;
+        private System.Windows.Forms.DateTimePicker dtp_PickupTime;
         private System.Windows.Forms.Label lbl_arrival_time;
-        private System.Windows.Forms.TextBox txt_ArrivalTime;
+        private System.Windows.Forms.DateTimePicker dtp_ArrivalTime;
         private System.Windows.Forms.Label lbl_reference_doc_no;
         private System.Windows.Forms.ComboBox cmb_ReferenceDocNo;
         private System.Windows.Forms.Label lbl_sales_invoice_doc_no;

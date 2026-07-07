@@ -1,6 +1,7 @@
 using smpc_dispatching.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -15,6 +16,7 @@ namespace smpc_dispatching.UI.Views.Logistics
 
         public event EventHandler RemoveRequested;
         public event EventHandler PinLocationRequested;
+        public event EventHandler<int> ReceiptUploadRequested;
 
         public string LocationText
         {
@@ -60,7 +62,7 @@ namespace smpc_dispatching.UI.Views.Logistics
         {
             foreach (var type in TemplateCostTypes)
             {
-                dg_costs.Rows.Add(type, string.Empty, "1", "0.00", string.Empty);
+                dg_costs.Rows.Add(type, string.Empty, "1", "0.00", "UPLOAD");
             }
         }
 
@@ -74,9 +76,27 @@ namespace smpc_dispatching.UI.Views.Logistics
             PinLocationRequested?.Invoke(this, EventArgs.Empty);
         }
 
+        private void dg_costs_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex != col_receipt.Index) return;
+            ReceiptUploadRequested?.Invoke(this, e.RowIndex);
+        }
+
+        // Called back after a successful upload — the button shows the
+        // original file name, while the row's Tag holds the actual server
+        // path (what actually gets persisted via BuildRoute).
+        public void SetReceiptUploadResult(int rowIndex, string displayName, string storedPath)
+        {
+            if (rowIndex < 0 || rowIndex >= dg_costs.Rows.Count) return;
+
+            var row = dg_costs.Rows[rowIndex];
+            row.Cells[col_receipt.Index].Value = displayName;
+            row.Tag = storedPath;
+        }
+
         private void btn_add_cost_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            dg_costs.Rows.Add(string.Empty, string.Empty, "1", "0.00", string.Empty);
+            dg_costs.Rows.Add(string.Empty, string.Empty, "1", "0.00", "UPLOAD");
         }
 
         public void LoadRoute(LogisticsRouteModel route)
@@ -99,7 +119,9 @@ namespace smpc_dispatching.UI.Views.Logistics
             {
                 foreach (var cost in route.Costs)
                 {
-                    dg_costs.Rows.Add(cost.CostType, cost.Description, cost.Multiplier.ToString(), cost.Amount.ToString("0.00"), cost.ReceiptPath);
+                    var receiptLabel = string.IsNullOrWhiteSpace(cost.ReceiptPath) ? "UPLOAD" : Path.GetFileName(cost.ReceiptPath);
+                    var rowIndex = dg_costs.Rows.Add(cost.CostType, cost.Description, cost.Multiplier.ToString(), cost.Amount.ToString("0.00"), receiptLabel);
+                    dg_costs.Rows[rowIndex].Tag = cost.ReceiptPath;
                 }
             }
             else
@@ -135,7 +157,7 @@ namespace smpc_dispatching.UI.Views.Logistics
                 var description = row.Cells["col_description"].Value?.ToString() ?? string.Empty;
                 var multiplierText = row.Cells["col_multiplier"].Value?.ToString() ?? "0";
                 var amountText = row.Cells["col_amount"].Value?.ToString() ?? "0";
-                var receiptPath = row.Cells["col_receipt"].Value?.ToString() ?? string.Empty;
+                var receiptPath = row.Tag as string ?? string.Empty;
 
                 if (string.IsNullOrWhiteSpace(costType) && string.IsNullOrWhiteSpace(amountText))
                     continue;
