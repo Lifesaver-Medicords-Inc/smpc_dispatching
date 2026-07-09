@@ -28,7 +28,7 @@ namespace smpc_dispatching.UI.Views.Logistics {
             this.lbl_returned = new System.Windows.Forms.Label();
             this.dtp_returned = new System.Windows.Forms.DateTimePicker();
             this.lbl_client_supplier = new System.Windows.Forms.Label();
-            this.cmb_client_supplier = new System.Windows.Forms.ComboBox();
+            this.txt_client_supplier = new System.Windows.Forms.TextBox();
             this.lbl_location = new System.Windows.Forms.Label();
             this.lbl_receiver = new System.Windows.Forms.Label();
             this.txt_receiver = new System.Windows.Forms.TextBox();
@@ -89,6 +89,7 @@ namespace smpc_dispatching.UI.Views.Logistics {
             // 
             this.txt_reference_doc.Location = new System.Drawing.Point(123, 88);
             this.txt_reference_doc.Name = "txt_reference_doc";
+            this.txt_reference_doc.ReadOnly = true;
             this.txt_reference_doc.Size = new System.Drawing.Size(150, 20);
             this.txt_reference_doc.TabIndex = 5;
             // 
@@ -105,6 +106,7 @@ namespace smpc_dispatching.UI.Views.Logistics {
             // 
             this.txt_delivery_receipt.Location = new System.Drawing.Point(123, 61);
             this.txt_delivery_receipt.Name = "txt_delivery_receipt";
+            this.txt_delivery_receipt.ReadOnly = true;
             this.txt_delivery_receipt.Size = new System.Drawing.Size(151, 20);
             this.txt_delivery_receipt.TabIndex = 7;
             // 
@@ -121,6 +123,7 @@ namespace smpc_dispatching.UI.Views.Logistics {
             // 
             this.txt_sales_invoice.Location = new System.Drawing.Point(124, 119);
             this.txt_sales_invoice.Name = "txt_sales_invoice";
+            this.txt_sales_invoice.ReadOnly = true;
             this.txt_sales_invoice.Size = new System.Drawing.Size(150, 20);
             this.txt_sales_invoice.TabIndex = 9;
             // 
@@ -187,14 +190,13 @@ namespace smpc_dispatching.UI.Views.Logistics {
             this.lbl_client_supplier.TabIndex = 16;
             this.lbl_client_supplier.Text = "CLIENT/SUPPLIER";
             // 
-            // cmb_client_supplier
+            // txt_client_supplier
             // 
-            this.cmb_client_supplier.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmb_client_supplier.FormattingEnabled = true;
-            this.cmb_client_supplier.Location = new System.Drawing.Point(121, 155);
-            this.cmb_client_supplier.Name = "cmb_client_supplier";
-            this.cmb_client_supplier.Size = new System.Drawing.Size(472, 21);
-            this.cmb_client_supplier.TabIndex = 17;
+            this.txt_client_supplier.Location = new System.Drawing.Point(121, 155);
+            this.txt_client_supplier.Name = "txt_client_supplier";
+            this.txt_client_supplier.ReadOnly = true;
+            this.txt_client_supplier.Size = new System.Drawing.Size(472, 20);
+            this.txt_client_supplier.TabIndex = 17;
             // 
             // lbl_location
             // 
@@ -218,6 +220,7 @@ namespace smpc_dispatching.UI.Views.Logistics {
             // 
             this.txt_receiver.Location = new System.Drawing.Point(121, 230);
             this.txt_receiver.Name = "txt_receiver";
+            this.txt_receiver.ReadOnly = true;
             this.txt_receiver.Size = new System.Drawing.Size(280, 20);
             this.txt_receiver.TabIndex = 21;
             // 
@@ -234,6 +237,7 @@ namespace smpc_dispatching.UI.Views.Logistics {
             // 
             this.txt_contact_no.Location = new System.Drawing.Point(493, 230);
             this.txt_contact_no.Name = "txt_contact_no";
+            this.txt_contact_no.ReadOnly = true;
             this.txt_contact_no.Size = new System.Drawing.Size(168, 20);
             this.txt_contact_no.TabIndex = 23;
             // 
@@ -271,7 +275,7 @@ namespace smpc_dispatching.UI.Views.Logistics {
             this.dg_costs.Size = new System.Drawing.Size(651, 128);
             this.dg_costs.TabIndex = 26;
             this.dg_costs.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dg_costs_CellClick);
-            //
+            // 
             // col_cost_type
             // 
             this.col_cost_type.HeaderText = "COST TYPE";
@@ -301,7 +305,6 @@ namespace smpc_dispatching.UI.Views.Logistics {
             this.col_receipt.HeaderText = "RECEIPT";
             this.col_receipt.Name = "col_receipt";
             this.col_receipt.Text = "UPLOAD";
-            this.col_receipt.UseColumnTextForButtonValue = false;
             this.col_receipt.Width = 80;
             // 
             // btn_add_cost
@@ -359,7 +362,7 @@ namespace smpc_dispatching.UI.Views.Logistics {
             this.Controls.Add(this.txt_receiver);
             this.Controls.Add(this.lbl_receiver);
             this.Controls.Add(this.lbl_location);
-            this.Controls.Add(this.cmb_client_supplier);
+            this.Controls.Add(this.txt_client_supplier);
             this.Controls.Add(this.lbl_client_supplier);
             this.Controls.Add(this.dtp_returned);
             this.Controls.Add(this.lbl_returned);
@@ -402,7 +405,7 @@ namespace smpc_dispatching.UI.Views.Logistics {
         private System.Windows.Forms.Label lbl_returned;
         private System.Windows.Forms.DateTimePicker dtp_returned;
         private System.Windows.Forms.Label lbl_client_supplier;
-        private System.Windows.Forms.ComboBox cmb_client_supplier;
+        private System.Windows.Forms.TextBox txt_client_supplier;
         private System.Windows.Forms.Label lbl_location;
         private System.Windows.Forms.Label lbl_receiver;
         private System.Windows.Forms.TextBox txt_receiver;

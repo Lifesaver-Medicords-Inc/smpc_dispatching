@@ -59,20 +59,25 @@ namespace smpc_dispatching.UI.Shared.CalendarEvent
             // SCHEDULE LIST
             _scheduleListUserControl = serviceProvider.GetRequiredService<ScheduleListUserControl>();
             _scheduleListUserControl.OnScheduleListChanged += LoadSchedulesAsync;
-            _scheduleListUserControl.OnEditRequested += scheduleId =>
-            {
-                if (GetDepartmentFromRoute() == "LOGISTICS")
-                {
-                    _ = _logisticsScheduleDetailsUC.EnterEditModeAsync(scheduleId);
-                    return;
-                }
+            _scheduleListUserControl.OnEditRequested += EnterEditMode;
 
-                var schedule = _schedules.FirstOrDefault(s => s.Id == scheduleId);
-                if (schedule != null)
-                    _scheduleDetailsUserControl.EnterEditMode(schedule);
-            };
+            // Double-clicking a schedule on the calendar grid opens the same edit view.
+            _scheduleCalendarUserControl.OnEventClick += schedule => EnterEditMode(schedule.Id);
 
             CalendarSwitchViewBtn.Text = !IsMonthView ? "MONTH" : "WEEK";
+        }
+
+        private void EnterEditMode(int scheduleId)
+        {
+            if (GetDepartmentFromRoute() == "LOGISTICS")
+            {
+                _ = _logisticsScheduleDetailsUC.EnterEditModeAsync(scheduleId);
+                return;
+            }
+
+            var schedule = _schedules.FirstOrDefault(s => s.Id == scheduleId);
+            if (schedule != null)
+                _scheduleDetailsUserControl.EnterEditMode(schedule);
         }
             
         public string Title
@@ -180,7 +185,7 @@ namespace smpc_dispatching.UI.Shared.CalendarEvent
             // schedule list
             _scheduleCalendarUserControl.LoadEvents(_schedules);
 
-            
+            _scheduleListUserControl.SetDateRangeFilter(_dateRange.StartDate, _dateRange.EndDate);
         }
 
         private void SetDateLabel()

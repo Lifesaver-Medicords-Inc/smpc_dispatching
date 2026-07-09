@@ -53,7 +53,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.label12 = new System.Windows.Forms.Label();
             this.txt_item_release_id = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.txt_sales_order_idsss = new System.Windows.Forms.TextBox();
+            this.txt_sales_order_id = new System.Windows.Forms.TextBox();
             this.cmb_sales_order_id = new System.Windows.Forms.ComboBox();
             this.cmb_ship_type_id = new System.Windows.Forms.ComboBox();
             this.txt_item_release_no = new System.Windows.Forms.TextBox();
@@ -297,7 +297,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.pnl_header.Controls.Add(this.label12);
             this.pnl_header.Controls.Add(this.txt_item_release_id);
             this.pnl_header.Controls.Add(this.label11);
-            this.pnl_header.Controls.Add(this.txt_sales_order_idsss);
+            this.pnl_header.Controls.Add(this.txt_sales_order_id);
             this.pnl_header.Controls.Add(this.cmb_sales_order_id);
             this.pnl_header.Controls.Add(this.cmb_ship_type_id);
             this.pnl_header.Controls.Add(this.txt_item_release_no);
@@ -381,13 +381,13 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.label11.Text = "S0 ID: ";
             this.label11.Visible = false;
             // 
-            // txt_sales_order_idsss
+            // txt_sales_order_id
             // 
-            this.txt_sales_order_idsss.Location = new System.Drawing.Point(663, 295);
-            this.txt_sales_order_idsss.Name = "txt_sales_order_idsss";
-            this.txt_sales_order_idsss.Size = new System.Drawing.Size(50, 20);
-            this.txt_sales_order_idsss.TabIndex = 132;
-            this.txt_sales_order_idsss.Visible = false;
+            this.txt_sales_order_id.Location = new System.Drawing.Point(663, 295);
+            this.txt_sales_order_id.Name = "txt_sales_order_id";
+            this.txt_sales_order_id.Size = new System.Drawing.Size(50, 20);
+            this.txt_sales_order_id.TabIndex = 132;
+            this.txt_sales_order_id.Visible = false;
             // 
             // cmb_sales_order_id
             // 
@@ -1283,7 +1283,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox txt_item_release_id;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox txt_sales_order_idsss;
+        private System.Windows.Forms.TextBox txt_sales_order_id;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.TextBox txt_customer_id;
         private System.Windows.Forms.SplitContainer splitContainer1;

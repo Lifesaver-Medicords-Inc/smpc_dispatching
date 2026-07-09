@@ -103,6 +103,8 @@ namespace smpc_dispatching.UI.Views.Sales
             // 
             // flowLayoutPanel3
             // 
+            this.flowLayoutPanel3.Controls.Add(this.label9);
+            this.flowLayoutPanel3.Controls.Add(this.txt_Title);
             this.flowLayoutPanel3.Controls.Add(this.label8);
             this.flowLayoutPanel3.Controls.Add(this.txt_Id);
             this.flowLayoutPanel3.Controls.Add(this.label2);
@@ -110,8 +112,6 @@ namespace smpc_dispatching.UI.Views.Sales
             this.flowLayoutPanel3.Controls.Add(this.dtp_EndDate);
             this.flowLayoutPanel3.Controls.Add(this.label3);
             this.flowLayoutPanel3.Controls.Add(this.panel2);
-            this.flowLayoutPanel3.Controls.Add(this.label9);
-            this.flowLayoutPanel3.Controls.Add(this.txt_Title);
             this.flowLayoutPanel3.Controls.Add(this.label4);
             this.flowLayoutPanel3.Controls.Add(this.rtxt_Description);
             this.flowLayoutPanel3.Controls.Add(this.panel1);

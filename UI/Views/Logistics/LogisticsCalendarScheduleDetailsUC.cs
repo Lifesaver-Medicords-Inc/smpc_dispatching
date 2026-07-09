@@ -139,7 +139,6 @@ namespace smpc_dispatching.UI.Views.Logistics
             {
                 var routePanel = new LogisticsRoutePanelUC { Dock = DockStyle.Top };
                 routePanel.HideRemoveButton();
-                routePanel.SetClientSupplierOptions(_bpiOptions);
                 if (existingRoute != null)
                 {
                     routePanel.LoadRoute(existingRoute);
@@ -158,11 +157,23 @@ namespace smpc_dispatching.UI.Views.Logistics
                         salesOrder = _salesOrders?.FirstOrDefault(so => so.OrderID == (uint)_currentSchedule.SalesOrderId);
                     }
 
+                    // Client/Supplier is derived, not user-selectable: sales order ->
+                    // customer_id -> bpi.id -> bpi.name. salesOrder.CustomerName isn't
+                    // used since it's a denormalized column that isn't reliably kept in
+                    // sync with the BPI record.
+                    string clientSupplier = salesOrder != null
+                        ? _bpiOptions?.FirstOrDefault(b => b.Id == (int)salesOrder.CustomerID)?.Name ?? string.Empty
+                        : string.Empty;
+
                     routePanel.LoadRoute(new LogisticsRouteModel
                     {
-                        ReferenceDoc = FormatSalesOrderId(_currentSchedule?.SalesOrderId),
+                        // salesOrder.Doc is the sales order's own doc-number sequence,
+                        // not the same series as OrderID (the DB primary key) - formatting
+                        // OrderID directly as "SO#000X" showed the wrong document number
+                        // whenever the two diverged.
+                        ReferenceDoc = FormatSalesOrderDocNo(salesOrder?.Doc),
                         DeliveryReceiptDoc = FormatDeliveryReceiptDocNo(_currentSchedule?.DeliveryReceiptDocNo),
-                        ClientSupplier = salesOrder?.CustomerName ?? string.Empty,
+                        ClientSupplier = clientSupplier,
                         Receiver = salesOrder?.Receiver ?? string.Empty,
                         ContactNo = salesOrder?.ContactNo ?? string.Empty
                     });
@@ -447,15 +458,6 @@ namespace smpc_dispatching.UI.Views.Logistics
             return raw.StartsWith("SO#") ? raw : $"SO#{raw}";
         }
 
-        // Formats the schedule's own sales_order_id directly (no join/lookup
-        // needed) — e.g. sales_order_id 1 -> "SO#0001".
-        private static string FormatSalesOrderId(int? salesOrderId)
-        {
-            return salesOrderId.HasValue && salesOrderId.Value > 0
-                ? Helpers.DocNoFormatter(salesOrderId.Value, "SO#")
-                : string.Empty;
-        }
-
         private static string StripDocPrefix(string value, string prefix)
         {
             if (string.IsNullOrWhiteSpace(value)) return string.Empty;
@@ -483,6 +485,7 @@ namespace smpc_dispatching.UI.Views.Logistics
         private void ClearForm()
         {
             txt_Id.Text = string.Empty;
+            txt_Title.Text = string.Empty;
             dtp_StartDate.Value = DateTime.Now;
             dtp_EndDate.Value = DateTime.Now;
             cmb_Category.SelectedIndex = -1;
@@ -556,6 +559,7 @@ namespace smpc_dispatching.UI.Views.Logistics
             var schedule = new LogisticsScheduleModel
             {
                 Department = "LOGISTICS",
+                Title = txt_Title.Text?.Trim() ?? string.Empty,
                 IsExternal = _isExternal,
                 CategoryId = cmb_Category.SelectedValue != null ? Convert.ToInt32(cmb_Category.SelectedValue) : 0,
                 StartDate = dtp_StartDate.Value,
@@ -627,6 +631,7 @@ namespace smpc_dispatching.UI.Views.Logistics
             _isExternal = schedule.IsExternal;
 
             txt_Id.Text = schedule.Id.ToString();
+            txt_Title.Text = schedule.Title;
             dtp_StartDate.Value = schedule.StartDate == DateTime.MinValue ? DateTime.Now : schedule.StartDate;
             dtp_EndDate.Value = schedule.EndDate == DateTime.MinValue ? DateTime.Now : schedule.EndDate;
             cmb_Category.SelectedValue = (uint)schedule.CategoryId;

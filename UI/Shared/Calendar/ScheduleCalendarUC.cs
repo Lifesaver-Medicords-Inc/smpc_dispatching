@@ -1,6 +1,7 @@
 ﻿using smpc_dispatching.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace smpc_dispatching.UI.Shared.Calendar {
@@ -23,6 +24,16 @@ namespace smpc_dispatching.UI.Shared.Calendar {
         public ScheduleCalendarUC() {
             InitializeComponent();
             LoadCalendar();
+
+            CalendarHarness.ItemDoubleClick += (s, e) => {
+                if (e.Item?.Tag is CalendarScheduleModel<SalesCalendarScheduleContent> schedule)
+                    OnEventClick?.Invoke(schedule);
+            };
+
+            // Double-clicking empty grid space otherwise spawns a blank item on the
+            // calendar itself (independent of AllowNew). Schedules are only ever added
+            // through the app's own Add New form, never directly on the calendar.
+            CalendarHarness.ItemCreating += (s, e) => e.Cancel = true;
         }
 
         public CalendarDateRange DateRange {
@@ -57,7 +68,7 @@ namespace smpc_dispatching.UI.Shared.Calendar {
                         CalendarHarness,
                         start,
                         end,
-                        e.Title 
+                        e.Title
                     );
                     item.Tag = e;
                     CalendarHarness.Items.Add(item);
@@ -66,7 +77,5 @@ namespace smpc_dispatching.UI.Shared.Calendar {
                 CalendarHarness.Invalidate();
             }));
         }
-
-
     }
 }

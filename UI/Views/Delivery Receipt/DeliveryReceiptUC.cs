@@ -693,6 +693,12 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             txt_sales_executive.Text = selectedSalesOrder?.Field<string>("SalesExecutive");
             txt_item_release_no.Text = selectedItemRelease?.Field<int>("doc_no").ToString();
 
+            // cmb_sales_order_id is bound to reference_doc_no strings (see DeliveryReceiptUC_Load),
+            // not real sales_order_id values, so BuildModelFromPanels must not read the id from it.
+            // Carry the resolved numeric OrderID here instead - txt_ prefix + matching property name
+            // makes BuildModelFromPanels<DeliveryReceiptModel> pick this up for sales_order_id.
+            txt_sales_order_id.Text = selectedSalesOrder?.Field<uint>("OrderID").ToString() ?? string.Empty;
+
             if (!filteredRows.Any())
             {
                 dg_items.DataSource = null;

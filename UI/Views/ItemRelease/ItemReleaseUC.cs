@@ -28,10 +28,12 @@ namespace smpc_dispatching.UI.Views.ItemRelease
         private readonly PrintService _printService;
         private readonly ISalesOrderIRViewService<SalesOrderViewModel> _salesOrderIRViewService;
         private readonly IItemReleaseService _itemReleaseService;
+        private readonly IUserService _userService;
         private readonly IServiceProvider _serviceProvider;
 
         private BindingList<ItemReleaseDetailsModel> _detailsBinding;
         private List<ItemReleaseModel> _itemReleases;
+        private List<UserModel> _users;
         private DataTable _soTable;
         private Panel[] _pnls;
         private string _userName;
@@ -73,6 +75,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             _serviceProvider = serviceProvider;
             _itemReleaseService = serviceProvider.GetRequiredService<IItemReleaseService>();
             _salesOrderIRViewService = serviceProvider.GetRequiredService<ISalesOrderIRViewService<SalesOrderViewModel>>();
+            _userService = serviceProvider.GetRequiredService<IUserService>();
             _printService = printService;
 
             _pnls = new[] { pnl_header, pnl_footer };
@@ -92,8 +95,8 @@ namespace smpc_dispatching.UI.Views.ItemRelease
                 txt_issued_by,
             }, true);
 
-            // If warehouse user, allow editing of txt_received_by
-            txt_received_by.ReadOnly = !_isWarehouseUser;
+            // If warehouse user, allow selecting cmb_received_by
+            cmb_received_by.Enabled = _isWarehouseUser;
 
             Helpers.EnableGroupHeaders(dgv_details, columnGroupsMain);
         }
@@ -103,6 +106,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             try
             {
                 SetMode(IRMode.View);
+                await LoadUsers();
                 await LoadSalesOrder();
                 await LoadItemReleases();
             }
@@ -148,19 +152,22 @@ namespace smpc_dispatching.UI.Views.ItemRelease
                 dgv_details.DataSource = null;
                 btn_forward.Visible = false;
                 btn_cancel_request.Visible = false;
+                btn_prev.Enabled = false;
+                btn_next.Enabled = false;
                 return;
             }
+
+            btn_prev.Enabled = index > 0;
+            btn_next.Enabled = index < _itemReleases.Count - 1;
 
             var current = _itemReleases[index];
 
             // Bind parent fields to panels
             Helpers.BindHelpers.BindParentToPanels(current, _pnls, "IREL#");
 
-            if (current.is_forward == true)
-            {
-                btn_forward.Visible = false;
-                btn_cancel_request.Visible = true;
-            }
+            // BindParentToPanels doesn't handle ComboBox, so select the matching user manually.
+            cmb_received_by.SelectedItem = _users?.FirstOrDefault(u =>
+                string.Equals(u.FullName, current.received_by, StringComparison.OrdinalIgnoreCase));
 
             // Bind child details to DataGridView
             _detailsBinding = new BindingList<ItemReleaseDetailsModel>(
@@ -168,11 +175,46 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             );
             dgv_details.DataSource = _detailsBinding;
 
-            // Toggle button visibility: if is_forward is true, show btn_cancel, hide btn_forward; otherwise vice versa
-            // Compute button visibility in one place
-            bool showButtons = !_isWarehouseUser;
-            btn_forward.Visible = showButtons && !(current.is_forward ?? false);
-            btn_cancel_request.Visible = showButtons && (current.is_forward ?? false);
+            RefreshForwardButtonState();
+            RefreshCancelRequestButtonState();
+        }
+
+        // Forward is only available while actively creating or editing a record.
+        private void RefreshForwardButtonState()
+        {
+            bool canEdit = _isNewMode || _isEditMode;
+
+            bool alreadyForwarded = false;
+            if (!_isNewMode && _itemReleases != null && _currentIRIndex >= 0 && _currentIRIndex < _itemReleases.Count)
+            {
+                alreadyForwarded = _itemReleases[_currentIRIndex].is_forward ?? false;
+            }
+
+            btn_forward.Visible = !_isWarehouseUser && canEdit && !alreadyForwarded;
+            btn_forward.Enabled = btn_forward.Visible;
+        }
+
+        // Cancel Request is only available while actively editing a record that has been forwarded.
+        private void RefreshCancelRequestButtonState()
+        {
+            bool isForwarded = _itemReleases != null && _currentIRIndex >= 0 && _currentIRIndex < _itemReleases.Count
+                && (_itemReleases[_currentIRIndex].is_forward ?? false);
+
+            btn_cancel_request.Visible = !_isWarehouseUser && _isEditMode && isForwarded;
+            btn_cancel_request.Enabled = btn_cancel_request.Visible;
+        }
+        #endregion
+
+        #region Load Users
+        private async Task LoadUsers()
+        {
+            var response = await _userService.GetAllAsync(null);
+            _users = response?.Data?.ToList() ?? new List<UserModel>();
+
+            cmb_received_by.DataSource = _users;
+            cmb_received_by.DisplayMember = nameof(UserModel.FullName);
+            cmb_received_by.ValueMember = nameof(UserModel.id);
+            cmb_received_by.SelectedIndex = -1;
         }
         #endregion
 
@@ -281,26 +323,14 @@ namespace smpc_dispatching.UI.Views.ItemRelease
                     if (modal.ShowDialog(this) != DialogResult.OK)
                         return;
 
-                    // Update main row total
-                    row.Cells[DetailsDGV.ReleasedQty].Value = modal.IssuedQty;
-                    row.Cells[DetailsDGV.ReleasedUom].Value = modal.IssuedUom;
+                    // Write to the bound model directly (matches the ItemDescription handler below).
+                    // Setting DataGridViewCell.Value here does NOT reliably push back into the
+                    // BindingList item, so Save was silently persisting released_qty as 0.
+                    var line = _detailsBinding[e.RowIndex];
+                    line.released_qty = Convert.ToUInt32(modal.IssuedQty);
+                    line.released_uom = modal.IssuedUom;
 
-                    // Update per-bin values back into the grid
-                    foreach (var kvp in modal.IssuedPerBin) // Dictionary<string, decimal>
-                    {
-                        string binKey = kvp.Key; // format: "itemId_binLocation"
-                        decimal issuedQty = kvp.Value;
-
-                        foreach (DataGridViewRow r in dgv_details.Rows)
-                        {
-                            int rItemId = Convert.ToInt32(r.Cells[DetailsDGV.ItemId].Value);
-                            string rBin = r.Cells[DetailsDGV.BinLocation]?.Value?.ToString();
-                            if (rItemId == itemId && $"{rItemId}_{rBin}" == binKey)
-                                r.Cells[DetailsDGV.ReleasedQty].Value = issuedQty;
-                        }
-                    }
-
-                    dgv_details.EndEdit();
+                    dgv_details.InvalidateRow(e.RowIndex);
                 }
             }
 
@@ -376,7 +406,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
                 {
                     if (_isWarehouseUser)
                     {
-                        if (string.IsNullOrWhiteSpace(txt_received_by.Text))
+                        if (string.IsNullOrWhiteSpace(cmb_received_by.Text))
                         {
                             Helpers.ShowDialogMessage("error", "Receiver name required.");
                             return;
@@ -384,8 +414,8 @@ namespace smpc_dispatching.UI.Views.ItemRelease
                     }
 
                     parentData.id = uint.Parse(txt_id.Text);
-                    // ✅ explicitly set is_forward
-                    parentData.is_forward = btn_forward.Visible;
+                    // Save must not change forward status; only the Forward button does that.
+                    parentData.is_forward = _itemReleases[_currentIRIndex].is_forward ?? false;
 
                     var response = await _itemReleaseService.UpdateAsync(parentData);
                     if (!response.Success)
@@ -419,9 +449,6 @@ namespace smpc_dispatching.UI.Views.ItemRelease
         private void btn_new_Click(object sender, EventArgs e)
         {
             SetMode(IRMode.Create);
-
-            btn_cancel_request.Visible = false;
-            btn_forward.Visible = true;
 
             Helpers.ResetControls(_pnls);
 
@@ -458,17 +485,14 @@ namespace smpc_dispatching.UI.Views.ItemRelease
                 SetEditableColumns(canEdit);
                 dgv_details.AllowUserToAddRows = canEdit && !_isWarehouseUser;
 
-                // Buttons
-                btn_forward.Enabled = !canEdit;
-                btn_cancel_request.Enabled = !canEdit;
-
                 // ToolStrip
                 SetToolStripButtons(canEdit);
 
                 // Role-based visibility
                 btn_new.Visible = !_isWarehouseUser && !canEdit;
-                btn_cancel_request.Visible = !_isWarehouseUser;
-                btn_forward.Visible = !_isWarehouseUser;
+
+                RefreshForwardButtonState();
+                RefreshCancelRequestButtonState();
 
                 // Navigation buttons (optional)
                 //SetNavigationButtons(canEdit);
@@ -565,9 +589,6 @@ namespace smpc_dispatching.UI.Views.ItemRelease
 
             _currentIRIndex = newIndex;
             BindItemRelease(_currentIRIndex);
-
-            btn_prev.Enabled = _currentIRIndex > 0;
-            btn_next.Enabled = _currentIRIndex < _itemReleases.Count - 1;
         }
 
         private async void btn_close_Click(object sender, EventArgs e)
@@ -638,8 +659,65 @@ namespace smpc_dispatching.UI.Views.ItemRelease
 
         private async void btn_forward_Click(object sender, EventArgs e)
         {
-            chk_is_forward.Checked = true;
-            await ForwardRequestAsync();
+            btn_forward.Enabled = false;
+
+            try
+            {
+                if (!await ValidateInput(_pnls)) return;
+
+                dgv_details.EndEdit();
+
+                var parentData = Helpers.BuildModelFromPanels<ItemReleaseModel>(_pnls);
+                var childData = _detailsBinding?.Where(d => d.item_id != 0).ToList();
+
+                bool isNew = string.IsNullOrWhiteSpace(txt_id.Text);
+
+                if ((cmb_reference_doc_no.SelectedItem == null || parentData == null || childData == null || !childData.Any()) && isNew)
+                {
+                    Helpers.ShowDialogMessage("error", "Please select Reference Doc No or at least one item.");
+                    return;
+                }
+
+                if (parentData == null || childData == null || !childData.Any())
+                {
+                    Helpers.ShowDialogMessage("error", "Please add at least one item.");
+                    return;
+                }
+
+                parentData.item_release_details = childData;
+                parentData.is_forward = true;
+
+                HttpResponseModel<ItemReleaseModel> response;
+                if (isNew)
+                {
+                    response = await _itemReleaseService.CreateAsync(parentData);
+                }
+                else
+                {
+                    parentData.id = uint.Parse(txt_id.Text);
+                    response = await _itemReleaseService.UpdateAsync(parentData);
+                }
+
+                if (!response.Success)
+                {
+                    Helpers.ShowDialogMessage("error", "Item Release forwarding failed.");
+                    return;
+                }
+
+                Helpers.ShowDialogMessage("success", "Item Release forwarded successfully.");
+
+                SetMode(IRMode.View);
+                await LoadItemReleases();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Forward failed");
+                Helpers.ShowDialogMessage("error", ex.Message);
+            }
+            finally
+            {
+                btn_forward.Enabled = true;
+            }
         }
 
         private async void btn_cancel_Click(object sender, EventArgs e)

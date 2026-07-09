@@ -27,24 +27,13 @@ namespace smpc_dispatching.UI.Views.Logistics
         public LogisticsRoutePanelUC()
         {
             InitializeComponent();
-            cmb_ship_type.Items.AddRange(new object[] { "Delivery", "Pickup", "Return", "Other" });
+            cmb_ship_type.Items.AddRange(new object[] { "Delivery", "Pickup"});
             AddTemplateCostRows();
         }
 
         public void SetRouteNumber(int number)
         {
             lbl_header.Text = $"ROUTE #{number}";
-        }
-
-        public void SetClientSupplierOptions(IEnumerable<BPI> options)
-        {
-            var selected = cmb_client_supplier.Text;
-
-            cmb_client_supplier.DataSource = options?.ToList() ?? new List<BPI>();
-            cmb_client_supplier.DisplayMember = "Name";
-            cmb_client_supplier.ValueMember = "Name";
-
-            cmb_client_supplier.Text = selected;
         }
 
         public void HideRemoveButton()
@@ -105,7 +94,7 @@ namespace smpc_dispatching.UI.Views.Logistics
             txt_reference_doc.Text = route.ReferenceDoc;
             txt_delivery_receipt.Text = route.DeliveryReceiptDoc;
             txt_sales_invoice.Text = route.SalesInvoiceDoc;
-            cmb_client_supplier.Text = route.ClientSupplier;
+            txt_client_supplier.Text = route.ClientSupplier;
             txt_location.Text = route.Location;
             txt_receiver.Text = route.Receiver;
             txt_contact_no.Text = route.ContactNo;
@@ -139,7 +128,7 @@ namespace smpc_dispatching.UI.Views.Logistics
                 ReferenceDoc = txt_reference_doc.Text,
                 DeliveryReceiptDoc = txt_delivery_receipt.Text,
                 SalesInvoiceDoc = txt_sales_invoice.Text,
-                ClientSupplier = cmb_client_supplier.Text,
+                ClientSupplier = txt_client_supplier.Text,
                 Location = txt_location.Text,
                 Receiver = txt_receiver.Text,
                 ContactNo = txt_contact_no.Text,

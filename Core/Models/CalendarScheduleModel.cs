@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 
 
 namespace smpc_dispatching.Core.Models {
@@ -39,6 +40,17 @@ namespace smpc_dispatching.Core.Models {
 
         [JsonProperty("notes")]
         public string Notes { get; set; }
+
+        // Logistics-only fields. The backend embeds these as top-level JSON keys
+        // (Go struct embedding without a json tag flattens them), not nested under
+        // "content" like SalesCalendarScheduleContent/etc. expect, so they have to
+        // live directly on the base class to actually deserialize. Blank/null for
+        // Sales and Engineering schedules.
+        [JsonProperty("vehicle_id")]
+        public int VehicleId { get; set; }
+
+        [JsonProperty("routes")]
+        public List<LogisticsRouteModel> Routes { get; set; }
     }
 
     public class EngineeringCalendarScheduleContent

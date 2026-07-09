@@ -60,8 +60,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.label1 = new System.Windows.Forms.Label();
             this.pnl_footer = new System.Windows.Forms.Panel();
             this.chk_is_forward = new System.Windows.Forms.CheckBox();
-            this.txt_received_by = new System.Windows.Forms.TextBox();
-            this.cmb_received_by_try = new System.Windows.Forms.ComboBox();
+            this.cmb_received_by = new System.Windows.Forms.ComboBox();
             this.btn_forward = new System.Windows.Forms.Button();
             this.txt_issued_by = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
@@ -382,8 +381,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             // pnl_footer
             // 
             this.pnl_footer.Controls.Add(this.chk_is_forward);
-            this.pnl_footer.Controls.Add(this.txt_received_by);
-            this.pnl_footer.Controls.Add(this.cmb_received_by_try);
+            this.pnl_footer.Controls.Add(this.cmb_received_by);
             this.pnl_footer.Controls.Add(this.btn_forward);
             this.pnl_footer.Controls.Add(this.txt_issued_by);
             this.pnl_footer.Controls.Add(this.label12);
@@ -408,32 +406,16 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.chk_is_forward.TabIndex = 40;
             this.chk_is_forward.Text = "IsForward";
             this.chk_is_forward.UseVisualStyleBackColor = true;
-            // 
-            // txt_received_by
-            // 
-            this.txt_received_by.Location = new System.Drawing.Point(139, 49);
-            this.txt_received_by.Name = "txt_received_by";
-            this.txt_received_by.Size = new System.Drawing.Size(200, 20);
-            this.txt_received_by.TabIndex = 39;
-            // 
-            // cmb_received_by_try
-            // 
-            this.cmb_received_by_try.FormattingEnabled = true;
-            this.cmb_received_by_try.Items.AddRange(new object[] {
-            "Management",
-            "Sales",
-            "Logistics",
-            "Engineering",
-            "Accounting",
-            "Purchasing",
-            "Warehouse"});
-            this.cmb_received_by_try.Location = new System.Drawing.Point(139, 75);
-            this.cmb_received_by_try.Name = "cmb_received_by_try";
-            this.cmb_received_by_try.Size = new System.Drawing.Size(200, 21);
-            this.cmb_received_by_try.TabIndex = 38;
-            this.cmb_received_by_try.Tag = "DYNAMIC, REQUIRED";
-            this.cmb_received_by_try.Visible = false;
-            // 
+            //
+            // cmb_received_by
+            //
+            this.cmb_received_by.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_received_by.FormattingEnabled = true;
+            this.cmb_received_by.Location = new System.Drawing.Point(139, 49);
+            this.cmb_received_by.Name = "cmb_received_by";
+            this.cmb_received_by.Size = new System.Drawing.Size(200, 21);
+            this.cmb_received_by.TabIndex = 39;
+            //
             // btn_forward
             // 
             this.btn_forward.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -763,8 +745,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
         private System.Windows.Forms.Button btn_cancel_request;
         private System.Windows.Forms.Panel pnl_body;
         private System.Windows.Forms.DataGridView dgv_details;
-        private System.Windows.Forms.TextBox txt_received_by;
-        private System.Windows.Forms.ComboBox cmb_received_by_try;
+        private System.Windows.Forms.ComboBox cmb_received_by;
         private System.Windows.Forms.CheckBox chk_is_forward;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txt_sales_order_id;
