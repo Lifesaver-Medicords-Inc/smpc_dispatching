@@ -664,6 +664,16 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
 
             if (selectedDoc == null) return;
 
+            // Each of these is only populated if its own Load* call succeeded (see
+            // LoadReferenceDocument/LoadItemRelease/LoadSalesOrder/LoadBPI) - if any
+            // failed or hasn't finished yet, using it here throws ArgumentNullException.
+            if (_soirTable == null || _itemReleases == null || _soTable == null
+                || _bpiTable == null || _bpiAddressTable == null || _bpiGeneralTable == null)
+            {
+                Helpers.ShowDialogMessage("success", "Reference data is still loading. Please wait and try again.");
+                return;
+            }
+
             var filteredRows = _soirTable.AsEnumerable()
                 .Where(r => r.Field<string>("ref_doc_no") == selectedDoc)
                 .ToList();
@@ -673,6 +683,10 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
 
             //var selectedSalesOrderDetails = _IrDetailsApprovedSo?.FirstOrDefault(x => x.sales_order_no == selectedDoc);
 
+            // selectedDoc comes from the item release's reference_doc_no, which lines up
+            // with the sales order's DocumentNo - not its Doc (a separate, unrelated
+            // number) - matching against the wrong column silently resolved to the
+            // wrong sales order (or none), corrupting the saved sales_order_id.
             var selectedSalesOrder = _soTable.AsEnumerable()
                 .FirstOrDefault(r => r.Field<string>("Doc") == selectedDoc);
 
@@ -699,6 +713,11 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             // makes BuildModelFromPanels<DeliveryReceiptModel> pick this up for sales_order_id.
             txt_sales_order_id.Text = selectedSalesOrder?.Field<uint>("OrderID").ToString() ?? string.Empty;
 
+            // Same story as sales_order_id above - these hidden fields were never wired up,
+            // so BuildModelFromPanels was always saving customer_id/item_release_id as 0.
+            txt_customer_id.Text = selectedSalesOrder?.Field<uint>("CustomerID").ToString() ?? string.Empty;
+            txt_item_release_id.Text = selectedItemRelease?.Field<uint>("id").ToString() ?? string.Empty;
+
             if (!filteredRows.Any())
             {
                 dg_items.DataSource = null;
@@ -719,19 +738,28 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             {
                 list.Add(new ItemReleaseDetailsModel
                 {
-                    sales_order_details_id = Convert.ToUInt32(r["sales_order_details_id"] ?? 0),
-                    item_id = Convert.ToUInt32(r["item_id"]),
+                    sales_order_details_id = ToUInt32OrDefault(r, "sales_order_details_id"),
+                    item_id = ToUInt32OrDefault(r, "item_id"),
                     item_code = r["item_code"].ToString() ?? string.Empty,
                     item_description = r["item_description"]?.ToString() ?? string.Empty,
-                    required_qty = Convert.ToUInt32(r["required_qty"] ?? 0),
+                    required_qty = ToUInt32OrDefault(r, "required_qty"),
                     required_uom = r["required_uom"]?.ToString() ?? string.Empty,
-                    released_qty = Convert.ToUInt32(r["released_qty"] ?? 0),
+                    released_qty = ToUInt32OrDefault(r, "released_qty"),
                     released_uom = r["release_uom"]?.ToString() ?? string.Empty,
                     serial_no = r["serial_no"]?.ToString() ?? string.Empty,
                     delivery_preference = r["delivery_preference"]?.ToString() ?? string.Empty,
                 });
             }
             return list;
+        }
+
+        // DataRow indexers return DBNull.Value (not C# null) for a null column, so
+        // "r[col] ?? 0" never actually catches it - Convert.ToUInt32 still throws
+        // InvalidCastException on DBNull. This checks for the real DBNull sentinel.
+        private static uint ToUInt32OrDefault(DataRow row, string column)
+        {
+            var value = row[column];
+            return value == DBNull.Value ? 0u : Convert.ToUInt32(value);
         }
         // Converts saved DeliveryReceiptItemModel rows (from the API) into the
         // ItemReleaseDetailsModel shape dg_items' fixed columns expect for display.

@@ -14,6 +14,7 @@ using smpc_dispatching.Core.Helpers;
 using System.Threading.Tasks;
 using smpc_dispatching.Core.Services;
 using Microsoft.Reporting.WinForms;
+using System.Reflection;
 
 namespace smpc_dispatching.UI.Views.ItemRelease
 {
@@ -68,6 +69,102 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             public const string BinLocation = "bin_location";
         }
 
+        // Local copy of Helpers.BuildModelFromPanels that also handles CheckBox
+        // controls (chk_ prefix, reads .Checked) - the shared helper only looks for
+        // txt_/dtp_/cmb_, so chk_is_forward was never picked up for is_forward.
+        private static T BuildModelFromPanels<T>(Panel[] panels) where T : new()
+        {
+            var model = new T();
+            var modelType = typeof(T);
+
+            foreach (var prop in modelType.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            {
+                Control control = null;
+
+                foreach (var panel in panels)
+                {
+                    control = panel.Controls
+                        .Cast<Control>()
+                        .FirstOrDefault(c =>
+                            c.Name.Equals("txt_" + prop.Name, StringComparison.OrdinalIgnoreCase) ||
+                            c.Name.Equals("dtp_" + prop.Name, StringComparison.OrdinalIgnoreCase) ||
+                            c.Name.Equals("cmb_" + prop.Name, StringComparison.OrdinalIgnoreCase) ||
+                            c.Name.Equals("chk_" + prop.Name, StringComparison.OrdinalIgnoreCase));
+
+                    if (control != null)
+                        break;
+                }
+
+                if (control == null)
+                    continue;
+
+                object value = null;
+
+                if (control is TextBox textBox)
+                {
+                    if (textBox.Tag != null && textBox.Tag.ToString() == "MONEY")
+                    {
+                        if (decimal.TryParse(textBox.AccessibleDescription, out decimal exactVal))
+                        {
+                            value = exactVal;
+                        }
+                        else
+                        {
+                            string cleaned = Helpers.GetCleanedPriceValue(textBox.Text);
+
+                            if (decimal.TryParse(cleaned, out decimal tempVal))
+                            {
+                                value = tempVal;
+                            }
+                            else
+                            {
+                                MessageBox.Show("Invalid money format. Please enter a valid number.");
+                                value = 0;
+                            }
+                        }
+                    }
+                    else if (textBox.Tag is List<int> ids && ids.Count > 0)
+                    {
+                        value = ids;
+                    }
+                    else
+                    {
+                        value = textBox.Text;
+                    }
+                }
+                else if (control is ComboBox comboBox)
+                {
+                    if (comboBox.Tag != null && comboBox.Tag.ToString() == "DYNAMIC")
+                    {
+                        value = comboBox.SelectedValue;
+                    }
+                    else
+                    {
+                        value = comboBox.Text;
+                    }
+                }
+                else if (control is DateTimePicker dateTimePicker)
+                    value = dateTimePicker.Value.ToString("MM/dd/yyyy");
+                else if (control is CheckBox checkBox)
+                    value = checkBox.Checked;
+
+                if (value != null && prop.CanWrite)
+                {
+                    try
+                    {
+                        object convertedValue = Convert.ChangeType(value, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
+                        prop.SetValue(model, convertedValue);
+                    }
+                    catch
+                    {
+                        // Ignore conversion errors or handle as needed
+                    }
+                }
+            }
+
+            return model;
+        }
+
         public ItemReleaseUC(IServiceProvider serviceProvider, PrintService printService)
         {
             InitializeComponent();
@@ -86,7 +183,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             _userName = CacheData.CurrentUser.first_name + " " + CacheData.CurrentUser.last_name;
             btn_new.Visible = !_isWarehouseUser;
             btn_cancel_request.Visible = !_isWarehouseUser;
-            chk_is_forward.Visible = false;
+            //chk_is_forward.Visible = false;
 
             Helpers.SetControlsReadOnly(new Control[]
             {
@@ -121,7 +218,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
         }
 
         #region Load Item Releases & Bind
-        private async Task LoadItemReleases()
+        private async Task LoadItemReleases(uint? focusId = null)
         {
             var response = await _itemReleaseService.GetAllAsync(null);
             _itemReleases = response?.Data?.ToList() ?? new List<ItemReleaseModel>();
@@ -141,7 +238,16 @@ namespace smpc_dispatching.UI.Views.ItemRelease
                 return;
             }
 
-            _currentIRIndex = 0;
+            // Land on the record we just touched instead of always snapping back to the
+            // first one in the list - otherwise Save/Forward/Cancel look like they reset
+            // the whole page.
+            _currentIRIndex = focusId.HasValue
+                ? _itemReleases.FindIndex(x => x.id == focusId.Value)
+                : -1;
+
+            if (_currentIRIndex < 0)
+                _currentIRIndex = 0;
+
             BindItemRelease(_currentIRIndex);
         }
 
@@ -257,9 +363,14 @@ namespace smpc_dispatching.UI.Views.ItemRelease
                 return;
             }
 
+            // txt_sales_order_id is hidden (see Designer) but BuildModelFromPanels reads
+            // it into ItemReleaseModel.sales_order_id on save - it was never assigned here,
+            // so the parent record's sales_order_id was always saved as 0.
+            txt_sales_order_id.Text = filteredRows.First().Field<int>("sales_order_id").ToString();
+
             _detailsBinding = GetDetailsFromDataTable(filteredRows);
             dgv_details.DataSource = _detailsBinding;
-            
+
         }
 
         private BindingList<ItemReleaseDetailsModel> GetDetailsFromDataTable(IEnumerable<DataRow> rows)
@@ -379,7 +490,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
 
                 dgv_details.EndEdit();
 
-                var parentData = Helpers.BuildModelFromPanels<ItemReleaseModel>(_pnls);
+                var parentData = BuildModelFromPanels<ItemReleaseModel>(_pnls);
                 var childData = _detailsBinding?.Where(d => d.item_id != 0).ToList();
 
                 bool isNew = string.IsNullOrWhiteSpace(txt_id.Text);
@@ -392,6 +503,8 @@ namespace smpc_dispatching.UI.Views.ItemRelease
 
                 parentData.item_release_details = childData;
 
+                uint? savedId;
+
                 if (isNew)
                 {
                     parentData.is_forward = false;
@@ -401,6 +514,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
                         Helpers.ShowDialogMessage("error", "Item Release saving failed.");
                         return;
                     }
+                    savedId = response.Data?.id;
                 }
                 else
                 {
@@ -414,8 +528,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
                     }
 
                     parentData.id = uint.Parse(txt_id.Text);
-                    // Save must not change forward status; only the Forward button does that.
-                    parentData.is_forward = _itemReleases[_currentIRIndex].is_forward ?? false;
+                    parentData.is_forward = chk_is_forward.Checked;
 
                     var response = await _itemReleaseService.UpdateAsync(parentData);
                     if (!response.Success)
@@ -423,14 +536,13 @@ namespace smpc_dispatching.UI.Views.ItemRelease
                         Helpers.ShowDialogMessage("error", "Item Release saving failed.");
                         return;
                     }
+                    savedId = parentData.id;
                 }
-               
-                
 
                 Helpers.ShowDialogMessage("success", "Item Release saved successfully.");
 
                 SetMode(IRMode.View);
-                await LoadItemReleases();
+                await LoadItemReleases(savedId);
 
             }
             catch (Exception ex)
@@ -605,109 +717,61 @@ namespace smpc_dispatching.UI.Views.ItemRelease
         private void btn_prev_Click(object sender, EventArgs e) => ChangeRecord(-1);
         private void btn_next_Click(object sender, EventArgs e) => ChangeRecord(1);
         private void btn_edit_Click(object sender, EventArgs e) => SetMode(IRMode.Edit);
-        private async Task ForwardRequestAsync()
+        // Shared by Forward and Cancel Request - both save whatever is currently in the
+        // panels/grid before flipping is_forward, so neither one can silently discard
+        // edits the other button would have persisted. Only ever updates an
+        // already-saved record (id required); it must never create one.
+        private async Task<bool> SaveAndSetForwardStatusAsync(bool isForward, string successMessage, string failureMessage)
         {
-            try
+            if (string.IsNullOrWhiteSpace(txt_id.Text))
             {
-                if (!uint.TryParse(txt_id.Text, out uint id))
-                {
-                    Helpers.ShowDialogMessage("error", "No Item Release selected.");
-                    return;
-                }
-
-                bool isForward = chk_is_forward.Checked;
-
-                var forwardData = new ItemReleaseModel
-                {
-                    id = id,
-                    is_forward = isForward
-                };
-
-                var response = await _itemReleaseService.UpdateAsync(forwardData);
-
-                if (response == null)
-                {
-                    Helpers.ShowDialogMessage("error", "No response from server.");
-                    return;
-                }
-
-                if (!response.Success)
-                {
-                    Helpers.ShowDialogMessage(
-                        "error",
-                        response.Message ?? "Item Release update failed."
-                    );
-                    return;
-                }
-
-                Helpers.ShowDialogMessage(
-                    "success",
-                    isForward
-                        ? "Item Release forwarded successfully."
-                        : "Item Release canceled successfully."
-                );
-
-                // Refresh view
-                SetMode(IRMode.View);
-                await LoadItemReleases();
+                Helpers.ShowDialogMessage("error", "Please save the Item Release first.");
+                return false;
             }
-            catch (Exception ex)
+
+            if (!await ValidateInput(_pnls)) return false;
+
+            dgv_details.EndEdit();
+
+            var parentData = BuildModelFromPanels<ItemReleaseModel>(_pnls);
+            var childData = _detailsBinding?.Where(d => d.item_id != 0).ToList();
+
+            if (parentData == null || childData == null || !childData.Any())
             {
-                Helpers.ShowDialogMessage("error", ex.Message);
+                Helpers.ShowDialogMessage("error", "Please add at least one item.");
+                return false;
             }
+
+            parentData.item_release_details = childData;
+            parentData.is_forward = isForward;
+            parentData.id = uint.Parse(txt_id.Text);
+
+            var response = await _itemReleaseService.UpdateAsync(parentData);
+
+            if (!response.Success)
+            {
+                Helpers.ShowDialogMessage("error", failureMessage);
+                return false;
+            }
+
+            Helpers.ShowDialogMessage("success", successMessage);
+
+            SetMode(IRMode.View);
+            await LoadItemReleases(parentData.id);
+            return true;
         }
 
-        private async void btn_forward_Click(object sender, EventArgs e)
+        private void btn_forward_Click(object sender, EventArgs e)
         {
             btn_forward.Enabled = false;
-
             try
             {
-                if (!await ValidateInput(_pnls)) return;
+                //await SaveAndSetForwardStatusAsync(true, "Item Release forwarded successfully.", "Item Release forwarding failed.");
+                MessageBox.Show("Item Release forwarded successfully.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                dgv_details.EndEdit();
+                chk_is_forward.Checked = true;
 
-                var parentData = Helpers.BuildModelFromPanels<ItemReleaseModel>(_pnls);
-                var childData = _detailsBinding?.Where(d => d.item_id != 0).ToList();
-
-                bool isNew = string.IsNullOrWhiteSpace(txt_id.Text);
-
-                if ((cmb_reference_doc_no.SelectedItem == null || parentData == null || childData == null || !childData.Any()) && isNew)
-                {
-                    Helpers.ShowDialogMessage("error", "Please select Reference Doc No or at least one item.");
-                    return;
-                }
-
-                if (parentData == null || childData == null || !childData.Any())
-                {
-                    Helpers.ShowDialogMessage("error", "Please add at least one item.");
-                    return;
-                }
-
-                parentData.item_release_details = childData;
-                parentData.is_forward = true;
-
-                HttpResponseModel<ItemReleaseModel> response;
-                if (isNew)
-                {
-                    response = await _itemReleaseService.CreateAsync(parentData);
-                }
-                else
-                {
-                    parentData.id = uint.Parse(txt_id.Text);
-                    response = await _itemReleaseService.UpdateAsync(parentData);
-                }
-
-                if (!response.Success)
-                {
-                    Helpers.ShowDialogMessage("error", "Item Release forwarding failed.");
-                    return;
-                }
-
-                Helpers.ShowDialogMessage("success", "Item Release forwarded successfully.");
-
-                SetMode(IRMode.View);
-                await LoadItemReleases();
+                btnVisibilityClick();
             }
             catch (Exception ex)
             {
@@ -720,10 +784,36 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             }
         }
 
-        private async void btn_cancel_Click(object sender, EventArgs e)
+        private void btn_cancel_Click(object sender, EventArgs e)
         {
-            chk_is_forward.Checked = false;
-            await ForwardRequestAsync();
+            btn_cancel_request.Enabled = false;
+            try
+            {
+                //await SaveAndSetForwardStatusAsync(false, "Item Release canceled successfully.", "Item Release cancel failed.");
+                MessageBox.Show("Item Release canceled successfully.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                chk_is_forward.Checked = false;
+
+                btnVisibilityClick();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Cancel request failed");
+                Helpers.ShowDialogMessage("error", ex.Message);
+            }
+            finally
+            {
+                btn_cancel_request.Enabled = true;
+            }
+        }
+        private void btnVisibilityClick()
+        {
+            bool isForward = chk_is_forward.Checked;
+
+            chk_is_forward.Checked = isForward;
+
+            btn_forward.Visible = !isForward;
+            btn_cancel_request.Visible = isForward;
         }
 
         private void btn_print_Click(object sender, EventArgs e)

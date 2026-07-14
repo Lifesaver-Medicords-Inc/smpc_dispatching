@@ -30,7 +30,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ItemReleaseUC));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pnl_header = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.txt_sales_order_id = new System.Windows.Forms.TextBox();
@@ -132,7 +132,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             // 
             // txt_sales_order_id
             // 
-            this.txt_sales_order_id.Location = new System.Drawing.Point(1029, 130);
+            this.txt_sales_order_id.Location = new System.Drawing.Point(1239, 279);
             this.txt_sales_order_id.Name = "txt_sales_order_id";
             this.txt_sales_order_id.Size = new System.Drawing.Size(200, 20);
             this.txt_sales_order_id.TabIndex = 99;
@@ -406,16 +406,17 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.chk_is_forward.TabIndex = 40;
             this.chk_is_forward.Text = "IsForward";
             this.chk_is_forward.UseVisualStyleBackColor = true;
-            //
+            this.chk_is_forward.Visible = false;
+            // 
             // cmb_received_by
-            //
+            // 
             this.cmb_received_by.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_received_by.FormattingEnabled = true;
             this.cmb_received_by.Location = new System.Drawing.Point(139, 49);
             this.cmb_received_by.Name = "cmb_received_by";
             this.cmb_received_by.Size = new System.Drawing.Size(200, 21);
             this.cmb_received_by.TabIndex = 39;
-            //
+            // 
             // btn_forward
             // 
             this.btn_forward.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -514,14 +515,14 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             this.dgv_details.AllowUserToAddRows = false;
             this.dgv_details.AllowUserToDeleteRows = false;
             this.dgv_details.AllowUserToResizeColumns = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_details.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_details.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgv_details.ColumnHeadersHeight = 40;
             this.dgv_details.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.number,
