@@ -745,7 +745,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
                     required_qty = ToUInt32OrDefault(r, "required_qty"),
                     required_uom = r["required_uom"]?.ToString() ?? string.Empty,
                     released_qty = ToUInt32OrDefault(r, "released_qty"),
-                    released_uom = r["release_uom"]?.ToString() ?? string.Empty,
+                    released_uom = r["released_uom"]?.ToString() ?? string.Empty,
                     serial_no = r["serial_no"]?.ToString() ?? string.Empty,
                     delivery_preference = r["delivery_preference"]?.ToString() ?? string.Empty,
                 });

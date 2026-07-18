@@ -7,11 +7,23 @@ using Serilog.Events;
 namespace smpc_dispatching.Config {
    public static class LoggerConfig {
         public static void Configure() {
-            // Get base directory (project root when running from bin)
-            string projectRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, @"..\.."));
-
-            // Logs folder inside the base directory
-            string logDirectory = Path.Combine(projectRoot, "Core/Logs");
+            // Always write logs to a stable, per-user, always-writable location
+            // (%LOCALAPPDATA%\smpc_dispatching\Logs), instead of deriving a
+            // "project root" via AppContext.BaseDirectory\..\.. .
+            //
+            // That relative-path trick only worked when running from
+            // bin\Debug\ inside the source checkout. Under a ClickOnce
+            // publish, AppContext.BaseDirectory is a virtualized install
+            // directory (AppData\Local\Apps\2.0\...), so "..\.." landed
+            // somewhere else entirely and Directory.CreateDirectory could
+            // throw (UnauthorizedAccessException/DirectoryNotFoundException).
+            // Since this runs as the very first line of Main(), before any
+            // UI is shown, that exception was unhandled and killed the
+            // process silently - the app would never appear.
+            string logDirectory = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "smpc_dispatching",
+                "Logs");
 
             // Ensure Logs folder exists
             Directory.CreateDirectory(logDirectory);

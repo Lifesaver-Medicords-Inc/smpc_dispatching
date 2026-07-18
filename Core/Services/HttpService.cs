@@ -23,12 +23,24 @@ namespace smpc_dispatching.Core.Services {
         public HttpService(IConfiguration configuration) {
             _configuration = configuration;
 
+            var apiBaseUrl = _configuration["AppSettings:ApiBaseUrl"];
+            if (string.IsNullOrWhiteSpace(apiBaseUrl)) {
+                throw new InvalidOperationException(
+                    "AppSettings:ApiBaseUrl is missing or empty. This usually means " +
+                    "appsettings.{Environment}.json (matching the \"Environment\" key " +
+                    "in App.config) was not found next to the running executable, or " +
+                    "the running copy of the app is an old/stale install that predates " +
+                    "this setting. Reinstall from the latest publish and confirm " +
+                    "appsettings.Production.json / appsettings.Development.json exist " +
+                    "alongside smpc_dispatching.exe.");
+            }
+
             var handler = new HttpClientHandler {
                 CookieContainer = new CookieContainer()
             };
 
             _client = new HttpClient(handler) {
-                BaseAddress = new Uri(_configuration["AppSettings:ApiBaseUrl"])
+                BaseAddress = new Uri(apiBaseUrl)
             };
         }
 

@@ -18,6 +18,7 @@ using smpc_dispatching.UI.Views.Sales;
 using smpc_dispatching.UI.Views.SalesOrder;
 using System;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
@@ -38,37 +39,117 @@ namespace smpc_dispatching {
         [STAThread]
         static void Main() {
 
-            LoggerConfig.Configure();
+            // Catch anything raised on the UI thread once the message loop is
+            // pumping (event handlers, etc.) and log + show it instead of
+            // letting the app die invisibly.
+            Application.ThreadException += (sender, e) => {
+                TryLogFatal(e.Exception);
+                MessageBox.Show(e.Exception.ToString(), "Unexpected error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            };
+            // Catch anything raised off the UI thread, or before the message
+            // loop starts, that isn't otherwise caught below.
+            AppDomain.CurrentDomain.UnhandledException += (sender, e) => {
+                var ex = e.ExceptionObject as Exception;
+                TryLogFatal(ex);
+                MessageBox.Show(ex?.ToString() ?? e.ExceptionObject?.ToString(),
+                    "Fatal error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            };
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 
-            // change else for Development and Production
-            var env = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Development";
+            try {
+                LoggerConfig.Configure();
 
-            // Build configuration
-            Configuration = new ConfigurationBuilder()
-               .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-               .AddJsonFile($"appsettings.{env}.json", optional: true, reloadOnChange: true)
-               .AddEnvironmentVariables()
-               .Build();
+                // Environment is controlled by the <add key="Environment" .../> setting
+                // in App.config. Switch it to "Development" or "Production" there before
+                // publishing/deploying. Defaults to "Production" (fail-safe) if missing
+                // or blank, so a forgotten/removed setting can't silently point a
+                // deployed build at a developer's local API.
+                var env = System.Configuration.ConfigurationManager.AppSettings["Environment"];
+                if (string.IsNullOrWhiteSpace(env)) {
+                    env = "Production";
+                }
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+                // Build configuration. Under ClickOnce, "data files" (which VS can
+                // auto-classify certain content files as, shown as "Included (Auto)"
+                // in the Application Files dialog) are installed into a separate,
+                // persistent Data Directory rather than next to the .exe. So the
+                // config file may legitimately live in either location depending on
+                // how ClickOnce chose to classify it - check both.
+                var fileName = $"appsettings.{env}.json";
+                var candidateDirs = new System.Collections.Generic.List<string> {
+                    AppDomain.CurrentDomain.BaseDirectory
+                };
+                try {
+                    if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed) {
+                        var dataDir = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.DataDirectory;
+                        if (!string.IsNullOrWhiteSpace(dataDir)) {
+                            candidateDirs.Add(dataDir);
+                        }
+                    }
+                } catch {
+                    // Not running under ClickOnce (e.g. Debug/F5) - ignore.
+                }
 
-            var culture = new CultureInfo("en-PH");
+                var baseDir = candidateDirs.FirstOrDefault(d =>
+                    System.IO.File.Exists(System.IO.Path.Combine(d, fileName))) ?? candidateDirs[0];
 
-            Thread.CurrentThread.CurrentCulture = culture;
-            Thread.CurrentThread.CurrentUICulture = culture;
+                Configuration = new ConfigurationBuilder()
+                   .SetBasePath(baseDir)
+                   .AddJsonFile(fileName, optional: true, reloadOnChange: true)
+                   .AddEnvironmentVariables()
+                   .Build();
 
-            // Create a service collection
-            var services = new ServiceCollection();
+                // Fail loud, with every path checked, instead of letting a
+                // missing/undeployed config file surface later as a cryptic null
+                // reference deep inside DI-resolved services.
+                if (string.IsNullOrWhiteSpace(Configuration["AppSettings:ApiBaseUrl"])) {
+                    var checkedPaths = string.Join("\n", candidateDirs.Select(d =>
+                        $"  {System.IO.Path.Combine(d, fileName)} (exists: {System.IO.File.Exists(System.IO.Path.Combine(d, fileName))})"));
+                    throw new InvalidOperationException(
+                        "AppSettings:ApiBaseUrl could not be loaded.\n" +
+                        $"Environment (from App.config): \"{env}\"\n" +
+                        $"Checked:\n{checkedPaths}\n" +
+                        "If none exist, this file was not deployed - check the ClickOnce " +
+                        "\"Application Files\" publish settings. If one exists, check its " +
+                        "JSON structure matches { \"AppSettings\": { \"ApiBaseUrl\": \"...\" } }.");
+                }
 
-            // Register your services
-            ConfigureServices(services);
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
 
-            // Build the provider
-            using (var serviceProvider = services.BuildServiceProvider()) {
-                // Resolve the startup form (with dependencies)
-                var loginForm = serviceProvider.GetRequiredService<LoginForm>();
-                Application.Run(loginForm);
+                var culture = new CultureInfo("en-PH");
+
+                Thread.CurrentThread.CurrentCulture = culture;
+                Thread.CurrentThread.CurrentUICulture = culture;
+
+                // Create a service collection
+                var services = new ServiceCollection();
+
+                // Register your services
+                ConfigureServices(services);
+
+                // Build the provider
+                using (var serviceProvider = services.BuildServiceProvider()) {
+                    // Resolve the startup form (with dependencies)
+                    var loginForm = serviceProvider.GetRequiredService<LoginForm>();
+                    Application.Run(loginForm);
+                }
+            } catch (Exception ex) {
+                // Startup failed before (or while) the message loop could take
+                // over - without this, the process would just exit and the
+                // app would appear to "not open" with no explanation.
+                TryLogFatal(ex);
+                MessageBox.Show(ex.ToString(), "Failed to start",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private static void TryLogFatal(Exception ex) {
+            try {
+                Serilog.Log.Logger?.Fatal(ex, "Unhandled exception");
+            } catch {
+                // Logging itself must never throw out of a crash handler.
             }
         }
         private static void ConfigureServices(ServiceCollection services) {

@@ -17,7 +17,7 @@
     </NuGetPackageImportStamp>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <TargetFrameworkProfile />
-    <PublishUrl>D:\LEM\Publish\Dispatching\</PublishUrl>
+    <PublishUrl>D:\Gids\Publish\Dispatching\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -27,7 +27,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>6</ApplicationRevision>
+    <ApplicationRevision>19</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -612,12 +612,6 @@
     <EmbeddedResource Include="UI\Views\Sales\SalesViewUserControl.resx">
       <DependentUpon>SalesViewUserControl.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="appsettings.Development.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="appsettings.Production.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\smpc_dispatching.Properties.Resources.datasource" />
     <None Include="Properties\DataSources\smpc_dispatching.Properties.Settings.datasource" />
@@ -637,6 +631,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Core\Logs\" />
+    <Folder Include="x64\" />
+    <Folder Include="x86\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icons8-next-20.png" />
@@ -663,6 +659,12 @@
     <None Include="Resources\icons8-search-20.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="appsettings.Development.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="appsettings.Production.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Icons\big_file.png" />
     <Content Include="Icons\file.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -696,6 +698,19 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="SqlServerTypes\x86\SqlServerSpatial140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <!-- System.Data.SQLite's NuGet package copies these into the build output
+         via its own .targets file (Stub.System.Data.SQLite.Core.NetFramework.targets),
+         not via a declared project item - so ClickOnce's Application Files list
+         never sees them and they don't get deployed, even though local F5 runs
+         work fine because the file is physically present in bin\<Config>\. -->
+    <Content Include="packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\x86\SQLite.Interop.dll">
+      <Link>x86\SQLite.Interop.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\x64\SQLite.Interop.dll">
+      <Link>x64\SQLite.Interop.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

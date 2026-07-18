@@ -169,8 +169,7 @@ namespace smpc_dispatching.Core.Models {
         public string required_uom { get; set; }
         public string delivery_preference { get; set; }
         public int? released_qty { get; set; }
-        //public int released_uom_id { get; set; }
-        public string release_uom { get; set; }
+        public string released_uom { get; set; }
 
         public string serial_no { get; set; }
     }
