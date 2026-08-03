@@ -8,6 +8,7 @@ using smpc_dispatching.UI.Forms;
 using smpc_dispatching.UI.Layout;
 using smpc_dispatching.UI.Shared;
 using smpc_dispatching.UI.Shared.Calendar;
+using smpc_dispatching.UI.Shared.RedBox;
 using smpc_dispatching.UI.Shared.CalendarEvent;
 using smpc_dispatching.UI.Views.Delivery_Receipt;
 using smpc_dispatching.UI.Views.Engineering;
@@ -184,6 +185,8 @@ namespace smpc_dispatching {
             services.AddScoped<IBpiService, BPIService>();
             services.AddScoped<IItemBinLocation<ItemBinLocationModel>, ItemBinLocation>();
             services.AddScoped<IHttpService, HttpService>();
+            services.AddScoped<IPurchasingActivePOService<PurchasingActivePOModel>, PurchasingActivePOService>();
+            services.AddScoped<IPurchasingPurchaseOrderService<PurchasingPurchaseOrderModel>, PurchasingPurchaseOrderService>();
 
             services.AddScoped<IGeoService, GeoService>();
             services.AddScoped(typeof(IDrawFolderTreeService<>), typeof(DrawFolderTreeService<>));
@@ -209,6 +212,7 @@ namespace smpc_dispatching {
             services.AddTransient<PickActivity>();
             services.AddTransient<DeliveryReceiptUC>();
             services.AddTransient<VehicleSetupUC>();
+            services.AddTransient<RedBoxUC>();
 
         }
     }

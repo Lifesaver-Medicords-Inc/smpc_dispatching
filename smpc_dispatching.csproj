@@ -27,7 +27,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>19</ApplicationRevision>
+    <ApplicationRevision>20</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -103,6 +103,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>download.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AjaxMin, Version=5.14.5506.26196, Culture=neutral, PublicKeyToken=21ef50ce11b5d80f, processorArchitecture=MSIL">
@@ -283,6 +286,8 @@
     <Compile Include="Core\Interfaces\ISalesOrderIRViewService.cs" />
     <Compile Include="Core\Interfaces\ISalesOrderWithApprovedIRDetailsService.cs" />
     <Compile Include="Core\Interfaces\ISalesOrderWithApprovedIRService.cs" />
+    <Compile Include="Core\Interfaces\IPurchasingActivePOService.cs" />
+    <Compile Include="Core\Interfaces\IPurchasingPurchaseOrderService.cs" />
     <Compile Include="Core\Interfaces\IShipTypeService.cs" />
     <Compile Include="Core\Interfaces\IVehicleService.cs" />
     <Compile Include="Core\Interfaces\IWarehouseService.cs" />
@@ -299,6 +304,8 @@
     <Compile Include="Core\Models\SalesCalendarScheduleModel.cs" />
     <Compile Include="Core\Models\SalesOrderWithApprovedIRModel.cs" />
     <Compile Include="Core\Models\ShipTypeModel.cs" />
+    <Compile Include="Core\Models\PurchasingActivePOModel.cs" />
+    <Compile Include="Core\Models\PurchasingPurchaseOrderModel.cs" />
     <Compile Include="Core\Services\BaseApiService.cs" />
     <Compile Include="Core\Services\BasePrintableDocument.cs" />
     <Compile Include="Core\Services\BPIService.cs" />
@@ -310,6 +317,8 @@
     <Compile Include="Core\Services\SalesOrderIRViewService.cs" />
     <Compile Include="Core\Services\SalesOrderWithApprovedIRDetailsService.cs" />
     <Compile Include="Core\Services\SalesOrderWithApprovedIRService.cs" />
+    <Compile Include="Core\Services\PurchasingActivePOService.cs" />
+    <Compile Include="Core\Services\PurchasingPurchaseOrderService.cs" />
     <Compile Include="Core\Services\ShipTypeService.cs" />
     <Compile Include="Core\Services\VehicleService.cs" />
     <Compile Include="Core\Services\WarehouseService.cs" />
@@ -452,6 +461,12 @@
     <Compile Include="UI\Views\Engineering\EngineeringViewUC.Designer.cs">
       <DependentUpon>EngineeringViewUC.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Shared\RedBox\RedBoxUC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Shared\RedBox\RedBoxUC.Designer.cs">
+      <DependentUpon>RedBoxUC.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Views\ItemRelease\ItemReleaseModals\ItemReleaseItems.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -518,6 +533,7 @@
     <Compile Include="UI\Views\Sales\SalesViewUserControl.Designer.cs">
       <DependentUpon>SalesViewUserControl.cs</DependentUpon>
     </Compile>
+    <Content Include="download.ico" />
     <Content Include="Printing\DeliveryReceiptReport.rdlc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -578,6 +594,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Views\Engineering\EngineeringViewUC.resx">
       <DependentUpon>EngineeringViewUC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Shared\RedBox\RedBoxUC.resx">
+      <DependentUpon>RedBoxUC.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Views\ItemRelease\ItemReleaseModals\ItemReleaseItems.resx">
       <DependentUpon>ItemReleaseItems.cs</DependentUpon>
@@ -706,11 +725,11 @@
          never sees them and they don't get deployed, even though local F5 runs
          work fine because the file is physically present in bin\<Config>\. -->
     <Content Include="packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\x86\SQLite.Interop.dll">
-      <Link>x86\SQLite.Interop.dll</Link>
+      <TargetPath>x86\SQLite.Interop.dll</TargetPath>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\x64\SQLite.Interop.dll">
-      <Link>x64\SQLite.Interop.dll</Link>
+      <TargetPath>x64\SQLite.Interop.dll</TargetPath>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

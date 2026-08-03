@@ -1,5 +1,7 @@
-﻿using smpc_dispatching.Core.Enum;
+﻿using Microsoft.Extensions.DependencyInjection;
+using smpc_dispatching.Core.Enum;
 using smpc_dispatching.Core.Interfaces;
+using smpc_dispatching.UI.Shared.RedBox;
 using System;
 using System.Drawing;
 using System.IO;
@@ -9,22 +11,39 @@ namespace smpc_dispatching.UI.Layout {
     public partial class MainLayout : Form {
 
         private readonly INavigationService _navigationService;
-        public MainLayout(INavigationService navigationService) {
+        private readonly IServiceProvider _serviceProvider;
+        public MainLayout(INavigationService navigationService, IServiceProvider serviceProvider) {
             _navigationService = navigationService;
+            _serviceProvider = serviceProvider;
             InitializeComponent();
         }
 
         private void MainLayout_Load(object sender, EventArgs e) {
             SetupnavigationBar();
-            
+
             TabControl.DrawMode = TabDrawMode.OwnerDrawFixed;
             TabControl.DrawItem += TabControl_DrawItem;
             TabControl.MouseDown += TabControl_MouseDown;
             statusStrip1.Dock = DockStyle.Bottom;
 
             StatusStrip();
+            SetupRedBox();
 
 
+        }
+
+        // Mounts the warehouse RED BOX dashboard into the permanent right-side red
+        // panel (previously just an empty colored placeholder). Resolved via DI like
+        // the other UserControls in this app, rather than instantiated directly, so it
+        // gets its constructor-injected services. Login has already completed by the
+        // time MainLayout loads (see Program.cs: LoginForm resolves MainLayout only
+        // after a successful login), so RedBoxUC can safely load data from its own
+        // Load event with no extra "wait for login" handshake needed.
+        private void SetupRedBox() {
+            var redBox = _serviceProvider.GetRequiredService<RedBoxUC>();
+            redBox.Dock = DockStyle.Fill;
+            innerContainer.Panel2.Controls.Clear();
+            innerContainer.Panel2.Controls.Add(redBox);
         }
         // LOAD TREE VIEW
         private void SetupnavigationBar() {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace smpc_dispatching.Core.Interfaces
 {
-    interface ISalesOrderWithApprovedIRService<T> : IGetViewService<T>
+    public interface ISalesOrderWithApprovedIRService<T> : IGetViewService<T>
     {
     }
 }
