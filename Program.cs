@@ -12,6 +12,7 @@ using smpc_dispatching.UI.Shared.RedBox;
 using smpc_dispatching.UI.Shared.CalendarEvent;
 using smpc_dispatching.UI.Views.Delivery_Receipt;
 using smpc_dispatching.UI.Views.Engineering;
+using smpc_dispatching.UI.Views.Inventory;
 using smpc_dispatching.UI.Views.ItemRelease;
 using smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals;
 using smpc_dispatching.UI.Views.Logistics;
@@ -189,6 +190,7 @@ namespace smpc_dispatching {
             services.AddScoped<IPurchasingPurchaseOrderService<PurchasingPurchaseOrderModel>, PurchasingPurchaseOrderService>();
 
             services.AddScoped<IGeoService, GeoService>();
+            services.AddScoped<IReservationApprovalService, ReservationApprovalService>();
             services.AddScoped(typeof(IDrawFolderTreeService<>), typeof(DrawFolderTreeService<>));
 
             //Forms
@@ -213,6 +215,7 @@ namespace smpc_dispatching {
             services.AddTransient<DeliveryReceiptUC>();
             services.AddTransient<VehicleSetupUC>();
             services.AddTransient<RedBoxUC>();
+            services.AddTransient<ReservationApprovalUC>();
 
         }
     }

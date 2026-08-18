@@ -4,6 +4,7 @@ using smpc_dispatching.Core.Models;
 using smpc_dispatching.UI.Shared;
 using smpc_dispatching.UI.Views.Delivery_Receipt;
 using smpc_dispatching.UI.Views.Engineering;
+using smpc_dispatching.UI.Views.Inventory;
 using smpc_dispatching.UI.Views.ItemRelease;
 using smpc_dispatching.UI.Views.Logistics;
 using smpc_dispatching.UI.Views.Sales;
@@ -78,6 +79,14 @@ namespace smpc_dispatching.Core.Services
                 Parent = null,
                 Title = "Item Release",
                 ViewFactory = () => _serviceProvider.GetRequiredService<ItemReleaseUC>()
+            };
+
+            _pages["RESERVATION_APPROVAL"] = new ViewControlModel
+            {
+                Code = "RESERVATION_APPROVAL",
+                Parent = null,
+                Title = "Reservation Approvals",
+                ViewFactory = () => _serviceProvider.GetRequiredService<ReservationApprovalUC>()
             };
 
             _pages["SETUP_COST_TYPE"] = new ViewControlModel

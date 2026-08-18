@@ -27,8 +27,22 @@ namespace smpc_dispatching.Core.Enum
 
         // CALENDAR
 
-        // VEHICLES 
+        // VEHICLES
         public const string VEHICLE = "vehicles";
+
+        // STOCK RESERVATION APPROVALS
+        //
+        // Deliberately NO leading "/" - HttpService's HttpClient.BaseAddress already ends
+        // in ".../api/" (see appsettings' ApiBaseUrl + how IR/item-releases below is built
+        // without a leading slash too), and .NET's URI combining rules treat a relative
+        // reference that starts with "/" as an ABSOLUTE PATH FROM THE HOST ROOT, discarding
+        // BaseAddress's own "/api" path segment entirely. That's exactly why this was
+        // hitting "/inventory/item_stocks/reservations/pending" (404) instead of
+        // "/api/inventory/item_stocks/reservations/pending" (the route actually registered
+        // by ERP_API's InventoryRoutes, mounted under app.Group("/api") in routes/root.go).
+        public const string RESERVATION_PENDING = "inventory/item_stocks/reservations/pending";
+        public const string RESERVATION_APPROVE = "inventory/item_stocks/reservations/{0}/approve";
+        public const string RESERVATION_REJECT = "inventory/item_stocks/reservations/{0}/reject";
 
     }
 }
