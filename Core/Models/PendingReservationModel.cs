@@ -36,6 +36,14 @@ namespace smpc_dispatching.Core.Models {
         [JsonProperty("document_no")]
         public string DocumentNo { get; set; }
 
+        // Off the parent quotation - who the stock is promised to, and for which
+        // project. ProjectName is empty for Quick Quotes (they have no project).
+        [JsonProperty("customer_name")]
+        public string CustomerName { get; set; }
+
+        [JsonProperty("project_name")]
+        public string ProjectName { get; set; }
+
         [JsonProperty("requested_by")]
         public string RequestedBy { get; set; }
 

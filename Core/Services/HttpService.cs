@@ -72,11 +72,20 @@ namespace smpc_dispatching.Core.Services {
 
                 string responseContent = await response.Content.ReadAsStringAsync();
 
-                // If not authenticated yet, try to get token from cookie
-                if (string.IsNullOrEmpty(SessionToken) && response.Headers.Contains("Set-Cookie")) {
+                // Always adopt whatever token the server just handed back, not just
+                // the first time SessionToken happens to be empty. SessionToken is
+                // static and lives for the whole process, so the old
+                // "only if empty" guard meant a fresh login (e.g. after logging out
+                // and back in without restarting the app, or after the API mints a
+                // new token following a redeploy) was silently ignored - every
+                // request kept using whatever token this process captured the very
+                // first time, no matter how many times you actually logged back in.
+                if (response.Headers.Contains("Set-Cookie")) {
                     var cookies = response.Headers.GetValues("Set-Cookie").ToList();
                     string token = ExtractToken(cookies.FirstOrDefault());
-                    SessionToken = token;
+                    if (!string.IsNullOrEmpty(token)) {
+                        SessionToken = token;
+                    }
                 }
 
                 if (response.IsSuccessStatusCode) {
@@ -113,10 +122,12 @@ namespace smpc_dispatching.Core.Services {
 
                 string responseContent = await response.Content.ReadAsStringAsync();
 
-                if (string.IsNullOrEmpty(SessionToken) && response.Headers.Contains("Set-Cookie")) {
+                if (response.Headers.Contains("Set-Cookie")) {
                     var cookies = response.Headers.GetValues("Set-Cookie").ToList();
                     string token = ExtractToken(cookies.FirstOrDefault());
-                    SessionToken = token;
+                    if (!string.IsNullOrEmpty(token)) {
+                        SessionToken = token;
+                    }
                 }
 
                 if (response.IsSuccessStatusCode) {
