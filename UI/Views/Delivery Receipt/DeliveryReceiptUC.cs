@@ -388,7 +388,22 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
 
             if (_previousIRIndex >= 0 && _deliveryReceipts != null && _deliveryReceipts.Count > 0)
             {
+                // Was viewing an existing record before New/Edit - restore it.
                 await LoadDeliveryReceipts();
+            }
+            else
+            {
+                // Nothing existed to go back to (this is what a brand new, never-saved
+                // record hits every time right now) - SetMode(View) above only toggles
+                // read-only/button state, it never clears data, so whatever New +
+                // picking a reference doc populated was otherwise left on screen,
+                // looking like an already-saved record. Discard it the same way
+                // btn_new_Click composes a fresh one.
+                Helpers.ResetControls(_pnls);
+                _bindingListItem = new BindingList<DeliveryReceiptItemModel>();
+                dg_items.DataSource = _bindingListItem;
+                _costRows.Clear();
+                ComputeGrandTotal();
             }
         }
         private void btn_new_Click(object sender, EventArgs e)
