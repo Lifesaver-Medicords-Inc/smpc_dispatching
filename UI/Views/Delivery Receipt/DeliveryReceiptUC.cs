@@ -116,8 +116,19 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
                 .OrderBy(d => d)
                 .ToList();
 
+            // Same guard LoadIRApprovedSO already uses for its own DataSource rebind:
+            // assigning a non-empty DataSource to a bound ComboBox can auto-select its
+            // first item, firing SelectedIndexChanged for real before the SelectedIndex =
+            // -1 below ever runs. Without this, cmb_reference_doc_no_SelectedIndexChanged
+            // executes with a genuine (if unintended) selectedDoc and populates the whole
+            // header + item grid from the first item release on load - even though
+            // nothing was ever actually picked, and the combo itself still shows blank
+            // once SelectedIndex is reset a moment later. That's exactly what made a
+            // brand new, never-saved Delivery Receipt look like it already had data.
+            isLoading = true;
             cmb_sales_order_id.DataSource = uniqueDocs;
             cmb_sales_order_id.SelectedIndex = -1;
+            isLoading = false;
         }
 
         private async Task LoadItemRelease()
