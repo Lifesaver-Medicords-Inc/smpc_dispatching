@@ -57,7 +57,13 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
         private bool _isNewMode => _mode == DRMode.Create;
         private bool _isEditMode => _mode == DRMode.Edit;
         private bool _isViewMode => _mode == DRMode.View;
-        private static readonly HashSet<string> _costTypeTemplate = new HashSet<string>
+        // Case-insensitive: this only needs to recognize the 7 standard cost types by
+        // name against whatever's actually in tbl_setup_calendar_cost_type (Setup screen
+        // is free to use any casing - the seed that populates this table on a fresh DB
+        // uses Title Case, e.g. "Toll Gate", not the ALL CAPS this set used to require -
+        // a case-sensitive match here silently matched nothing and GenerateCostTypeRow
+        // added zero rows even once the table had real data).
+        private static readonly HashSet<string> _costTypeTemplate = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
             "LABOR",
             "VEHICLE",
