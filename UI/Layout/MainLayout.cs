@@ -46,13 +46,21 @@ namespace smpc_dispatching.UI.Layout {
         {
             if (innerContainer == null || panel1 == null) return;
 
-            int availableWidth = innerContainer.Panel1.ClientSize.Width;
-            int cappedWidth = Math.Min(MaxContentWidth, availableWidth);
+            try
+            {
+                int availableWidth = innerContainer.Panel1.ClientSize.Width;
+                int cappedWidth = Math.Min(MaxContentWidth, availableWidth);
 
-            panel1.Width = cappedWidth;
-            panel1.Height = innerContainer.Panel1.ClientSize.Height;
-            panel1.Left = (availableWidth - cappedWidth) / 2;
-            panel1.Top = 0;
+                panel1.Width = cappedWidth;
+                panel1.Height = innerContainer.Panel1.ClientSize.Height;
+                panel1.Left = (availableWidth - cappedWidth) / 2;
+                panel1.Top = 0;
+            } catch (Exception) {
+                // Cosmetic only - never let a sizing quirk take the app down. Same
+                // defense-in-depth added everywhere else after a live crash in
+                // smpc_inventory_app's equivalent method (a different WinForms
+                // internal-timing quirk than the null case above).
+            }
         }
 
         private void MainLayout_Load(object sender, EventArgs e) {
