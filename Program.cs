@@ -133,9 +133,20 @@ namespace smpc_dispatching {
 
                 // Build the provider
                 using (var serviceProvider = services.BuildServiceProvider()) {
-                    // Resolve the startup form (with dependencies)
-                    var loginForm = serviceProvider.GetRequiredService<LoginForm>();
-                    Application.Run(loginForm);
+                    // Phase 4.6 (UI uniformity): LoginForm no longer resolves and shows
+                    // MainLayout itself - it returns DialogResult.OK like the other 4
+                    // non-DI apps' Login, and this is now the one place that reacts to it.
+                    // As a side effect this also ties the app's message loop to MainLayout
+                    // once it's up, instead of to a hidden LoginForm - closing MainLayout
+                    // now ends the application the same way the other apps' main windows
+                    // already do, rather than relying on nothing having a live reference
+                    // to the still-open (just hidden) LoginForm.
+                    using (var loginForm = serviceProvider.GetRequiredService<LoginForm>()) {
+                        if (loginForm.ShowDialog() == DialogResult.OK) {
+                            var mainLayout = serviceProvider.GetRequiredService<MainLayout>();
+                            Application.Run(mainLayout);
+                        }
+                    }
                 }
             } catch (Exception ex) {
                 // Startup failed before (or while) the message loop could take
