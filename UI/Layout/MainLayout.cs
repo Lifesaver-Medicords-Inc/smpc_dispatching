@@ -16,6 +16,43 @@ namespace smpc_dispatching.UI.Layout {
             _navigationService = navigationService;
             _serviceProvider = serviceProvider;
             InitializeComponent();
+
+            innerContainer.Panel1.Resize += (s, e) => RecalculateContentWidth();
+            // Phase 4.6 (UI uniformity): set the initial capped/centered width before
+            // the form is ever shown - the Resize event alone would leave panel1 at its
+            // Designer-time placeholder size for one frame on startup.
+            RecalculateContentWidth();
+        }
+
+        // Phase 4.6 (UI uniformity): the main content area (panel1, the bordered
+        // TabControl wrapper inside innerContainer.Panel1) caps at 1280px and stays
+        // centered on wide/ultrawide monitors. RedBox (innerContainer.Panel2, fixed
+        // width via FixedPanel=Panel2) is left uncapped on purpose - it's persistent
+        // utility chrome, not the "page" being viewed.
+        //
+        // Unlike the tab-based apps whose pages hardcode their own size,
+        // NavigationService.TreeView_AfterSelect already force-Dock=Fills every page it
+        // adds, same as smpc_admin - so there's no independent "page's own natural
+        // width" to preserve here, and no scroll-below-that-width handling is needed.
+        private const int MaxContentWidth = 1280;
+
+        // Live crash found in smpc_sales_system: a Resize event can fire mid-
+        // InitializeComponent() - e.g. the moment a panel is docked into its own
+        // parent - which is *before* every field a handler touches is necessarily
+        // assigned yet, regardless of how early each one's own "new" line appears in
+        // the Designer file. Guard against null rather than relying on
+        // Designer/construction order to save us.
+        private void RecalculateContentWidth()
+        {
+            if (innerContainer == null || panel1 == null) return;
+
+            int availableWidth = innerContainer.Panel1.ClientSize.Width;
+            int cappedWidth = Math.Min(MaxContentWidth, availableWidth);
+
+            panel1.Width = cappedWidth;
+            panel1.Height = innerContainer.Panel1.ClientSize.Height;
+            panel1.Left = (availableWidth - cappedWidth) / 2;
+            panel1.Top = 0;
         }
 
         private void MainLayout_Load(object sender, EventArgs e) {

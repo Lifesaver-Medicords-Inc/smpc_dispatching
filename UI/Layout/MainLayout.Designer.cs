@@ -103,12 +103,20 @@
             this.innerContainer.SplitterDistance = 686;
             this.innerContainer.SplitterWidth = 1;
             this.innerContainer.TabIndex = 0;
-            // 
+            //
             // panel1
-            // 
+            //
+            // Phase 4.6 (UI uniformity): no longer Dock=Fill - innerContainer.Panel1
+            // (which already had AutoScroll=true set) now sizes/centers this manually
+            // (see MainLayout.cs's RecalculateContentWidth) so the work area caps at
+            // 1280px on wide/ultrawide monitors instead of stretching edge to edge,
+            // matching all 6 apps' new standard. Unlike the tab-based apps whose pages
+            // hardcode their own size, NavigationService.TreeView_AfterSelect already
+            // force-Dock=Fills every page it adds, same as smpc_admin - so there's no
+            // independent "page's own natural width" to preserve here, and no
+            // scroll-below-that-width handling is needed.
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.TabControl);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(686, 816);
