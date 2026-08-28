@@ -18,6 +18,11 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
         public string IssuedUom { get; private set; }
         public Dictionary<string, decimal> IssuedPerBin { get; private set; } = new Dictionary<string, decimal>();
 
+        // Same allocation as IssuedPerBin, keyed by the stock row's own id instead of its
+        // bin location string - this is what actually goes to the API, since
+        // DeductStockWithTx needs a specific tbl_inv_item_stocks row, not a display label.
+        public List<(int BinId, decimal Qty)> IssuedPerBinId { get; private set; } = new List<(int, decimal)>();
+
         private readonly int _itemId;
         private readonly IItemStockAndLocationService<ItemStockAndLocationModel> _service;
         private readonly IItemBinLocation<ItemBinLocationModel> _itemBinLocation;
@@ -262,22 +267,38 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
         {
             var issuedCol = dgv_item.Columns.Cast<DataGridViewColumn>().FirstOrDefault(c => c.Name == "ReleaseQty");
             var binCol = dgv_item.Columns.Cast<DataGridViewColumn>().FirstOrDefault(c => c.Name == "BinLocation");
+            var binIdCol = dgv_item.Columns.Cast<DataGridViewColumn>().FirstOrDefault(c => c.Name == "BinId");
             var uomCol = dgv_item.Columns.Cast<DataGridViewColumn>().FirstOrDefault(c => c.Name == "ReleaseUom");
 
-            if (issuedCol == null || binCol == null || uomCol == null) return;
+            if (issuedCol == null || binCol == null || binIdCol == null || uomCol == null) return;
 
-            IssuedPerBin = dgv_item.Rows
+            var issuedRows = dgv_item.Rows
                 .Cast<DataGridViewRow>()
                 .Where(r => Convert.ToDecimal(r.Cells[issuedCol.Index].Value ?? 0) > 0)
-                .ToDictionary(
-                    r => r.Cells[binCol.Index].Value?.ToString() ?? "",
-                    r => Convert.ToDecimal(r.Cells[issuedCol.Index].Value ?? 0)
-                );
+                .ToList();
+
+            IssuedPerBin = issuedRows.ToDictionary(
+                r => r.Cells[binCol.Index].Value?.ToString() ?? "",
+                r => Convert.ToDecimal(r.Cells[issuedCol.Index].Value ?? 0)
+            );
+
+            IssuedPerBinId = issuedRows
+                .Select(r => (
+                    BinId: Convert.ToInt32(r.Cells[binIdCol.Index].Value ?? 0),
+                    Qty: Convert.ToDecimal(r.Cells[issuedCol.Index].Value ?? 0)
+                ))
+                .ToList();
 
             IssuedQty = IssuedPerBin.Values.Sum();
             if (IssuedQty <= 0)
             {
                 Helpers.ShowDialogMessage("error", "No quantity issued.");
+                return;
+            }
+
+            if (IssuedPerBinId.Any(x => x.BinId <= 0))
+            {
+                Helpers.ShowDialogMessage("error", "One or more rows are missing a bin reference - cannot release from an unidentified location.");
                 return;
             }
 

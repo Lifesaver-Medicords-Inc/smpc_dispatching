@@ -441,6 +441,19 @@ namespace smpc_dispatching.UI.Views.ItemRelease
                     line.released_qty = Convert.ToUInt32(modal.IssuedQty);
                     line.released_uom = modal.IssuedUom;
 
+                    // Carry the bin breakdown through too - this used to be computed by the
+                    // modal and then discarded here, which is the reason Item Release never
+                    // actually deducted stock (§10.5/§4 invariant: only Item Release may
+                    // touch inventory on the warehouse side of this flow).
+                    line.locations = modal.IssuedPerBinId
+                        .Select(x => new ItemReleaseLocationModel
+                        {
+                            item_release_details_id = line.id,
+                            bin_id = (uint)x.BinId,
+                            selected_qty = (int)x.Qty
+                        })
+                        .ToList();
+
                     dgv_details.InvalidateRow(e.RowIndex);
                 }
             }
@@ -511,7 +524,12 @@ namespace smpc_dispatching.UI.Views.ItemRelease
                     var response = await _itemReleaseService.CreateAsync(parentData);
                     if (!response.Success)
                     {
-                        Helpers.ShowDialogMessage("error", "Item Release saving failed.");
+                        // Surface the API's actual reason (e.g. insufficient stock, or a
+                        // released_qty/bin-allocation mismatch) instead of a fixed generic
+                        // string - both failure modes are now reachable from this save.
+                        Helpers.ShowDialogMessage("error", string.IsNullOrWhiteSpace(response.Message)
+                            ? "Item Release saving failed."
+                            : response.Message);
                         return;
                     }
                     savedId = response.Data?.id;
@@ -533,7 +551,9 @@ namespace smpc_dispatching.UI.Views.ItemRelease
                     var response = await _itemReleaseService.UpdateAsync(parentData);
                     if (!response.Success)
                     {
-                        Helpers.ShowDialogMessage("error", "Item Release saving failed.");
+                        Helpers.ShowDialogMessage("error", string.IsNullOrWhiteSpace(response.Message)
+                            ? "Item Release saving failed."
+                            : response.Message);
                         return;
                     }
                     savedId = parentData.id;
@@ -639,9 +659,14 @@ namespace smpc_dispatching.UI.Views.ItemRelease
 
         private void SetEditableColumns(bool isEdit)
         {
+            // ReleasedQty is deliberately NOT in the warehouse-editable set: it must only
+            // ever be set via the ReleasedQty CellClick handler above, which launches
+            // PickActivity and always produces a bin allocation. A freeform typed value
+            // here would have no bin behind it, and the API now rejects exactly that
+            // (released_qty with no matching location total).
             var editableColumns = !_isWarehouseUser
                 ? new[] { DetailsDGV.RequiredQty, DetailsDGV.DeliveryPreference }
-                : new[] { DetailsDGV.SerialNo, DetailsDGV.ReleasedQty };
+                : new[] { DetailsDGV.SerialNo };
 
             foreach (var colName in editableColumns)
             {

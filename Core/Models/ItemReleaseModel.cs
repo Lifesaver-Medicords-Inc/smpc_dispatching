@@ -36,7 +36,21 @@ namespace smpc_dispatching.Core.Models {
         public string released_uom { get; set; }
         public string serial_no { get; set; }
         public string delivery_preference { get; set; }
+
+        // Per-bin breakdown behind released_qty, from PickActivity's IssuedPerBinId -
+        // ItemReleaseUC used to throw this away and keep only the summed released_qty,
+        // which is why Item Release never actually deducted stock. The API now requires
+        // this to sum exactly to released_qty whenever released_qty > 0.
+        public List<ItemReleaseLocationModel> locations { get; set; } = new List<ItemReleaseLocationModel>();
     }
+
+    public class ItemReleaseLocationModel
+    {
+        public uint item_release_details_id { get; set; }
+        public uint bin_id { get; set; }
+        public int selected_qty { get; set; }
+    }
+
     public class ItemReleaseList
     {
         public List<ItemReleaseModel> item_release { get; set; }
