@@ -65,6 +65,15 @@ namespace smpc_dispatching.UI.Shared
             }
         }
 
+        // Bugs #180/#182/#185-191 (Trello): none of these fields had any real
+        // validation - Plate No. accepted anything, Acquisition Year and Last
+        // Maintenance were plain free text, and Capacity silently fell back to 0
+        // on unparseable input (uint.TryParse below) instead of rejecting it. The
+        // grid these were originally filed against has since been replaced by
+        // this modal, but the underlying gaps carried over.
+        private static readonly System.Text.RegularExpressions.Regex PlateNoPattern =
+            new System.Text.RegularExpressions.Regex(@"^[A-Za-z]{2,3}[\s-]?\d{3,5}$");
+
         private bool HasValidationErrors(out string messages)
         {
             bool hasError = false;
@@ -76,9 +85,41 @@ namespace smpc_dispatching.UI.Shared
                 hasError = true;
             }
 
-            if (string.IsNullOrWhiteSpace(txt_plate_no.Text))
+            string plateNo = txt_plate_no.Text.Trim();
+            if (string.IsNullOrWhiteSpace(plateNo))
             {
                 messages += "Plate No. cannot be empty\n";
+                hasError = true;
+            }
+            else if (!PlateNoPattern.IsMatch(plateNo))
+            {
+                messages += "Plate No. format is invalid (e.g. AAA1234)\n";
+                hasError = true;
+            }
+
+            string acquisitionYear = txt_acquisition_year.Text.Trim();
+            if (!string.IsNullOrWhiteSpace(acquisitionYear))
+            {
+                if (!int.TryParse(acquisitionYear, out int year) || acquisitionYear.Length != 4
+                    || year < 1980 || year > DateTime.Now.Year + 1)
+                {
+                    messages += "Acquisition Year must be a valid 4-digit year\n";
+                    hasError = true;
+                }
+            }
+
+            string capacityText = txt_capacity.Text.Trim();
+            if (!string.IsNullOrWhiteSpace(capacityText)
+                && (!uint.TryParse(capacityText, out uint parsedCapacity) || parsedCapacity == 0))
+            {
+                messages += "Capacity must be a positive whole number\n";
+                hasError = true;
+            }
+
+            string lastMaintenance = txt_last_maintenance.Text.Trim();
+            if (!string.IsNullOrWhiteSpace(lastMaintenance) && !DateTime.TryParse(lastMaintenance, out _))
+            {
+                messages += "Last Maintenance must be a valid date\n";
                 hasError = true;
             }
 
