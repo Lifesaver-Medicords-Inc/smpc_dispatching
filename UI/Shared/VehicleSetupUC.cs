@@ -55,6 +55,27 @@ namespace smpc_dispatching.UI.Shared
             HideColumn("CreatedAt");
             HideColumn("UpdatedAt");
             HideColumn("WarehouseId");
+
+            // Bug #179 (Trello, "PLATENO column should have a space") - this grid
+            // auto-generates columns from VehicleModel's raw property names, so every
+            // header showed the property name as-is (PlateNo, AcquisitionYear, etc.)
+            // instead of a readable label. Fixed the one reported and its siblings
+            // while here, rather than leave the rest looking the same way.
+            SetHeaderText("Type", "Type");
+            SetHeaderText("Model", "Model");
+            SetHeaderText("Description", "Description");
+            SetHeaderText("PlateNo", "Plate No.");
+            SetHeaderText("AcquisitionYear", "Acquisition Year");
+            SetHeaderText("Capacity", "Capacity");
+            SetHeaderText("Status", "Status");
+            SetHeaderText("LastMaintenance", "Last Maintenance");
+            SetHeaderText("Notes", "Notes");
+        }
+
+        private void SetHeaderText(string columnName, string headerText)
+        {
+            if (dg_vehicle.Columns.Contains(columnName))
+                dg_vehicle.Columns[columnName].HeaderText = headerText;
         }
 
         private void HideColumn(string columnName)
