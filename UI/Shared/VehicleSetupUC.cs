@@ -84,21 +84,50 @@ namespace smpc_dispatching.UI.Shared
                 dg_vehicle.Columns[columnName].Visible = false;
         }
 
+        // Bug #192 (Trello): dg_vehicle is bound straight to a DataTable with no
+        // ReadOnly=true, so its cells (including Capacity, a non-nullable uint
+        // column) are still directly in-cell editable. Clearing a Capacity cell
+        // to blank and pressing Escape to cancel the edit makes the grid try to
+        // convert an empty string back to uint, which throws - and with no
+        // DataError handler that exception propagated through WinForms' own
+        // default handling, which is what this report saw as a freeze.
+        private void dg_vehicle_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            e.ThrowException = false;
+            e.Cancel = true;
+        }
+
         private async void btn_new_Click(object sender, EventArgs e)
         {
             using (var modal = new VehicleDetailsModal(_warehouseService))
             {
                 if (modal.ShowDialog(this) != DialogResult.OK) return;
 
-                var response = await _vehicleService.CreateAsync(modal.Result);
-                if (response == null || !response.Success)
+                // Bug #184 (Trello, "two saved entries instead of one"): the modal
+                // is blocking, but once it closes OK this button was still
+                // clickable through the whole CreateAsync + LoadVehicles await -
+                // nothing here gave the user any feedback that the save was
+                // already in flight, so a second New -> Save before the success
+                // dialog appeared posted a second Create for the same entry.
+                btn_new.Enabled = false;
+                btn_edit.Enabled = false;
+                try
                 {
-                    Helpers.ShowDialogMessage("error", $"Failed to save vehicle.\n{response?.Message}");
-                    return;
-                }
+                    var response = await _vehicleService.CreateAsync(modal.Result);
+                    if (response == null || !response.Success)
+                    {
+                        Helpers.ShowDialogMessage("error", $"Failed to save vehicle.\n{response?.Message}");
+                        return;
+                    }
 
-                Helpers.ShowDialogMessage("success", "Vehicle saved successfully.");
-                await LoadVehicles();
+                    Helpers.ShowDialogMessage("success", "Vehicle saved successfully.");
+                    await LoadVehicles();
+                }
+                finally
+                {
+                    btn_new.Enabled = true;
+                    btn_edit.Enabled = true;
+                }
             }
         }
 
@@ -128,15 +157,26 @@ namespace smpc_dispatching.UI.Shared
             {
                 if (modal.ShowDialog(this) != DialogResult.OK) return;
 
-                var response = await _vehicleService.UpdateAsync(modal.Result);
-                if (response == null || !response.Success)
+                // Bug #184 (Trello) - same double-submit window as btn_new_Click.
+                btn_new.Enabled = false;
+                btn_edit.Enabled = false;
+                try
                 {
-                    Helpers.ShowDialogMessage("error", $"Failed to save vehicle.\n{response?.Message}");
-                    return;
-                }
+                    var response = await _vehicleService.UpdateAsync(modal.Result);
+                    if (response == null || !response.Success)
+                    {
+                        Helpers.ShowDialogMessage("error", $"Failed to save vehicle.\n{response?.Message}");
+                        return;
+                    }
 
-                Helpers.ShowDialogMessage("success", "Vehicle saved successfully.");
-                await LoadVehicles();
+                    Helpers.ShowDialogMessage("success", "Vehicle saved successfully.");
+                    await LoadVehicles();
+                }
+                finally
+                {
+                    btn_new.Enabled = true;
+                    btn_edit.Enabled = true;
+                }
             }
         }
     }

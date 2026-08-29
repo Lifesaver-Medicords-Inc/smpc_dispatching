@@ -65,6 +65,7 @@ namespace smpc_dispatching.UI.Shared {
             this.dg_vehicle.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dg_vehicle.Size = new System.Drawing.Size(900, 514);
             this.dg_vehicle.TabIndex = 0;
+            this.dg_vehicle.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dg_vehicle_DataError);
             // 
             // lbl_title
             // 
