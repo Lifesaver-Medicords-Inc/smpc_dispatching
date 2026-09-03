@@ -786,17 +786,21 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             return true;
         }
 
-        private void btn_forward_Click(object sender, EventArgs e)
+        private async void btn_forward_Click(object sender, EventArgs e)
         {
             btn_forward.Enabled = false;
             try
             {
-                //await SaveAndSetForwardStatusAsync(true, "Item Release forwarded successfully.", "Item Release forwarding failed.");
-                MessageBox.Show("Item Release forwarded successfully.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                chk_is_forward.Checked = true;
-
-                btnVisibilityClick();
+                // Was a stub: the real save was commented out, replaced with a fake
+                // "success" message and a local flip of the (hidden) chk_is_forward
+                // checkbox - is_forward never actually reached the server. LoadItemReleases
+                // filters a Warehouse user's list down to is_forward == true, so no matter
+                // how many requests were "forwarded" through this button, that list stayed
+                // empty/near-empty - which is exactly why Previous/Next had nothing to page
+                // through under the Warehouse position. SaveAndSetForwardStatusAsync already
+                // does everything needed (validate, save, reload, rebind, and its own
+                // success/error messaging) - call it for real instead.
+                await SaveAndSetForwardStatusAsync(true, "Item Release forwarded successfully.", "Item Release forwarding failed.");
             }
             catch (Exception ex)
             {
@@ -809,17 +813,14 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             }
         }
 
-        private void btn_cancel_Click(object sender, EventArgs e)
+        private async void btn_cancel_Click(object sender, EventArgs e)
         {
             btn_cancel_request.Enabled = false;
             try
             {
-                //await SaveAndSetForwardStatusAsync(false, "Item Release canceled successfully.", "Item Release cancel failed.");
-                MessageBox.Show("Item Release canceled successfully.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                chk_is_forward.Checked = false;
-
-                btnVisibilityClick();
+                // Same fix as btn_forward_Click - this was a stub that never persisted
+                // is_forward = false to the server either.
+                await SaveAndSetForwardStatusAsync(false, "Item Release canceled successfully.", "Item Release cancel failed.");
             }
             catch (Exception ex)
             {
@@ -830,15 +831,6 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             {
                 btn_cancel_request.Enabled = true;
             }
-        }
-        private void btnVisibilityClick()
-        {
-            bool isForward = chk_is_forward.Checked;
-
-            chk_is_forward.Checked = isForward;
-
-            btn_forward.Visible = !isForward;
-            btn_cancel_request.Visible = isForward;
         }
 
         private void btn_print_Click(object sender, EventArgs e)
@@ -863,7 +855,29 @@ namespace smpc_dispatching.UI.Views.ItemRelease
 
         private void btn_search_Click(object sender, EventArgs e)
         {
+            // Was a completely empty stub - clicking Search did nothing at all. Reuses
+            // the in-memory _itemReleases list (already correctly department-scoped: a
+            // Warehouse user only ever has is_forward == true records in it) rather than
+            // a fresh API call, and jumps to the picked record the same way
+            // ChangeRecord/LoadItemReleases(focusId) already do elsewhere in this file.
+            if (_itemReleases == null || _itemReleases.Count == 0)
+            {
+                Helpers.ShowDialogMessage("info", "No item releases to search.");
+                return;
+            }
 
+            using (var modal = new ItemReleaseSearchModal(_itemReleases))
+            {
+                if (modal.ShowDialog() == DialogResult.OK && modal.SelectedId.HasValue)
+                {
+                    int index = _itemReleases.FindIndex(x => x.id == modal.SelectedId.Value);
+                    if (index >= 0)
+                    {
+                        _currentIRIndex = index;
+                        BindItemRelease(_currentIRIndex);
+                    }
+                }
+            }
         }
     }
 } 
