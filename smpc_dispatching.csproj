@@ -27,7 +27,8 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>1000</ApplicationRevision>
+    <UpdateUrl>http://localhost/smpc_dispatching/</UpdateUrl>
+    <ApplicationRevision>1002</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -249,6 +250,7 @@
       <HintPath>packages\System.Threading.Tasks.Extensions.4.6.3\lib\net462\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -451,6 +453,18 @@
     </Compile>
     <Compile Include="UI\Views\Delivery Receipt\DeliveryReceiptUC.Designer.cs">
       <DependentUpon>DeliveryReceiptUC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Views\Delivery Receipt\DeliveryReceiptSearchModal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Views\Delivery Receipt\DeliveryReceiptSearchModal.Designer.cs">
+      <DependentUpon>DeliveryReceiptSearchModal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Views\Delivery Receipt\DeliveryReceiptItemPickerModal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Views\Delivery Receipt\DeliveryReceiptItemPickerModal.Designer.cs">
+      <DependentUpon>DeliveryReceiptItemPickerModal.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Views\Engineering\EngineeringScheduleCalendarDetailsUC.cs">
       <SubType>UserControl</SubType>

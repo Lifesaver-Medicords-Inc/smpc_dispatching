@@ -128,7 +128,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.col6 = new System.Data.DataColumn();
             this.col7 = new System.Data.DataColumn();
             this.col8 = new System.Data.DataColumn();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel1 = new System.Windows.Forms.Panel();
             this.pnl_body = new System.Windows.Forms.Panel();
             this.pnl_toggle = new System.Windows.Forms.Panel();
             this.btn_toggle = new System.Windows.Forms.Button();
@@ -144,6 +144,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.dataBindingFile = new System.Windows.Forms.BindingSource(this.components);
             this.costs_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.costs_delivery_receipt_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.costs_route_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.costs_cost_type_id = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.costs_description = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.costs_amount = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -208,6 +209,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.dg_costs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.costs_id,
             this.costs_delivery_receipt_id,
+            this.costs_route_id,
             this.costs_cost_type_id,
             this.costs_description,
             this.costs_amount,
@@ -688,6 +690,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.btn_delete.Name = "btn_delete";
             this.btn_delete.Size = new System.Drawing.Size(60, 22);
             this.btn_delete.Text = "Delete";
+            this.btn_delete.Click += new System.EventHandler(this.btn_delete_Click);
             // 
             // btn_print
             // 
@@ -705,7 +708,8 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.btn_search.Name = "btn_search";
             this.btn_search.Size = new System.Drawing.Size(62, 22);
             this.btn_search.Text = "Search";
-            // 
+            this.btn_search.Click += new System.EventHandler(this.btn_search_Click);
+            //
             // btn_save
             // 
             this.btn_save.Image = ((System.Drawing.Image)(resources.GetObject("btn_save.Image")));
@@ -1016,12 +1020,12 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             // 
             // flowLayoutPanel1
             // 
-            this.flowLayoutPanel1.Controls.Add(this.pnl_header);
             this.flowLayoutPanel1.Controls.Add(this.pnl_body);
             this.flowLayoutPanel1.Controls.Add(this.pnl_toggle);
             this.flowLayoutPanel1.Controls.Add(this.pnl_footer);
+            this.flowLayoutPanel1.Controls.Add(this.pnl_header);
+            this.flowLayoutPanel1.AutoScroll = true;
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(1242, 946);
@@ -1030,7 +1034,9 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             // pnl_body
             // 
             this.pnl_body.Controls.Add(this.dg_items);
+            this.pnl_body.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnl_body.Location = new System.Drawing.Point(3, 344);
+            this.pnl_body.MinimumSize = new System.Drawing.Size(0, 150);
             this.pnl_body.Name = "pnl_body";
             this.pnl_body.Size = new System.Drawing.Size(1236, 200);
             this.pnl_body.TabIndex = 3;
@@ -1038,7 +1044,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             // pnl_toggle
             // 
             this.pnl_toggle.Controls.Add(this.btn_toggle);
-            this.pnl_toggle.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnl_toggle.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnl_toggle.Location = new System.Drawing.Point(3, 550);
             this.pnl_toggle.Name = "pnl_toggle";
             this.pnl_toggle.Size = new System.Drawing.Size(1236, 25);
@@ -1122,6 +1128,14 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             this.costs_delivery_receipt_id.HeaderText = "costs_delivery_receipt_id";
             this.costs_delivery_receipt_id.Name = "costs_delivery_receipt_id";
             this.costs_delivery_receipt_id.Visible = false;
+            // 
+            // costs_route_id
+            // 
+            this.costs_route_id.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.costs_route_id.DataPropertyName = "costs_route_id";
+            this.costs_route_id.HeaderText = "costs_route_id";
+            this.costs_route_id.Name = "costs_route_id";
+            this.costs_route_id.Visible = false;
             // 
             // costs_cost_type_id
             // 
@@ -1235,7 +1249,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.ToolStripButton btn_print;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.Panel flowLayoutPanel1;
         private System.Windows.Forms.Panel pnl_body;
         private System.Windows.Forms.Panel pnl_toggle;
         private System.Windows.Forms.Button btn_toggle;
@@ -1312,6 +1326,7 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
         private System.Windows.Forms.DataGridViewTextBoxColumn itemsdeliveryreceiptidDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn costs_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn costs_delivery_receipt_id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn costs_route_id;
         private System.Windows.Forms.DataGridViewComboBoxColumn costs_cost_type_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn costs_description;
         private System.Windows.Forms.DataGridViewTextBoxColumn costs_amount;

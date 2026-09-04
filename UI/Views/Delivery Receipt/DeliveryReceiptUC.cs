@@ -25,7 +25,6 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
         private readonly IServiceProvider _serviceProvider;
         private readonly IDeliveryReceiptService _deliveryReceiptService;
         private readonly ISalesOrderWithApprovedIRService<SalesOrderWithApprovedIRModel> _salesOrderWithApprovedIRService;
-        private readonly ISalesOrderWithApprovedIRDetailsService _salesOrderWithApprovedIRDetailsService;
         private readonly ICostTypeService<SetupModel> _costTypeService;
         private readonly IShipTypeService<ShipTypeModel> _shipTypeService;
 
@@ -39,7 +38,6 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
         private BindingList<DeliveryReceiptCostModel> _bindingListCost/* = new BindingList<DeliveryReceiptCostModel>()*/;
         private List<DeliveryReceiptModel> _deliveryReceipts;
         private List<SalesOrderWithApprovedIRModel> _IrApprovedSo;
-        private List<SalesOrderWithApprovedIRDetailsModel> _IrDetailsApprovedSo;
         private DataTable _soirTable;
         private DataTable _soTable;
         private DataTable _bpiTable;
@@ -86,7 +84,6 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             _deliveryReceiptService = serviceProvider.GetRequiredService<IDeliveryReceiptService>();
             _costTypeService = serviceProvider.GetRequiredService<ICostTypeService<SetupModel>>();
             _salesOrderWithApprovedIRService = serviceProvider.GetRequiredService<ISalesOrderWithApprovedIRService<SalesOrderWithApprovedIRModel>>();
-            _salesOrderWithApprovedIRDetailsService = serviceProvider.GetRequiredService<ISalesOrderWithApprovedIRDetailsService>();
             _shipTypeService = serviceProvider.GetRequiredService<IShipTypeService<ShipTypeModel>>();
             _salesOrderIRViewService = serviceProvider.GetRequiredService<ISalesOrderIRViewService<SalesOrderViewModel>>();
             _salesOrderService = serviceProvider.GetRequiredService<ISalesOrderService>();
@@ -262,28 +259,14 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             ComputeGrandTotal();
             SetMode(DRMode.View);
         }
-        private void BindSalesOrder(string soDocNo)
-        {
-            var selectedSO = _IrApprovedSo?.FirstOrDefault(x => x.sales_order_no == soDocNo);
-            if (selectedSO == null) return;
-            Helpers.BindHelpers.BindParentToPanels(selectedSO, _pnls);
-
-            // Correct cmb_ship_type_id if ship_type_id not in data source
-            var shipTypeExists = _shipTypes?.Any(x => x.id == selectedSO.ship_type_id) ?? false;
-            if (!shipTypeExists)
-                cmb_ship_type_id.SelectedValue = 0;
-
-            LoadIRItems((int)selectedSO.item_release_id);
-        }
-        private async void LoadIRItems(int irId)
-        {
-             var response = await _salesOrderWithApprovedIRDetailsService.GetAsync(irId);
-
-            if (response?.Data == null) return;
-
-            _IrDetailsApprovedSo = response.Data.ToList();
-            dg_items.DataSource = _IrDetailsApprovedSo;
-        }
+        // BindSalesOrder / LoadIRItems lived here and hosted the item picker, but nothing
+        // ever called BindSalesOrder - cmb_sales_order_id is wired only to
+        // cmb_reference_doc_no_SelectedIndexChanged (see the Designer), so the selection
+        // step sat on an unreachable path. It also fetched SalesOrderWithApprovedIRDetails,
+        // which carries neither item_description nor delivery_preference (both required on
+        // the DR by §5.12) nor sales_order_details_id (needed to save the line). The picker
+        // now runs inside cmb_reference_doc_no_SelectedIndexChanged against
+        // ItemReleaseDetailsModel, which has all three.
         public void InitializeDgCosts()
         {
             dg_costs.DataSource = _costRows; // bind once on form load
@@ -410,6 +393,61 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
                 dg_items.DataSource = _bindingListItem;
                 _costRows.Clear();
                 ComputeGrandTotal();
+            }
+        }
+        // btn_delete existed on the toolstrip - drawn, labelled, and enabled/disabled by
+        // SetToolStripButtons - but no Click handler was ever attached to it, so pressing
+        // Delete did nothing at all and no request ever reached the API.
+        private async void btn_delete_Click(object sender, EventArgs e)
+        {
+            if (_currentIndex < 0 || _deliveryReceipts == null || _currentIndex >= _deliveryReceipts.Count)
+            {
+                Helpers.ShowDialogMessage("error", "There is no delivery receipt open to delete.");
+                return;
+            }
+
+            var current = _deliveryReceipts[_currentIndex];
+
+            // Deleting a DR also removes the logistics schedule and route it created,
+            // and every delivery-cost row against it (user decision, 2026-09-03) - so
+            // say so rather than asking a bare "are you sure?".
+            var confirm = MessageBox.Show(
+                $"Delete Delivery Receipt DR#{current.doc_no:D4}?{Environment.NewLine}{Environment.NewLine}" +
+                "Its items, delivery costs, and the logistics schedule and route created " +
+                "with it will be deleted as well. This cannot be undone.",
+                "Confirm Delete",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning,
+                MessageBoxDefaultButton.Button2);
+
+            if (confirm != DialogResult.Yes) return;
+
+            btn_delete.Enabled = false;
+            try
+            {
+                var response = await _deliveryReceiptService.RemoveAsync(current.id);
+                if (!response.Success)
+                {
+                    Helpers.ShowDialogMessage("error", "Deleting this delivery receipt failed. Please try again.");
+                    return;
+                }
+
+                Helpers.ShowDialogMessage("success", "Delivery Receipt deleted.");
+
+                // Land on a real record again - the deleted index is gone, so let
+                // LoadDeliveryReceipts fall back to the last one (or clear the form
+                // when nothing is left).
+                _currentIndex = -1;
+                await LoadDeliveryReceipts();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Delete failed");
+                Helpers.ShowDialogMessage("error", ex.Message);
+            }
+            finally
+            {
+                btn_delete.Enabled = true;
             }
         }
         private void btn_new_Click(object sender, EventArgs e)
@@ -551,6 +589,34 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
         private void btn_prev_Click(object sender, EventArgs e) => ChangeRecord(-1);
         private void btn_next_Click(object sender, EventArgs e) => ChangeRecord(1);
         private void btn_edit_Click(object sender, EventArgs e) => SetMode(DRMode.Edit);
+
+        // btn_search was wired into the enable/disable arrays elsewhere in this class
+        // but had no Click handler at all - same empty-stub pattern already found and
+        // fixed on Item Release's own Search button this session. Modeled on
+        // ItemReleaseSearchModal: filters the in-memory _deliveryReceipts list already
+        // loaded by LoadDeliveryReceipts (no separate API call needed) and returns the
+        // picked id via DialogResult.
+        private void btn_search_Click(object sender, EventArgs e)
+        {
+            if (_deliveryReceipts == null || _deliveryReceipts.Count == 0)
+            {
+                Helpers.ShowDialogMessage("info", "No delivery receipts to search.");
+                return;
+            }
+
+            using (var modal = new DeliveryReceiptSearchModal(_deliveryReceipts))
+            {
+                if (modal.ShowDialog() == DialogResult.OK && modal.SelectedId.HasValue)
+                {
+                    int index = _deliveryReceipts.FindIndex(d => d.id == modal.SelectedId.Value);
+                    if (index >= 0)
+                    {
+                        _currentIndex = index;
+                        BindDeliveryReceipt(_currentIndex);
+                    }
+                }
+            }
+        }
         private void ChangeRecord(int step)
         {
             if (_deliveryReceipts == null || !_deliveryReceipts.Any())
@@ -713,8 +779,6 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             var selectedItemRelease = _itemReleases.AsEnumerable()
                 .FirstOrDefault(r => r.Field<string>("reference_doc_no") == selectedDoc);
 
-            //var selectedSalesOrderDetails = _IrDetailsApprovedSo?.FirstOrDefault(x => x.sales_order_no == selectedDoc);
-
             // selectedDoc comes from the item release's reference_doc_no, which lines up
             // with the sales order's DocumentNo - not its Doc (a separate, unrelated
             // number) - matching against the wrong column silently resolved to the
@@ -756,8 +820,98 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
                 return;
             }
 
-            _detailsBinding = GetDetailsFromDataTable(filteredRows);
+            // User decision, 2026-09-03: this used to bind every released line straight
+            // onto dg_items, so one DR had to cover the whole release and a line already
+            // sent out on an earlier DR was offered again on the next one - double-counting
+            // against the SO's RELEASED qty (§5.12), the same failure §14.9 guards against
+            // for RR-vs-PO. Offer a selection step instead, and only for what earlier
+            // receipts have not already taken.
+            var released = GetDetailsFromDataTable(filteredRows);
+            var pickerRows = BuildPickerRows(released);
+
+            if (pickerRows.Count == 0)
+            {
+                Helpers.ShowDialogMessage("error",
+                    "Every released item on this reference document has already been delivered. " +
+                    "Nothing is left to put on a new delivery receipt.");
+                dg_items.DataSource = null;
+                return;
+            }
+
+            using (var picker = new DeliveryReceiptItemPickerModal(pickerRows))
+            {
+                if (picker.ShowDialog() != DialogResult.OK)
+                {
+                    dg_items.DataSource = null;
+                    return;
+                }
+
+                _detailsBinding = new BindingList<ItemReleaseDetailsModel>(picker.GetSelectedItems());
+            }
+
             dg_items.DataSource = _detailsBinding;
+        }
+
+        // How much of each released line earlier delivery receipts have already taken.
+        // No API call is needed: LoadDeliveryReceipts already pulls every DR with its
+        // items, and DeliveryReceiptItemModel carries sales_order_details_id, item_id
+        // and qty - enough to net off what has gone out.
+        //
+        // The DR being edited is excluded from the sum, otherwise reopening a saved
+        // receipt would count its own lines against itself and show nothing left.
+        // (Today the reference combo is only enabled on a new record - SetMode - so this
+        // is a guard for when editing is opened up, not dead weight.)
+        private List<DeliveryReceiptPickerRow> BuildPickerRows(IEnumerable<ItemReleaseDetailsModel> released)
+        {
+            int? currentId = _isEditMode && _currentIndex >= 0 && _deliveryReceipts != null
+                             && _currentIndex < _deliveryReceipts.Count
+                ? _deliveryReceipts[_currentIndex].id
+                : (int?)null;
+
+            // sales_order_details_id identifies an SO line on its own, so it is the
+            // primary key here. Rows that arrive without one (0) fall back to item_id,
+            // which is coarser but better than silently counting nothing.
+            var bySoDetail = new Dictionary<uint, uint>();
+            var byItem = new Dictionary<uint, uint>();
+
+            foreach (var dr in _deliveryReceipts ?? new List<DeliveryReceiptModel>())
+            {
+                if (currentId.HasValue && dr.id == currentId.Value) continue;
+
+                foreach (var item in dr.delivery_receipt_items ?? new List<DeliveryReceiptItemModel>())
+                {
+                    // A DR line can be a manual addition that was never on the SO (§5.12);
+                    // those have no released line to net off, so they simply never match.
+                    uint qty = item.items_qty > 0 ? (uint)item.items_qty : 0u;
+                    if (qty == 0) continue;
+
+                    if (item.items_sales_order_details_id > 0)
+                    {
+                        uint key = (uint)item.items_sales_order_details_id;
+                        bySoDetail[key] = (bySoDetail.TryGetValue(key, out uint running) ? running : 0u) + qty;
+                    }
+                    else if (item.items_item_id > 0)
+                    {
+                        uint key = (uint)item.items_item_id;
+                        byItem[key] = (byItem.TryGetValue(key, out uint running) ? running : 0u) + qty;
+                    }
+                }
+            }
+
+            var rows = new List<DeliveryReceiptPickerRow>();
+            foreach (var line in released)
+            {
+                uint delivered = 0u;
+                if (line.sales_order_details_id > 0)
+                    bySoDetail.TryGetValue(line.sales_order_details_id, out delivered);
+                else if (line.item_id > 0)
+                    byItem.TryGetValue(line.item_id, out delivered);
+
+                var row = new DeliveryReceiptPickerRow { Item = line, AlreadyDelivered = delivered };
+                if (row.Remaining > 0) rows.Add(row);
+            }
+
+            return rows;
         }
         // dg_items has AutoGenerateColumns = false with columns whose DataPropertyName is
         // hard-wired (in the Designer) to ItemReleaseDetailsModel's property names
@@ -895,6 +1049,10 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
 
             dg_costs.Columns[nameof(DeliveryReceiptCostModel.costs_id)].Visible = false;
             dg_costs.Columns[nameof(DeliveryReceiptCostModel.costs_delivery_receipt_id)].Visible = false;
+            // Carries the logistics route this cost row belongs to (spec §13.3 - one
+            // cost table shared by the route and the DR). Hidden, but present so the
+            // value survives a save; see DeliveryReceiptCostModel.costs_route_id.
+            dg_costs.Columns[nameof(DeliveryReceiptCostModel.costs_route_id)].Visible = false;
 
             // format
             dg_costs.Columns[nameof(DeliveryReceiptCostModel.costs_amount)].DefaultCellStyle.Format = "C2";
