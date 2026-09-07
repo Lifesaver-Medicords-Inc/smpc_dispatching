@@ -180,6 +180,8 @@ namespace smpc_dispatching {
             services.AddScoped<ICalendarScheduleService<SalesCalendarScheduleContent>, CalendarScheduleService<SalesCalendarScheduleContent>>();
             services.AddScoped<ICalendarCategoryService, CalendarCategoryService>();
             services.AddScoped<IVehicleService, VehicleService>();
+            // Dispatch people (drivers / helpers) - §13.3.
+            services.AddScoped<IDispatchPersonService, DispatchPersonService>();
             services.AddScoped<IWarehouseService, WarehouseService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ILogisticsScheduleService, LogisticsScheduleService>();
@@ -225,6 +227,7 @@ namespace smpc_dispatching {
             services.AddTransient<PickActivity>();
             services.AddTransient<DeliveryReceiptUC>();
             services.AddTransient<VehicleSetupUC>();
+            services.AddTransient<PeopleSetupUC>();
             services.AddTransient<RedBoxUC>();
             services.AddTransient<ReservationApprovalUC>();
 

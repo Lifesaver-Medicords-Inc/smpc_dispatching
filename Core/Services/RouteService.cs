@@ -118,6 +118,17 @@ namespace smpc_dispatching.Core.Services
                 Title = "Vehicle",
                 ViewFactory = () => _serviceProvider.GetRequiredService<VehicleSetupUC>()
             };
+
+            // Drivers and helpers (§13.3, "select driver, helper, and vehicle first").
+            // Sits next to Vehicle because a trip needs both, and neither is a system
+            // user - see PeopleSetupUC.
+            _pages["SETUP_PEOPLE"] = new ViewControlModel
+            {
+                Code = "SETUP_PEOPLE",
+                Parent = "Setup",
+                Title = "People",
+                ViewFactory = () => _serviceProvider.GetRequiredService<PeopleSetupUC>()
+            };
         }
 
         // --- Public Methods ---
