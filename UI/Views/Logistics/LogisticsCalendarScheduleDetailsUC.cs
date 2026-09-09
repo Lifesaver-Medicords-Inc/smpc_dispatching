@@ -1,4 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using smpc_dispatching.Core.Helpers;
 using smpc_dispatching.Core.Interfaces;
@@ -24,9 +24,20 @@ namespace smpc_dispatching.UI.Views.Logistics
         private readonly ISalesOrderService _salesOrderService;
         private readonly IReceiptUploadService _receiptUploadService;
 
+        private readonly IDispatchPersonService _dispatchPersonService;
+
         private List<CalendarCategoryModel> _categories;
         private List<VehicleModel> _vehicles;
-        private List<UserModel> _people;
+
+        // The dispatch roster (tbl_dispatching_people), not system users. §13.3's
+        // driver and helpers do not log in and are not HRIS employees - the roster
+        // exists precisely so dispatch can name them (see DispatchPersonModel). This
+        // picker was bound to UserModel, which listed ERP logins instead.
+        private List<DispatchPersonModel> _people;
+
+        // Who is on this trip. A list rather than one selection: §13.2 makes PEOPLE
+        // multi-select, and the usual shape is one driver plus one or two helpers.
+        private List<SchedulePersonModel> _assignedPeople = new List<SchedulePersonModel>();
         private List<BPI> _bpiOptions;
         private List<SalesOrderModel> _salesOrders;
         private List<string> _salesOrderDocNos;
@@ -50,6 +61,7 @@ namespace smpc_dispatching.UI.Views.Logistics
             IBpiService bpiService,
             ISalesOrderService salesOrderService,
             IReceiptUploadService receiptUploadService,
+            IDispatchPersonService dispatchPersonService,
             IServiceProvider serviceProvider)
         {
             InitializeComponent();
@@ -61,6 +73,7 @@ namespace smpc_dispatching.UI.Views.Logistics
             _bpiService = bpiService;
             _salesOrderService = salesOrderService;
             _receiptUploadService = receiptUploadService;
+            _dispatchPersonService = dispatchPersonService;
 
             _externalControls = new Control[]
             {
@@ -107,7 +120,8 @@ namespace smpc_dispatching.UI.Views.Logistics
             txt_Notes.Visible = _isExternal;
 
             lbl_people.Visible = !_isExternal;
-            cmb_People.Visible = !_isExternal;
+            pnl_people.Visible = !_isExternal;
+            flowLayoutPanel_people.Visible = !_isExternal;
 
             lbl_vehicle.Visible = !_isExternal;
             pnl_vehicle.Visible = !_isExternal;
@@ -385,14 +399,26 @@ namespace smpc_dispatching.UI.Views.Logistics
         {
             try
             {
-                var res = await _userService.GetAllAsync(null);
+                // The dispatch roster, not ERP logins. §13.3's driver and helpers are
+                // not system users - they do not log in and hold no module access -
+                // and tbl_dispatching_people exists for exactly this picker.
+                var res = await _dispatchPersonService.GetAllAsync(null);
                 if (res?.Success == true)
                     _people = res.Data.ToList();
 
+                // Inactive people drop out of the picker but keep their names on past
+                // schedules, the same rule §4.4.1 applies to an inactive warehouse.
+                var selectable = (_people ?? new List<DispatchPersonModel>())
+                    .Where(p => p.is_active)
+                    .OrderBy(p => p.role)
+                    .ThenBy(p => p.full_name)
+                    .ToList();
+
                 cmb_People.DataSource = null;
-                cmb_People.DataSource = _people;
-                cmb_People.DisplayMember = nameof(UserModel.FullName);
-                cmb_People.ValueMember = nameof(UserModel.id);
+                cmb_People.DataSource = selectable;
+                cmb_People.DisplayMember = nameof(DispatchPersonModel.full_name);
+                cmb_People.ValueMember = nameof(DispatchPersonModel.id);
+                cmb_People.SelectedIndex = -1;
             }
             catch (Exception ex)
             {
@@ -490,7 +516,8 @@ namespace smpc_dispatching.UI.Views.Logistics
             dtp_EndDate.Value = DateTime.Now;
             cmb_Category.SelectedIndex = -1;
             cmb_People.SelectedIndex = -1;
-            cmb_People.Text = string.Empty;
+            _assignedPeople = new List<SchedulePersonModel>();
+            RefreshPeopleList();
             cmb_Vehicle.SelectedIndex = -1;
 
             cmb_ClientSupplier.SelectedIndex = -1;
@@ -564,7 +591,9 @@ namespace smpc_dispatching.UI.Views.Logistics
                 CategoryId = cmb_Category.SelectedValue != null ? Convert.ToInt32(cmb_Category.SelectedValue) : 0,
                 StartDate = dtp_StartDate.Value,
                 EndDate = dtp_EndDate.Value,
-                People = (cmb_People.SelectedItem as UserModel)?.FullName ?? cmb_People.Text ?? string.Empty,
+                // The People column is the readable summary the calendar card and
+                // its search use; the real assignment is AssignedPeople below.
+                People = string.Join(", ", _assignedPeople.Select(p => p.full_name)),
                 VehicleId = cmb_Vehicle.SelectedValue != null ? Convert.ToInt32(cmb_Vehicle.SelectedValue) : 0,
                 ReferenceDocNo = StripDocPrefix(cmb_ReferenceDocNo.Text, "SO#"),
                 Notes = txt_Notes.Text
@@ -588,6 +617,18 @@ namespace smpc_dispatching.UI.Views.Logistics
                     _routes[i].SortOrder = i + 1;
                     schedule.Routes.Add(_routes[i]);
                 }
+
+                // Sent as the full intended set - ReplaceSchedulePeople deletes and
+                // reinserts rather than diffing, so an empty list clears the
+                // assignment and the mirrored driver_name with it.
+                schedule.AssignedPeople = _assignedPeople
+                    .Select(p => new SchedulePersonModel
+                    {
+                        person_id = p.person_id,
+                        full_name = p.full_name,
+                        role = p.role
+                    })
+                    .ToList();
             }
 
             HttpResponseModel<LogisticsScheduleModel> res;
@@ -635,7 +676,10 @@ namespace smpc_dispatching.UI.Views.Logistics
             dtp_StartDate.Value = schedule.StartDate == DateTime.MinValue ? DateTime.Now : schedule.StartDate;
             dtp_EndDate.Value = schedule.EndDate == DateTime.MinValue ? DateTime.Now : schedule.EndDate;
             cmb_Category.SelectedValue = (uint)schedule.CategoryId;
-            cmb_People.Text = schedule.People;
+            _assignedPeople = schedule.AssignedPeople != null
+                ? schedule.AssignedPeople.ToList()
+                : new List<SchedulePersonModel>();
+            RefreshPeopleList();
             cmb_Vehicle.SelectedValue = (uint)schedule.VehicleId;
 
             // Schedules auto-created from a delivery receipt come with the sales
@@ -665,6 +709,118 @@ namespace smpc_dispatching.UI.Views.Logistics
 
             ApplyViewMode();
             BtnToggle(true);
+        }
+
+        // ADD puts the person picked in the combo onto this trip. §13.2's PEOPLE is
+        // multi-select, so this appends to a list rather than replacing a selection.
+        private void btn_assign_person_Click(object sender, EventArgs e)
+        {
+            var person = cmb_People.SelectedItem as DispatchPersonModel;
+            if (person == null)
+            {
+                Helpers.ShowDialogMessage("warning", "Select a person to add.");
+                return;
+            }
+
+            if (_assignedPeople.Any(p => p.person_id == person.id))
+            {
+                Helpers.ShowDialogMessage("warning", person.full_name + " is already on this schedule.");
+                return;
+            }
+
+            // Role comes from the roster record. SchedulePerson.Role is per-trip and
+            // may in principle differ from the person's usual capacity, but nothing
+            // asks for that yet and §17 defines no list to offer beyond DRIVER and
+            // HELPER - so it is taken from the roster rather than guessed at.
+            _assignedPeople.Add(new SchedulePersonModel
+            {
+                person_id = person.id,
+                full_name = person.full_name,
+                role = person.role
+            });
+
+            RefreshPeopleList();
+        }
+
+        private void RefreshPeopleList()
+        {
+            flowLayoutPanel_people.Controls.Clear();
+            // Same width computation as RefreshRouteList, and for the same reason:
+            // FlowLayoutPanel ignores Dock on its children.
+            int rowWidth = Math.Max(flowLayoutPanel_people.ClientSize.Width - 4, 300);
+            for (int i = 0; i < _assignedPeople.Count; i++)
+            {
+                flowLayoutPanel_people.Controls.Add(BuildPersonRow(_assignedPeople[i], i, rowWidth));
+            }
+        }
+
+        private Panel BuildPersonRow(SchedulePersonModel person, int index, int width)
+        {
+            var row = new Panel
+            {
+                Width = width,
+                Height = 28,
+                Margin = new Padding(0, 0, 0, 3),
+                BorderStyle = BorderStyle.FixedSingle
+            };
+
+            var btn_row_remove = new Button
+            {
+                Text = "REMOVE",
+                Width = 70,
+                Height = 20,
+                Anchor = AnchorStyles.Top | AnchorStyles.Right,
+                Location = new Point(width - 70 - 6, 3),
+                BackColor = Color.IndianRed,
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat
+            };
+
+            var lbl = new Label
+            {
+                AutoSize = false,
+                AutoEllipsis = true,
+                Location = new Point(6, 6),
+                Width = Math.Max(btn_row_remove.Location.X - 12, 40),
+                Height = 16,
+                Font = new Font("Microsoft Sans Serif", 8F, FontStyle.Bold),
+                Text = string.IsNullOrWhiteSpace(person.role)
+                    ? person.full_name
+                    : person.role.ToUpperInvariant() + "   " + person.full_name
+            };
+
+            btn_row_remove.Click += (s, e) =>
+            {
+                _assignedPeople.RemoveAt(index);
+                RefreshPeopleList();
+            };
+
+            row.Controls.Add(lbl);
+            row.Controls.Add(btn_row_remove);
+            return row;
+        }
+
+        // "+" opens the People Setup roster, mirroring btn_add_vehicle below, so a
+        // driver or helper who is not on the list yet can be added without leaving
+        // the schedule. The roster is reloaded afterwards so the new name appears.
+        private async void btn_add_person_Click(object sender, EventArgs e)
+        {
+            using (var host = new Form())
+            {
+                host.Text = "People Setup";
+                host.Size = new Size(950, 650);
+                host.StartPosition = FormStartPosition.CenterParent;
+                host.MinimizeBox = false;
+                host.MaximizeBox = false;
+
+                var peopleSetup = _serviceProvider.GetRequiredService<PeopleSetupUC>();
+                peopleSetup.Dock = DockStyle.Fill;
+                host.Controls.Add(peopleSetup);
+
+                host.ShowDialog(this);
+            }
+
+            await LoadPeopleAsync();
         }
 
         private async void btn_add_vehicle_Click(object sender, EventArgs e)

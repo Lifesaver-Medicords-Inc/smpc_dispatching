@@ -1,4 +1,4 @@
-namespace smpc_dispatching.UI.Views.Logistics
+﻿namespace smpc_dispatching.UI.Views.Logistics
 {
     partial class LogisticsCalendarScheduleDetailsUC
     {
@@ -40,6 +40,10 @@ namespace smpc_dispatching.UI.Views.Logistics
             this.dtp_EndDate = new System.Windows.Forms.DateTimePicker();
             this.lbl_people = new System.Windows.Forms.Label();
             this.cmb_People = new System.Windows.Forms.ComboBox();
+            this.pnl_people = new System.Windows.Forms.Panel();
+            this.btn_assign_person = new System.Windows.Forms.Button();
+            this.btn_add_person = new System.Windows.Forms.Button();
+            this.flowLayoutPanel_people = new System.Windows.Forms.FlowLayoutPanel();
             this.lbl_vehicle = new System.Windows.Forms.Label();
             this.pnl_vehicle = new System.Windows.Forms.Panel();
             this.btn_add_vehicle = new System.Windows.Forms.Button();
@@ -207,7 +211,8 @@ namespace smpc_dispatching.UI.Views.Logistics
             this.flowLayoutPanel_fields.Controls.Add(this.lbl_end_date);
             this.flowLayoutPanel_fields.Controls.Add(this.dtp_EndDate);
             this.flowLayoutPanel_fields.Controls.Add(this.lbl_people);
-            this.flowLayoutPanel_fields.Controls.Add(this.cmb_People);
+            this.flowLayoutPanel_fields.Controls.Add(this.pnl_people);
+            this.flowLayoutPanel_fields.Controls.Add(this.flowLayoutPanel_people);
             this.flowLayoutPanel_fields.Controls.Add(this.lbl_vehicle);
             this.flowLayoutPanel_fields.Controls.Add(this.pnl_vehicle);
             this.flowLayoutPanel_fields.Controls.Add(this.lbl_category);
@@ -335,7 +340,46 @@ namespace smpc_dispatching.UI.Views.Logistics
             this.cmb_People.Location = new System.Drawing.Point(3, 185);
             this.cmb_People.Margin = new System.Windows.Forms.Padding(3, 0, 3, 10);
             this.cmb_People.Name = "cmb_People";
-            this.cmb_People.Size = new System.Drawing.Size(300, 21);
+            this.cmb_People.Size = new System.Drawing.Size(205, 21);
+            this.cmb_People.Dock = System.Windows.Forms.DockStyle.Left;
+            this.cmb_People.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            // 
+            // pnl_people
+            // 
+            this.pnl_people.Controls.Add(this.btn_add_person);
+            this.pnl_people.Controls.Add(this.btn_assign_person);
+            this.pnl_people.Controls.Add(this.cmb_People);
+            this.pnl_people.Margin = new System.Windows.Forms.Padding(3, 0, 3, 4);
+            this.pnl_people.Name = "pnl_people";
+            this.pnl_people.Size = new System.Drawing.Size(300, 26);
+            // 
+            // btn_assign_person
+            // 
+            this.btn_assign_person.Location = new System.Drawing.Point(209, 1);
+            this.btn_assign_person.Name = "btn_assign_person";
+            this.btn_assign_person.Size = new System.Drawing.Size(56, 22);
+            this.btn_assign_person.Text = "ADD";
+            this.btn_assign_person.UseVisualStyleBackColor = true;
+            this.btn_assign_person.Click += new System.EventHandler(this.btn_assign_person_Click);
+            // 
+            // btn_add_person
+            // 
+            this.btn_add_person.Location = new System.Drawing.Point(270, 1);
+            this.btn_add_person.Name = "btn_add_person";
+            this.btn_add_person.Size = new System.Drawing.Size(30, 22);
+            this.btn_add_person.Text = "+";
+            this.btn_add_person.UseVisualStyleBackColor = true;
+            this.btn_add_person.Click += new System.EventHandler(this.btn_add_person_Click);
+            // 
+            // flowLayoutPanel_people
+            // 
+            this.flowLayoutPanel_people.AutoSize = true;
+            this.flowLayoutPanel_people.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel_people.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel_people.Margin = new System.Windows.Forms.Padding(3, 0, 3, 10);
+            this.flowLayoutPanel_people.Name = "flowLayoutPanel_people";
+            this.flowLayoutPanel_people.Size = new System.Drawing.Size(300, 0);
+            this.flowLayoutPanel_people.WrapContents = false;
             this.cmb_People.TabIndex = 9;
             // 
             // lbl_vehicle
@@ -695,6 +739,10 @@ namespace smpc_dispatching.UI.Views.Logistics
         private System.Windows.Forms.ComboBox cmb_Category;
         private System.Windows.Forms.Label lbl_people;
         private System.Windows.Forms.ComboBox cmb_People;
+        private System.Windows.Forms.Panel pnl_people;
+        private System.Windows.Forms.Button btn_assign_person;
+        private System.Windows.Forms.Button btn_add_person;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel_people;
         private System.Windows.Forms.Label lbl_vehicle;
         private System.Windows.Forms.Panel pnl_vehicle;
         private System.Windows.Forms.Button btn_add_vehicle;

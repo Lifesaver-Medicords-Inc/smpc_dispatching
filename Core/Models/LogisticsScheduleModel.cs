@@ -83,6 +83,14 @@ namespace smpc_dispatching.Core.Models
 
         [JsonProperty("routes")]
         public List<LogisticsRouteModel> Routes { get; set; } = new List<LogisticsRouteModel>();
+
+        // The driver and helper(s) on this trip - §13.2 makes PEOPLE multi-select and
+        // §13.3 has the dispatcher "select driver, helper, and vehicle first". Sent as
+        // the full intended set: ReplaceSchedulePeople deletes and reinserts rather
+        // than diffing, so an empty list clears the assignment (and the mirrored
+        // driver_name with it).
+        [JsonProperty("assigned_people")]
+        public List<SchedulePersonModel> AssignedPeople { get; set; } = new List<SchedulePersonModel>();
     }
 
     public class LogisticsRouteModel

@@ -28,7 +28,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <UpdateUrl>http://localhost/smpc_dispatching/</UpdateUrl>
-    <ApplicationRevision>1002</ApplicationRevision>
+    <ApplicationRevision>1006</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -441,6 +441,27 @@
     </Compile>
     <Compile Include="UI\Shared\VehicleDetailsModal.Designer.cs">
       <DependentUpon>VehicleDetailsModal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Models\DispatchPersonModel.cs" />
+    <Compile Include="Core\Interfaces\IDispatchPersonService.cs" />
+    <Compile Include="Core\Services\DispatchPersonService.cs" />
+    <Compile Include="UI\Shared\SerialNumberEntryModal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Shared\SerialNumberEntryModal.Designer.cs">
+      <DependentUpon>SerialNumberEntryModal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Shared\PeopleSetupUC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Shared\PeopleSetupUC.Designer.cs">
+      <DependentUpon>PeopleSetupUC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Shared\PersonDetailsModal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Shared\PersonDetailsModal.Designer.cs">
+      <DependentUpon>PersonDetailsModal.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Shared\VehicleSetupUC.cs">
       <SubType>UserControl</SubType>

@@ -51,6 +51,15 @@ namespace smpc_dispatching.Core.Models {
 
         [JsonProperty("routes")]
         public List<LogisticsRouteModel> Routes { get; set; }
+
+        // §13.2's PEOPLE is multi-select, and §13.3 wants a driver plus one or more
+        // helpers on an internal trip. The API has stored that as a row per person in
+        // tbl_dispatching_schedule_people since 2026-09-05 - GET preloads it, update
+        // calls ReplaceSchedulePeople - but no client property existed to carry it, so
+        // the screen could only ever write the single free-text People summary below.
+        // Flattened top-level like Routes and VehicleId, for the reason given above.
+        [JsonProperty("assigned_people")]
+        public List<SchedulePersonModel> AssignedPeople { get; set; }
     }
 
     public class EngineeringCalendarScheduleContent
