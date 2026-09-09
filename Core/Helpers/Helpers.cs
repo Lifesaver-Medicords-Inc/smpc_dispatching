@@ -18,6 +18,68 @@ namespace smpc_dispatching.Core.Helpers
 {
     internal static class Helpers
     {
+        // Renders a document number in a ComboBox the way §2.5 defines it - prefix per
+        // document type, the prefix carrying the "#", zero-padded to 4: SO#0001.
+        //
+        // Every ComboBox that picks a Sales Order used to show the bare stored value, which
+        // is "0001" in vw_get_sales_order_item_release and can be an unpadded id elsewhere -
+        // so the same document read differently from one screen to the next (user-reported
+        // 2026-09-05: "make it uniform that all that select the sales order in any apps will
+        // display in combobox as SO#0001").
+        //
+        // Deliberately a display-time format via the ListControl.Format event, not a rewrite
+        // of the bound data: these combos are bound to plain strings and their change
+        // handlers match on SelectedItem.ToString() against the raw table value. Reformatting
+        // the data would break every one of those matches; formatting the render breaks none.
+        public static class ComboBoxDocumentFormatter
+        {
+            // Keyed by control so re-calling replaces rather than stacks handlers - these
+            // screens rebind their combos on load and again on refresh.
+            private static readonly Dictionary<ComboBox, ListControlConvertEventHandler> _handlers
+                = new Dictionary<ComboBox, ListControlConvertEventHandler>();
+
+            public static void ComboBoxDocumentFormat(ComboBox combo, string prefix, int digits = 4)
+            {
+                if (combo == null || string.IsNullOrWhiteSpace(prefix)) return;
+
+                if (_handlers.TryGetValue(combo, out var existing))
+                {
+                    combo.Format -= existing;
+                    _handlers.Remove(combo);
+                }
+
+                ListControlConvertEventHandler handler = (s, e) =>
+                {
+                    e.Value = FormatDocumentNo(prefix, e.Value?.ToString(), digits);
+                };
+
+                // Format is only raised when this is on.
+                combo.FormattingEnabled = true;
+                combo.Format += handler;
+                _handlers[combo] = handler;
+            }
+
+            public static string FormatDocumentNo(string prefix, string raw, int digits = 4)
+            {
+                if (string.IsNullOrWhiteSpace(raw)) return raw;
+
+                string trimmed = raw.Trim();
+
+                // Formatting runs on every repaint, so a second pass must not yield SO#SO#0001.
+                if (trimmed.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)) return trimmed;
+
+                if (int.TryParse(trimmed, out int number))
+                {
+                    // 0 means "no document" - blank beats SO#0000, which reads like a real
+                    // document that does not exist.
+                    if (number == 0) return string.Empty;
+                    return prefix + number.ToString($"D{digits}");
+                }
+
+                return prefix + trimmed;
+            }
+        }
+
         public static void SetChildControlsEnabled(Control[] parents, bool enable, string[] excludeNames)
         {
             foreach (Control parent in parents)

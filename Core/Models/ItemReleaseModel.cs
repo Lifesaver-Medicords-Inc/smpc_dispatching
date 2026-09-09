@@ -18,6 +18,24 @@ namespace smpc_dispatching.Core.Models {
         public string approved_by { get; set; }
         public string issued_by { get; set; }
         public bool? is_forward { get; set; }
+
+        // Same §2.5 gap as DeliveryReceiptModel's pair, in the other dispatching report:
+        // ItemReleaseReport.rdlc bound doc_no and reference_doc_no raw, so an IREL printed
+        // its own number as "1" and its Sales Order as "0006" while the screen showed
+        // IREL#0001 and SO#0006.
+        //
+        // reference_doc_no is stored already padded but unprefixed ("0006" in
+        // tbl_inv_item_release), which FormatDocumentNo handles: it parses the number back
+        // out and re-pads under the prefix, so the stored padding is neither doubled nor
+        // trusted.
+        [Newtonsoft.Json.JsonIgnore]
+        public string doc_no_formatted =>
+            smpc_dispatching.Core.Helpers.Helpers.ComboBoxDocumentFormatter.FormatDocumentNo("IREL#", doc_no?.ToString());
+
+        [Newtonsoft.Json.JsonIgnore]
+        public string reference_doc_no_formatted =>
+            smpc_dispatching.Core.Helpers.Helpers.ComboBoxDocumentFormatter.FormatDocumentNo("SO#", reference_doc_no);
+
         public List<ItemReleaseDetailsModel> item_release_details { get; set; }
     }
 

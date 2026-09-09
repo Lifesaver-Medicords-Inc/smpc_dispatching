@@ -129,9 +129,22 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             // once SelectedIndex is reset a moment later. That's exactly what made a
             // brand new, never-saved Delivery Receipt look like it already had data.
             isLoading = true;
-            cmb_sales_order_id.DataSource = uniqueDocs;
-            cmb_sales_order_id.SelectedIndex = -1;
-            isLoading = false;
+            try
+            {
+                cmb_sales_order_id.DataSource = uniqueDocs;
+
+                // §2.5: a Sales Order reads SO#0001 wherever it is shown. Display only - this
+                // combo is bound to raw reference_doc_no strings and
+                // cmb_reference_doc_no_SelectedIndexChanged matches SelectedItem.ToString()
+                // against them, so the bound values stay exactly as they are.
+                Helpers.ComboBoxDocumentFormatter.ComboBoxDocumentFormat(cmb_sales_order_id, "SO#");
+
+                cmb_sales_order_id.SelectedIndex = -1;
+            }
+            finally
+            {
+                isLoading = false;
+            }
         }
 
         private async Task LoadItemRelease()
@@ -203,25 +216,35 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
         }
         public async Task LoadIRApprovedSO()
         {
+            // try/finally, not a bare pair of assignments: the "no data" return below used to
+            // leave isLoading stuck TRUE for the lifetime of the screen, which then swallowed
+            // the user's first real pick of a reference document. Every rebind here raises
+            // SelectedIndexChanged, so the flag has to cover the whole block and has to be
+            // cleared no matter how the method leaves.
             isLoading = true;
-            var response = await _salesOrderWithApprovedIRService.GetAllAsync(null);
-            if (response?.Data == null) return;
-            _IrApprovedSo = response.Data.ToList();
+            try
+            {
+                var response = await _salesOrderWithApprovedIRService.GetAllAsync(null);
+                if (response?.Data == null) return;
+                _IrApprovedSo = response.Data.ToList();
 
-            var uniqueDocs = _IrApprovedSo
-                .GroupBy(s => s.sales_order_no)
-                .Where(g => !string.IsNullOrWhiteSpace(g.Key))
-                .Select(g => g.First())
-                .OrderBy(s => s.sales_order_no)
-                .ToList();
+                var uniqueDocs = _IrApprovedSo
+                    .GroupBy(s => s.sales_order_no)
+                    .Where(g => !string.IsNullOrWhiteSpace(g.Key))
+                    .Select(g => g.First())
+                    .OrderBy(s => s.sales_order_no)
+                    .ToList();
 
-            cmb_sales_order_id.DataSource = null; // reset first to avoid binding conflicts
-            cmb_sales_order_id.DataSource = uniqueDocs;
-            cmb_sales_order_id.DisplayMember = nameof(SalesOrderWithApprovedIRModel.sales_order_no);
-            cmb_sales_order_id.ValueMember = nameof(SalesOrderWithApprovedIRModel.sales_order_id);
-            cmb_sales_order_id.SelectedIndex = -1;
-
-            isLoading = false;
+                cmb_sales_order_id.DataSource = null; // reset first to avoid binding conflicts
+                cmb_sales_order_id.DataSource = uniqueDocs;
+                cmb_sales_order_id.DisplayMember = nameof(SalesOrderWithApprovedIRModel.sales_order_no);
+                cmb_sales_order_id.ValueMember = nameof(SalesOrderWithApprovedIRModel.sales_order_id);
+                cmb_sales_order_id.SelectedIndex = -1;
+            }
+            finally
+            {
+                isLoading = false;
+            }
         }
         private async Task LoadShipType()
         {
@@ -756,7 +779,24 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
         }
         private void cmb_reference_doc_no_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (isLoading) { isLoading = false; return; }
+            // Was: if (isLoading) { isLoading = false; return; } - a guard that DISARMED
+            // ITSELF on the first event it caught, while the load path raises several in a
+            // row. LoadIRApprovedSO alone fires one for DataSource = null, another for
+            // DataSource = uniqueDocs, more for DisplayMember/ValueMember, and a last one
+            // for SelectedIndex = -1. The first consumed the flag; the second ran this
+            // handler for real, against the item the combo had just auto-selected - which
+            // is how merely opening a Delivery Receipt popped the Select Delivery Items
+            // modal and rewrote the header (user-reported 2026-09-05).
+            //
+            // The flag now belongs to whoever set it, and is cleared in their finally.
+            if (isLoading) return;
+
+            // Nothing in this handler is a view-mode action: it rewrites the customer,
+            // address, TIN, sales executive and the hidden sales_order/customer/item_release
+            // ids, then opens the item picker. On a saved receipt being looked at, every one
+            // of those is wrong - the record already has its own values. _isViewMode existed
+            // all along; this handler simply never consulted it.
+            if (_isViewMode) return;
 
             string selectedDoc = cmb_sales_order_id.SelectedItem?.ToString();
 
@@ -874,6 +914,17 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             var bySoDetail = new Dictionary<uint, uint>();
             var byItem = new Dictionary<uint, uint>();
 
+            // Serialised units are tallied BY SERIAL, not by quantity against the SO line.
+            //
+            // Since the Item Release splits a serialised line into one row per unit (client
+            // decision 2026-09-05, "option A" - see ItemReleaseUC.ExpandSerialisedLines),
+            // ten released units now share ONE sales_order_details_id. Counting them by that
+            // key would charge every one of the ten rows with the whole delivered total: if
+            // three units had gone out, all ten rows would compute 1 - 3 and drop out of the
+            // picker, so nothing would ever be left to deliver. A serial identifies exactly
+            // one unit, which is the whole point of splitting them.
+            var deliveredSerials = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
             foreach (var dr in _deliveryReceipts ?? new List<DeliveryReceiptModel>())
             {
                 if (currentId.HasValue && dr.id == currentId.Value) continue;
@@ -884,6 +935,16 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
                     // those have no released line to net off, so they simply never match.
                     uint qty = item.items_qty > 0 ? (uint)item.items_qty : 0u;
                     if (qty == 0) continue;
+
+                    string serial = item.items_serial_no?.Trim();
+                    if (!string.IsNullOrEmpty(serial))
+                    {
+                        // Deliberately NOT also added to the quantity tallies below: a unit
+                        // is accounted for once, by its serial. Adding it to both would net
+                        // it off a second time against the line's unserialised remainder.
+                        deliveredSerials.Add(serial);
+                        continue;
+                    }
 
                     if (item.items_sales_order_details_id > 0)
                     {
@@ -899,13 +960,37 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             }
 
             var rows = new List<DeliveryReceiptPickerRow>();
+
+            // An unserialised line's quantity tally is shared by every unserialised row for
+            // the same SO line, so it has to be drawn down as the rows are walked - two
+            // remainder rows of 4 against 5 already delivered means the first is fully
+            // consumed and the second still has 3 left, not "both are short by 5".
+            var remainingSoDetail = new Dictionary<uint, uint>(bySoDetail);
+            var remainingItem = new Dictionary<uint, uint>(byItem);
+
             foreach (var line in released)
             {
-                uint delivered = 0u;
-                if (line.sales_order_details_id > 0)
-                    bySoDetail.TryGetValue(line.sales_order_details_id, out delivered);
+                uint delivered;
+
+                string serial = line.serial_no?.Trim();
+                if (!string.IsNullOrEmpty(serial))
+                {
+                    // This exact unit either went out already or it did not. No arithmetic
+                    // against the SO line, which ten split rows all share.
+                    delivered = deliveredSerials.Contains(serial) ? line.released_qty : 0u;
+                }
+                else if (line.sales_order_details_id > 0)
+                {
+                    delivered = TakeDelivered(remainingSoDetail, line.sales_order_details_id, line.released_qty);
+                }
                 else if (line.item_id > 0)
-                    byItem.TryGetValue(line.item_id, out delivered);
+                {
+                    delivered = TakeDelivered(remainingItem, line.item_id, line.released_qty);
+                }
+                else
+                {
+                    delivered = 0u;
+                }
 
                 var row = new DeliveryReceiptPickerRow { Item = line, AlreadyDelivered = delivered };
                 if (row.Remaining > 0) rows.Add(row);
@@ -913,6 +998,17 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
 
             return rows;
         }
+        // Consumes up to `wanted` from a shared delivered-quantity tally and returns how much
+        // was actually taken, leaving the remainder for the next row keyed the same way.
+        private static uint TakeDelivered(Dictionary<uint, uint> tally, uint key, uint wanted)
+        {
+            if (!tally.TryGetValue(key, out uint available) || available == 0) return 0u;
+
+            uint taken = Math.Min(available, wanted);
+            tally[key] = available - taken;
+            return taken;
+        }
+
         // dg_items has AutoGenerateColumns = false with columns whose DataPropertyName is
         // hard-wired (in the Designer) to ItemReleaseDetailsModel's property names
         // (item_code, required_qty, released_qty, ...). Binding any other model type here

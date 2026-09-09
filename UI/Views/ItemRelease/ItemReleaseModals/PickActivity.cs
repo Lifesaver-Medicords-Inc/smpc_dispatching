@@ -302,7 +302,34 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
                 return;
             }
 
-            IssuedUom = dgv_item.Rows[0].Cells[uomCol.Index].Value?.ToString();
+            // Read the UoM off a row that is actually being released, not off row 0.
+            //
+            // Every other value here comes from issuedRows - the rows carrying a quantity -
+            // but this one was hard-coded to dgv_item.Rows[0]. Release from any bin other
+            // than the first and row 0's ReleaseUom cell is empty, so the line went back to
+            // Item Release with a quantity and a BLANK release UoM (user-reported 2026-09-05:
+            // picking the 2nd row leaves the UOM out).
+            //
+            // First non-empty rather than simply issuedRows[0]: the release UoM cell is only
+            // filled on rows the user actually typed into, and a later row can carry it when
+            // an earlier one does not. Falls back to the available-stock UoM of the same row,
+            // which is the unit the bin is counted in and therefore the unit being released.
+            IssuedUom = issuedRows
+                .Select(r => r.Cells[uomCol.Index].Value?.ToString())
+                .FirstOrDefault(u => !string.IsNullOrWhiteSpace(u));
+
+            if (string.IsNullOrWhiteSpace(IssuedUom))
+            {
+                var stockUomCol = dgv_item.Columns.Cast<DataGridViewColumn>()
+                    .FirstOrDefault(c => c.Name == "StockUom");
+
+                if (stockUomCol != null)
+                {
+                    IssuedUom = issuedRows
+                        .Select(r => r.Cells[stockUomCol.Index].Value?.ToString())
+                        .FirstOrDefault(u => !string.IsNullOrWhiteSpace(u));
+                }
+            }
             DialogResult = DialogResult.OK;
             Close();
          }

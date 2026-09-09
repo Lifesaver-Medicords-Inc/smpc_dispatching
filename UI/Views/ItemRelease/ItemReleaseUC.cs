@@ -13,6 +13,7 @@ using smpc_dispatching.Core.Enum;
 using smpc_dispatching.Core.Helpers;
 using System.Threading.Tasks;
 using smpc_dispatching.Core.Services;
+using smpc_dispatching.UI.Shared;
 using Microsoft.Reporting.WinForms;
 using System.Reflection;
 
@@ -340,6 +341,13 @@ namespace smpc_dispatching.UI.Views.ItemRelease
                 .ToList();
 
             cmb_reference_doc_no.DataSource = uniqueDocs;
+
+            // §2.5: a Sales Order reads SO#0001 wherever it is shown. Display only - the combo
+            // is bound to raw ref_doc_no strings and cmb_ReferenceDocNo_SelectedIndexChanged
+            // matches SelectedItem.ToString() straight back against that column, so the
+            // underlying values must not change.
+            Helpers.ComboBoxDocumentFormatter.ComboBoxDocumentFormat(cmb_reference_doc_no, "SO#");
+
             cmb_reference_doc_no.SelectedIndex = -1;
         }
 
@@ -458,6 +466,41 @@ namespace smpc_dispatching.UI.Views.ItemRelease
                 }
             }
 
+            // ────── Handle SerialNo click ──────
+            // §5.9 step 4 (inherited by §5.10): "Serial numbers entered for every unit
+            // released." One free-text cell cannot hold N serials for a line covering N
+            // units, so the cell opens a modal with a box per unit instead of being typed
+            // into. Warehouse users only - the same people the SERIAL NUMBER column is
+            // already editable for (see SetEditableColumns).
+            if (_isWarehouseUser && dgv_details.Columns[e.ColumnIndex].Name == DetailsDGV.SerialNo)
+            {
+                dgv_details.EndEdit();
+
+                var line = _detailsBinding[e.RowIndex];
+
+                // Nothing to serialise until the warehouse has said how many units are
+                // going out - released_qty is what decides how many boxes the modal shows.
+                if (line.released_qty == 0)
+                {
+                    Helpers.ShowDialogMessage("info",
+                        "Enter the released quantity for this item first - serial numbers are recorded one per unit released.");
+                    return;
+                }
+
+                using (var modal = new SerialNumberEntryModal((int)line.released_qty, line.serial_no, line.item_description))
+                {
+                    if (modal.ShowDialog(this) != DialogResult.OK) return;
+
+                    // Same reason the released-qty handler writes through the bound model
+                    // rather than the cell: setting DataGridViewCell.Value does not reliably
+                    // push back into the BindingList item.
+                    line.serial_no = modal.SerialNumbers;
+                    dgv_details.InvalidateRow(e.RowIndex);
+                }
+
+                return;
+            }
+
             // ────── Handle ItemDescription click ──────
             if (!_isWarehouseUser && dgv_details.Columns[e.ColumnIndex].Name == DetailsDGV.ItemDescription)
             {
@@ -514,7 +557,9 @@ namespace smpc_dispatching.UI.Views.ItemRelease
                     return;
                 }
 
-                parentData.item_release_details = childData;
+                // One saved row per serialised unit - see ExpandSerialisedLines. Done here, at
+                // the last moment before the post, so the grid and the picker stay untouched.
+                parentData.item_release_details = ExpandSerialisedLines(childData);
 
                 uint? savedId;
 
@@ -657,6 +702,133 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             );
         }
 
+        // Expands each serialised line into one saved row per unit (client decision,
+        // 2026-09-05 - "option A": a 10-unit line with 10 serials becomes 10 rows carrying a
+        // serial each, so the saved document, the Delivery Receipt and the printed IREL show
+        // the units separately).
+        //
+        // Only lines the warehouse actually put serials on are split. §10.7 is explicit that
+        // there is NO per-item "serialised" flag and that most items carry no serial at all,
+        // so splitting every line would turn a 100-unit box of couplings into 100 rows with
+        // 100 blank serial cells. Carrying serials IS the signal.
+        //
+        // Runs at save time only. The grid keeps one line per item so the warehouse picks
+        // bins once, through the existing Actual Pick Qty modal, rather than N times.
+        private static List<ItemReleaseDetailsModel> ExpandSerialisedLines(List<ItemReleaseDetailsModel> lines)
+        {
+            if (lines == null) return null;
+
+            var expanded = new List<ItemReleaseDetailsModel>();
+
+            foreach (var line in lines)
+            {
+                var serials = SerialNumberEntryModal.SplitSerials(line.serial_no)
+                    .Where(s => !string.IsNullOrWhiteSpace(s))
+                    .ToList();
+
+                // Nothing to separate: no serials, a single unit, or fewer serials than would
+                // make more than one row. Left exactly as it is.
+                if (serials.Count <= 1 || line.released_qty <= 1)
+                {
+                    expanded.Add(line);
+                    continue;
+                }
+
+                // Never invent units. §10.7's prompt-and-proceed means a line may legitimately
+                // carry fewer serials than units, and the leftover units are gathered onto one
+                // final unserialised row rather than being dropped or duplicated.
+                int serialisedUnits = Math.Min(serials.Count, (int)line.released_qty);
+                int remainder = (int)line.released_qty - serialisedUnits;
+
+                // Bin allocation is per row on the API side (ApplyItemReleaseLocations runs
+                // per detail and its total must equal that detail's released_qty), so the
+                // single allocation made in the picker is handed out a unit at a time, in
+                // order, across the rows this line becomes.
+                var binQueue = new Queue<ItemReleaseLocationModel>(
+                    (line.locations ?? new List<ItemReleaseLocationModel>())
+                        .Where(l => l.selected_qty > 0)
+                        .Select(l => new ItemReleaseLocationModel
+                        {
+                            item_release_details_id = l.item_release_details_id,
+                            bin_id = l.bin_id,
+                            selected_qty = l.selected_qty
+                        }));
+
+                for (int unit = 0; unit < serialisedUnits; unit++)
+                {
+                    // The first row inherits the original row's id so an edit updates the
+                    // record that already exists (and the API restores/reapplies its bin
+                    // allocation for the changed qty); the rest go up with id 0, which
+                    // DbUpdateDetails inserts.
+                    var row = CloneDetailLine(line, unit == 0 ? line.id : 0);
+                    row.released_qty = 1;
+                    row.serial_no = serials[unit];
+                    row.locations = TakeUnits(binQueue, 1, row.id);
+                    expanded.Add(row);
+                }
+
+                if (remainder > 0)
+                {
+                    var row = CloneDetailLine(line, 0);
+                    row.released_qty = (uint)remainder;
+                    row.serial_no = string.Empty;
+                    row.locations = TakeUnits(binQueue, remainder, row.id);
+                    expanded.Add(row);
+                }
+            }
+
+            return expanded;
+        }
+
+        private static ItemReleaseDetailsModel CloneDetailLine(ItemReleaseDetailsModel source, uint id)
+        {
+            return new ItemReleaseDetailsModel
+            {
+                id = id,
+                item_release_id = source.item_release_id,
+                sales_order_id = source.sales_order_id,
+                sales_order_details_id = source.sales_order_details_id,
+                item_id = source.item_id,
+                item_code = source.item_code,
+                item_description = source.item_description,
+                // required_qty stays on the line it came from - it describes what the SO
+                // asked for, not what this one unit is, and splitting it would make the
+                // outstanding-quantity sums downstream wrong.
+                required_qty = source.required_qty,
+                required_uom = source.required_uom,
+                released_uom = source.released_uom,
+                delivery_preference = source.delivery_preference,
+            };
+        }
+
+        // Pulls `units` worth of allocation off the front of the queue, splitting a bin entry
+        // when it straddles the boundary, so every row's locations sum exactly to its own
+        // released_qty - which is what the API validates.
+        private static List<ItemReleaseLocationModel> TakeUnits(Queue<ItemReleaseLocationModel> binQueue, int units, uint detailsId)
+        {
+            var taken = new List<ItemReleaseLocationModel>();
+
+            while (units > 0 && binQueue.Count > 0)
+            {
+                var head = binQueue.Peek();
+                int take = Math.Min(units, head.selected_qty);
+
+                taken.Add(new ItemReleaseLocationModel
+                {
+                    item_release_details_id = detailsId,
+                    bin_id = head.bin_id,
+                    selected_qty = take
+                });
+
+                head.selected_qty -= take;
+                units -= take;
+
+                if (head.selected_qty <= 0) binQueue.Dequeue();
+            }
+
+            return taken;
+        }
+
         private void SetEditableColumns(bool isEdit)
         {
             // ReleasedQty is deliberately NOT in the warehouse-editable set: it must only
@@ -767,7 +939,8 @@ namespace smpc_dispatching.UI.Views.ItemRelease
                 return false;
             }
 
-            parentData.item_release_details = childData;
+            // Same split as the create path above - see ExpandSerialisedLines.
+            parentData.item_release_details = ExpandSerialisedLines(childData);
             parentData.is_forward = isForward;
             parentData.id = uint.Parse(txt_id.Text);
 
