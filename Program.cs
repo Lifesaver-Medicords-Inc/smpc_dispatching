@@ -96,11 +96,30 @@ namespace smpc_dispatching {
                 var baseDir = candidateDirs.FirstOrDefault(d =>
                     System.IO.File.Exists(System.IO.Path.Combine(d, fileName))) ?? candidateDirs[0];
 
-                Configuration = new ConfigurationBuilder()
+                var configBuilder = new ConfigurationBuilder()
                    .SetBasePath(baseDir)
                    .AddJsonFile(fileName, optional: true, reloadOnChange: true)
-                   .AddEnvironmentVariables()
-                   .Build();
+                   .AddEnvironmentVariables();
+
+                // smpc.endpoints.xml, when present, overrides whatever the JSON
+                // files say. Injected as the LAST configuration source so it
+                // wins, and so every existing reader of
+                // Configuration["AppSettings:ApiBaseUrl"] picks it up with no
+                // further changes.
+                //
+                // The trailing slash is not cosmetic: this value becomes an
+                // HttpClient BaseAddress, and "https://host/api" (no slash)
+                // makes a relative request resolve against "https://host/",
+                // silently dropping the /api prefix.
+                var endpointOverrides = new System.Collections.Generic.Dictionary<string, string>();
+                string apiOverride = SmpcEndpoints.Api(null);
+                if (!string.IsNullOrWhiteSpace(apiOverride))
+                    endpointOverrides["AppSettings:ApiBaseUrl"] = apiOverride.TrimEnd('/') + "/";
+
+                if (endpointOverrides.Count > 0)
+                    configBuilder.AddInMemoryCollection(endpointOverrides);
+
+                Configuration = configBuilder.Build();
 
                 // Fail loud, with every path checked, instead of letting a
                 // missing/undeployed config file surface later as a cryptic null
