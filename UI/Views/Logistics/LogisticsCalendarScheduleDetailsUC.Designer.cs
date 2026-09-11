@@ -39,10 +39,10 @@
             this.lbl_end_date = new System.Windows.Forms.Label();
             this.dtp_EndDate = new System.Windows.Forms.DateTimePicker();
             this.lbl_people = new System.Windows.Forms.Label();
-            this.cmb_People = new System.Windows.Forms.ComboBox();
             this.pnl_people = new System.Windows.Forms.Panel();
-            this.btn_assign_person = new System.Windows.Forms.Button();
             this.btn_add_person = new System.Windows.Forms.Button();
+            this.btn_assign_person = new System.Windows.Forms.Button();
+            this.cmb_People = new System.Windows.Forms.ComboBox();
             this.flowLayoutPanel_people = new System.Windows.Forms.FlowLayoutPanel();
             this.lbl_vehicle = new System.Windows.Forms.Label();
             this.pnl_vehicle = new System.Windows.Forms.Panel();
@@ -78,6 +78,7 @@
             this.pnl_header_title.SuspendLayout();
             this.pnl_root.SuspendLayout();
             this.flowLayoutPanel_fields.SuspendLayout();
+            this.pnl_people.SuspendLayout();
             this.pnl_vehicle.SuspendLayout();
             this.pnl_category.SuspendLayout();
             this.SuspendLayout();
@@ -239,7 +240,7 @@
             this.flowLayoutPanel_fields.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel_fields.Location = new System.Drawing.Point(10, 10);
             this.flowLayoutPanel_fields.Name = "flowLayoutPanel_fields";
-            this.flowLayoutPanel_fields.Size = new System.Drawing.Size(338, 734);
+            this.flowLayoutPanel_fields.Size = new System.Drawing.Size(338, 743);
             this.flowLayoutPanel_fields.TabIndex = 0;
             this.flowLayoutPanel_fields.WrapContents = false;
             // 
@@ -332,61 +333,67 @@
             this.lbl_people.TabIndex = 8;
             this.lbl_people.Text = "PEOPLE";
             // 
-            // cmb_People
-            // 
-            this.cmb_People.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.cmb_People.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cmb_People.FormattingEnabled = true;
-            this.cmb_People.Location = new System.Drawing.Point(3, 185);
-            this.cmb_People.Margin = new System.Windows.Forms.Padding(3, 0, 3, 10);
-            this.cmb_People.Name = "cmb_People";
-            this.cmb_People.Size = new System.Drawing.Size(205, 21);
-            this.cmb_People.Dock = System.Windows.Forms.DockStyle.Left;
-            this.cmb_People.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            // 
             // pnl_people
             // 
             this.pnl_people.Controls.Add(this.btn_add_person);
             this.pnl_people.Controls.Add(this.btn_assign_person);
             this.pnl_people.Controls.Add(this.cmb_People);
+            this.pnl_people.Location = new System.Drawing.Point(3, 185);
             this.pnl_people.Margin = new System.Windows.Forms.Padding(3, 0, 3, 4);
             this.pnl_people.Name = "pnl_people";
             this.pnl_people.Size = new System.Drawing.Size(300, 26);
-            // 
-            // btn_assign_person
-            // 
-            this.btn_assign_person.Location = new System.Drawing.Point(209, 1);
-            this.btn_assign_person.Name = "btn_assign_person";
-            this.btn_assign_person.Size = new System.Drawing.Size(56, 22);
-            this.btn_assign_person.Text = "ADD";
-            this.btn_assign_person.UseVisualStyleBackColor = true;
-            this.btn_assign_person.Click += new System.EventHandler(this.btn_assign_person_Click);
+            this.pnl_people.TabIndex = 9;
             // 
             // btn_add_person
             // 
             this.btn_add_person.Location = new System.Drawing.Point(270, 1);
             this.btn_add_person.Name = "btn_add_person";
             this.btn_add_person.Size = new System.Drawing.Size(30, 22);
+            this.btn_add_person.TabIndex = 0;
             this.btn_add_person.Text = "+";
             this.btn_add_person.UseVisualStyleBackColor = true;
             this.btn_add_person.Click += new System.EventHandler(this.btn_add_person_Click);
+            // 
+            // btn_assign_person
+            // 
+            this.btn_assign_person.Location = new System.Drawing.Point(209, 1);
+            this.btn_assign_person.Name = "btn_assign_person";
+            this.btn_assign_person.Size = new System.Drawing.Size(56, 22);
+            this.btn_assign_person.TabIndex = 1;
+            this.btn_assign_person.Text = "ADD";
+            this.btn_assign_person.UseVisualStyleBackColor = true;
+            this.btn_assign_person.Click += new System.EventHandler(this.btn_assign_person_Click);
+            // 
+            // cmb_People
+            // 
+            this.cmb_People.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cmb_People.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cmb_People.Dock = System.Windows.Forms.DockStyle.Left;
+            this.cmb_People.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_People.FormattingEnabled = true;
+            this.cmb_People.Location = new System.Drawing.Point(0, 0);
+            this.cmb_People.Margin = new System.Windows.Forms.Padding(3, 0, 3, 10);
+            this.cmb_People.Name = "cmb_People";
+            this.cmb_People.Size = new System.Drawing.Size(205, 21);
+            this.cmb_People.TabIndex = 9;
             // 
             // flowLayoutPanel_people
             // 
             this.flowLayoutPanel_people.AutoSize = true;
             this.flowLayoutPanel_people.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel_people.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel_people.Location = new System.Drawing.Point(3, 215);
             this.flowLayoutPanel_people.Margin = new System.Windows.Forms.Padding(3, 0, 3, 10);
             this.flowLayoutPanel_people.Name = "flowLayoutPanel_people";
-            this.flowLayoutPanel_people.Size = new System.Drawing.Size(300, 0);
+            this.flowLayoutPanel_people.Size = new System.Drawing.Size(0, 0);
+            this.flowLayoutPanel_people.TabIndex = 10;
             this.flowLayoutPanel_people.WrapContents = false;
-            this.cmb_People.TabIndex = 9;
             // 
             // lbl_vehicle
             // 
             this.lbl_vehicle.AutoSize = true;
             this.lbl_vehicle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_vehicle.Location = new System.Drawing.Point(3, 216);
+            this.lbl_vehicle.Location = new System.Drawing.Point(3, 225);
             this.lbl_vehicle.Name = "lbl_vehicle";
             this.lbl_vehicle.Size = new System.Drawing.Size(59, 13);
             this.lbl_vehicle.TabIndex = 10;
@@ -396,7 +403,7 @@
             // 
             this.pnl_vehicle.Controls.Add(this.btn_add_vehicle);
             this.pnl_vehicle.Controls.Add(this.cmb_Vehicle);
-            this.pnl_vehicle.Location = new System.Drawing.Point(3, 229);
+            this.pnl_vehicle.Location = new System.Drawing.Point(3, 238);
             this.pnl_vehicle.Margin = new System.Windows.Forms.Padding(3, 0, 3, 10);
             this.pnl_vehicle.Name = "pnl_vehicle";
             this.pnl_vehicle.Size = new System.Drawing.Size(300, 26);
@@ -430,7 +437,7 @@
             // 
             this.lbl_category.AutoSize = true;
             this.lbl_category.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_category.Location = new System.Drawing.Point(3, 265);
+            this.lbl_category.Location = new System.Drawing.Point(3, 274);
             this.lbl_category.Name = "lbl_category";
             this.lbl_category.Size = new System.Drawing.Size(74, 13);
             this.lbl_category.TabIndex = 6;
@@ -440,7 +447,7 @@
             // 
             this.pnl_category.Controls.Add(this.btn_add_category);
             this.pnl_category.Controls.Add(this.cmb_Category);
-            this.pnl_category.Location = new System.Drawing.Point(3, 278);
+            this.pnl_category.Location = new System.Drawing.Point(3, 287);
             this.pnl_category.Margin = new System.Windows.Forms.Padding(3, 0, 3, 10);
             this.pnl_category.Name = "pnl_category";
             this.pnl_category.Size = new System.Drawing.Size(300, 26);
@@ -472,7 +479,7 @@
             // 
             this.lbl_reference_doc_no.AutoSize = true;
             this.lbl_reference_doc_no.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_reference_doc_no.Location = new System.Drawing.Point(3, 314);
+            this.lbl_reference_doc_no.Location = new System.Drawing.Point(3, 323);
             this.lbl_reference_doc_no.Name = "lbl_reference_doc_no";
             this.lbl_reference_doc_no.Size = new System.Drawing.Size(137, 13);
             this.lbl_reference_doc_no.TabIndex = 24;
@@ -482,7 +489,7 @@
             // 
             this.cmb_ReferenceDocNo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_ReferenceDocNo.FormattingEnabled = true;
-            this.cmb_ReferenceDocNo.Location = new System.Drawing.Point(3, 327);
+            this.cmb_ReferenceDocNo.Location = new System.Drawing.Point(3, 336);
             this.cmb_ReferenceDocNo.Margin = new System.Windows.Forms.Padding(3, 0, 3, 10);
             this.cmb_ReferenceDocNo.Name = "cmb_ReferenceDocNo";
             this.cmb_ReferenceDocNo.Size = new System.Drawing.Size(300, 21);
@@ -492,7 +499,7 @@
             // 
             this.lbl_delivery_receipt_doc_no.AutoSize = true;
             this.lbl_delivery_receipt_doc_no.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_delivery_receipt_doc_no.Location = new System.Drawing.Point(3, 358);
+            this.lbl_delivery_receipt_doc_no.Location = new System.Drawing.Point(3, 367);
             this.lbl_delivery_receipt_doc_no.Name = "lbl_delivery_receipt_doc_no";
             this.lbl_delivery_receipt_doc_no.Size = new System.Drawing.Size(181, 13);
             this.lbl_delivery_receipt_doc_no.TabIndex = 28;
@@ -500,7 +507,7 @@
             // 
             // txt_DeliveryReceiptDocNo
             // 
-            this.txt_DeliveryReceiptDocNo.Location = new System.Drawing.Point(3, 371);
+            this.txt_DeliveryReceiptDocNo.Location = new System.Drawing.Point(3, 380);
             this.txt_DeliveryReceiptDocNo.Margin = new System.Windows.Forms.Padding(3, 0, 3, 10);
             this.txt_DeliveryReceiptDocNo.Name = "txt_DeliveryReceiptDocNo";
             this.txt_DeliveryReceiptDocNo.Size = new System.Drawing.Size(300, 20);
@@ -510,7 +517,7 @@
             // 
             this.lbl_sales_invoice_doc_no.AutoSize = true;
             this.lbl_sales_invoice_doc_no.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_sales_invoice_doc_no.Location = new System.Drawing.Point(3, 401);
+            this.lbl_sales_invoice_doc_no.Location = new System.Drawing.Point(3, 410);
             this.lbl_sales_invoice_doc_no.Name = "lbl_sales_invoice_doc_no";
             this.lbl_sales_invoice_doc_no.Size = new System.Drawing.Size(156, 13);
             this.lbl_sales_invoice_doc_no.TabIndex = 26;
@@ -518,7 +525,7 @@
             // 
             // txt_SalesInvoiceDocNo
             // 
-            this.txt_SalesInvoiceDocNo.Location = new System.Drawing.Point(3, 414);
+            this.txt_SalesInvoiceDocNo.Location = new System.Drawing.Point(3, 423);
             this.txt_SalesInvoiceDocNo.Margin = new System.Windows.Forms.Padding(3, 0, 3, 10);
             this.txt_SalesInvoiceDocNo.Name = "txt_SalesInvoiceDocNo";
             this.txt_SalesInvoiceDocNo.Size = new System.Drawing.Size(300, 20);
@@ -528,7 +535,7 @@
             // 
             this.lbl_client_supplier.AutoSize = true;
             this.lbl_client_supplier.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_client_supplier.Location = new System.Drawing.Point(3, 444);
+            this.lbl_client_supplier.Location = new System.Drawing.Point(3, 453);
             this.lbl_client_supplier.Name = "lbl_client_supplier";
             this.lbl_client_supplier.Size = new System.Drawing.Size(118, 13);
             this.lbl_client_supplier.TabIndex = 12;
@@ -538,7 +545,7 @@
             // 
             this.cmb_ClientSupplier.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_ClientSupplier.FormattingEnabled = true;
-            this.cmb_ClientSupplier.Location = new System.Drawing.Point(3, 457);
+            this.cmb_ClientSupplier.Location = new System.Drawing.Point(3, 466);
             this.cmb_ClientSupplier.Margin = new System.Windows.Forms.Padding(3, 0, 3, 10);
             this.cmb_ClientSupplier.Name = "cmb_ClientSupplier";
             this.cmb_ClientSupplier.Size = new System.Drawing.Size(300, 21);
@@ -548,7 +555,7 @@
             // 
             this.lbl_courier.AutoSize = true;
             this.lbl_courier.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_courier.Location = new System.Drawing.Point(3, 488);
+            this.lbl_courier.Location = new System.Drawing.Point(3, 497);
             this.lbl_courier.Name = "lbl_courier";
             this.lbl_courier.Size = new System.Drawing.Size(63, 13);
             this.lbl_courier.TabIndex = 16;
@@ -556,7 +563,7 @@
             // 
             // txt_Courier
             // 
-            this.txt_Courier.Location = new System.Drawing.Point(3, 501);
+            this.txt_Courier.Location = new System.Drawing.Point(3, 510);
             this.txt_Courier.Margin = new System.Windows.Forms.Padding(3, 0, 3, 10);
             this.txt_Courier.Name = "txt_Courier";
             this.txt_Courier.Size = new System.Drawing.Size(300, 20);
@@ -566,7 +573,7 @@
             // 
             this.lbl_pickup_time.AutoSize = true;
             this.lbl_pickup_time.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_pickup_time.Location = new System.Drawing.Point(3, 531);
+            this.lbl_pickup_time.Location = new System.Drawing.Point(3, 540);
             this.lbl_pickup_time.Name = "lbl_pickup_time";
             this.lbl_pickup_time.Size = new System.Drawing.Size(86, 13);
             this.lbl_pickup_time.TabIndex = 20;
@@ -575,7 +582,7 @@
             // dtp_PickupTime
             // 
             this.dtp_PickupTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dtp_PickupTime.Location = new System.Drawing.Point(3, 544);
+            this.dtp_PickupTime.Location = new System.Drawing.Point(3, 553);
             this.dtp_PickupTime.Margin = new System.Windows.Forms.Padding(3, 0, 3, 10);
             this.dtp_PickupTime.Name = "dtp_PickupTime";
             this.dtp_PickupTime.ShowUpDown = true;
@@ -586,7 +593,7 @@
             // 
             this.lbl_arrival_time.AutoSize = true;
             this.lbl_arrival_time.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_arrival_time.Location = new System.Drawing.Point(3, 574);
+            this.lbl_arrival_time.Location = new System.Drawing.Point(3, 583);
             this.lbl_arrival_time.Name = "lbl_arrival_time";
             this.lbl_arrival_time.Size = new System.Drawing.Size(94, 13);
             this.lbl_arrival_time.TabIndex = 22;
@@ -595,7 +602,7 @@
             // dtp_ArrivalTime
             // 
             this.dtp_ArrivalTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dtp_ArrivalTime.Location = new System.Drawing.Point(3, 587);
+            this.dtp_ArrivalTime.Location = new System.Drawing.Point(3, 596);
             this.dtp_ArrivalTime.Margin = new System.Windows.Forms.Padding(3, 0, 3, 10);
             this.dtp_ArrivalTime.Name = "dtp_ArrivalTime";
             this.dtp_ArrivalTime.ShowUpDown = true;
@@ -605,11 +612,11 @@
             // btn_add_route
             // 
             this.btn_add_route.AutoSize = true;
-            this.btn_add_route.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.btn_add_route.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_add_route.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
-            this.btn_add_route.LinkColor = System.Drawing.Color.Navy;
-            this.btn_add_route.Location = new System.Drawing.Point(3, 617);
+            this.btn_add_route.BackColor = System.Drawing.Color.Transparent;
+            this.btn_add_route.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))));
+            this.btn_add_route.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
+            this.btn_add_route.LinkColor = System.Drawing.Color.Blue;
+            this.btn_add_route.Location = new System.Drawing.Point(3, 626);
             this.btn_add_route.Margin = new System.Windows.Forms.Padding(3, 0, 3, 6);
             this.btn_add_route.Name = "btn_add_route";
             this.btn_add_route.Padding = new System.Windows.Forms.Padding(12, 6, 12, 6);
@@ -625,7 +632,7 @@
             this.flowLayoutPanel_routes.AutoSize = true;
             this.flowLayoutPanel_routes.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel_routes.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel_routes.Location = new System.Drawing.Point(3, 648);
+            this.flowLayoutPanel_routes.Location = new System.Drawing.Point(3, 657);
             this.flowLayoutPanel_routes.Margin = new System.Windows.Forms.Padding(3, 0, 3, 10);
             this.flowLayoutPanel_routes.Name = "flowLayoutPanel_routes";
             this.flowLayoutPanel_routes.Size = new System.Drawing.Size(0, 0);
@@ -636,7 +643,7 @@
             // 
             this.lbl_notes.AutoSize = true;
             this.lbl_notes.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_notes.Location = new System.Drawing.Point(3, 658);
+            this.lbl_notes.Location = new System.Drawing.Point(3, 667);
             this.lbl_notes.Name = "lbl_notes";
             this.lbl_notes.Size = new System.Drawing.Size(49, 13);
             this.lbl_notes.TabIndex = 32;
@@ -644,7 +651,7 @@
             // 
             // txt_Notes
             // 
-            this.txt_Notes.Location = new System.Drawing.Point(3, 671);
+            this.txt_Notes.Location = new System.Drawing.Point(3, 680);
             this.txt_Notes.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.txt_Notes.Multiline = true;
             this.txt_Notes.Name = "txt_Notes";
@@ -704,6 +711,7 @@
             this.pnl_root.PerformLayout();
             this.flowLayoutPanel_fields.ResumeLayout(false);
             this.flowLayoutPanel_fields.PerformLayout();
+            this.pnl_people.ResumeLayout(false);
             this.pnl_vehicle.ResumeLayout(false);
             this.pnl_category.ResumeLayout(false);
             this.ResumeLayout(false);

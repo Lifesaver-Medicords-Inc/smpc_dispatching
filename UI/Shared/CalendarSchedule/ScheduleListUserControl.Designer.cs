@@ -26,11 +26,11 @@
             this.MainSplitContainer = new System.Windows.Forms.SplitContainer();
             this.panel1 = new System.Windows.Forms.Panel();
             this.lbl_view_all = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.lbl_year_caption = new System.Windows.Forms.Label();
-            this.cbo_year_filter = new System.Windows.Forms.ComboBox();
-            this.lbl_month_caption = new System.Windows.Forms.Label();
             this.cbo_month_filter = new System.Windows.Forms.ComboBox();
+            this.lbl_month_caption = new System.Windows.Forms.Label();
+            this.cbo_year_filter = new System.Windows.Forms.ComboBox();
+            this.lbl_year_caption = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -96,52 +96,8 @@
             this.lbl_view_all.Text = "VIEW ALL";
             this.lbl_view_all.Click += new System.EventHandler(this.lbl_view_all_Click);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(5, 4);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(100, 17);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "SCHEDULES";
-            //
-            // lbl_year_caption
-            //
-            this.lbl_year_caption.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbl_year_caption.AutoSize = true;
-            this.lbl_year_caption.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_year_caption.Location = new System.Drawing.Point(735, 8);
-            this.lbl_year_caption.Name = "lbl_year_caption";
-            this.lbl_year_caption.Size = new System.Drawing.Size(38, 13);
-            this.lbl_year_caption.TabIndex = 3;
-            this.lbl_year_caption.Text = "YEAR:";
-            //
-            // cbo_year_filter
-            //
-            this.cbo_year_filter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbo_year_filter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbo_year_filter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cbo_year_filter.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbo_year_filter.FormattingEnabled = true;
-            this.cbo_year_filter.Location = new System.Drawing.Point(778, 4);
-            this.cbo_year_filter.Name = "cbo_year_filter";
-            this.cbo_year_filter.Size = new System.Drawing.Size(70, 21);
-            this.cbo_year_filter.TabIndex = 4;
-            //
-            // lbl_month_caption
-            //
-            this.lbl_month_caption.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbl_month_caption.AutoSize = true;
-            this.lbl_month_caption.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_month_caption.Location = new System.Drawing.Point(858, 8);
-            this.lbl_month_caption.Name = "lbl_month_caption";
-            this.lbl_month_caption.Size = new System.Drawing.Size(48, 13);
-            this.lbl_month_caption.TabIndex = 5;
-            this.lbl_month_caption.Text = "MONTH:";
-            //
             // cbo_month_filter
-            //
+            // 
             this.cbo_month_filter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbo_month_filter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbo_month_filter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -151,7 +107,51 @@
             this.cbo_month_filter.Name = "cbo_month_filter";
             this.cbo_month_filter.Size = new System.Drawing.Size(110, 21);
             this.cbo_month_filter.TabIndex = 6;
-            //
+            // 
+            // lbl_month_caption
+            // 
+            this.lbl_month_caption.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbl_month_caption.AutoSize = true;
+            this.lbl_month_caption.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_month_caption.Location = new System.Drawing.Point(858, 8);
+            this.lbl_month_caption.Name = "lbl_month_caption";
+            this.lbl_month_caption.Size = new System.Drawing.Size(56, 13);
+            this.lbl_month_caption.TabIndex = 5;
+            this.lbl_month_caption.Text = "MONTH:";
+            // 
+            // cbo_year_filter
+            // 
+            this.cbo_year_filter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbo_year_filter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbo_year_filter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbo_year_filter.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbo_year_filter.FormattingEnabled = true;
+            this.cbo_year_filter.Location = new System.Drawing.Point(778, 4);
+            this.cbo_year_filter.Name = "cbo_year_filter";
+            this.cbo_year_filter.Size = new System.Drawing.Size(70, 21);
+            this.cbo_year_filter.TabIndex = 4;
+            // 
+            // lbl_year_caption
+            // 
+            this.lbl_year_caption.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbl_year_caption.AutoSize = true;
+            this.lbl_year_caption.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_year_caption.Location = new System.Drawing.Point(735, 8);
+            this.lbl_year_caption.Name = "lbl_year_caption";
+            this.lbl_year_caption.Size = new System.Drawing.Size(44, 13);
+            this.lbl_year_caption.TabIndex = 3;
+            this.lbl_year_caption.Text = "YEAR:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(5, 4);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(100, 17);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "SCHEDULES";
+            // 
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Controls.Add(this.flowLayoutPanel2);
