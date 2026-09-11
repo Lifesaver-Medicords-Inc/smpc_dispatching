@@ -198,7 +198,6 @@ namespace smpc_dispatching.UI.Shared.CalendarEvent {
         private void BtnToggle(bool isEdit)
         {
             btn_new.Visible = !isEdit;
-            btn_delete.Visible = !isEdit;
             btn_edit.Visible = !isEdit;
 
             btn_save.Visible = isEdit;

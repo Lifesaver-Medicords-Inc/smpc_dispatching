@@ -267,7 +267,8 @@ namespace smpc_dispatching.UI.Shared.CalendarEvent
 
             if (response == null || !response.Success)
             {
-                MessageBox.Show("Failed to delete schedule.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // The API says why - e.g. only the schedule's creator may delete it (spec 14.49).
+                MessageBox.Show(response?.Message ?? "Failed to delete schedule.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 

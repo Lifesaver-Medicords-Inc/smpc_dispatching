@@ -38,5 +38,12 @@ namespace smpc_dispatching.UI.Shared
             byte[] pdf = reportViewer1.LocalReport.Render("PDF");
             File.WriteAllBytes(path, pdf);
         }
+
+        // "Back" returns to the document the preview was opened from. The
+        // button was on the toolbar with nothing behind it.
+        private void btn_prev_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }
