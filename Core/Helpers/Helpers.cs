@@ -434,48 +434,321 @@ namespace smpc_dispatching.Core.Helpers
             }
         }
 
+        // The one standard loading screen (spec 2.1): "Loading... Please wait", it
+        // covers the WHOLE PAGE rather than one section, and it clears only once
+        // every part of the page has finished loading.
+        //
+        // Rewritten 2026-09-12. The previous version broke all three of those rules
+        // and the bugs were not cosmetic:
+        //
+        //   - It overlaid whatever control the caller passed - in practice a single
+        //     DataGridView - so the grid was covered while the toolbar, the header
+        //     fields and the action buttons stayed live. A user could press Save on
+        //     a form whose data had not arrived yet.
+        //
+        //   - One static overlay for the entire app, first-wins: a second load
+        //     starting while one was up returned silently, and then the FIRST
+        //     HideLoading tore the overlay down while the other load was still
+        //     running. A page with two or three fetches cleared early, every time.
+        //
+        //   - HideLoading disposed and nulled the static field while removing the
+        //     panel from whichever control it was handed. Hand it a different
+        //     control than Show got - easy, since callers pass grids - and the
+        //     overlay is orphaned on screen with nothing left pointing at it.
+        //
+        // Now: the host is resolved UP to the page that contains it, input to the
+        // page is held back for the duration, and shows are REF-COUNTED per
+        // page, so the screen lifts on the last completion rather than the first.
+        //
+        // Callers need no change - every existing call site passes some control on
+        // the page, which is exactly what this resolves from.
         public static class Loading
         {
-            private static UserControl overlayPanel;
+            // Spec 2.1's exact wording. Callers may pass their own message, but the
+            // default is the standard one and should stay that way.
+            public const string StandardMessage = "Loading... Please wait";
 
-            public static void ShowLoading(Control parentControl, string message = "Loading, please wait...")
+            private class PageOverlay
             {
-                if (overlayPanel != null) return; // already showing
-
-                overlayPanel = new UserControl
-                {
-                    BackColor = Color.FromArgb(180, Color.Gray), // semi-transparent overlay
-                    Dock = DockStyle.Fill
-                };
-
-                Label lblMessage = new Label
-                {
-                    AutoSize = false,
-                    Dock = DockStyle.Fill,
-                    Text = message,
-                    ForeColor = Color.White,
-                    Font = new Font("Segoe UI", 12, FontStyle.Bold),
-                    TextAlign = ContentAlignment.MiddleCenter
-                };
-
-                overlayPanel.Controls.Add(lblMessage);
-
-                // Add overlay inside the DataGridView's parent (so it sits on top of the grid)
-                parentControl.Controls.Add(overlayPanel);
-                overlayPanel.BringToFront();
+                public Panel Panel;
+                public int Depth;
             }
 
-            /// <summary>
-            /// Hide the loading overlay from the DataGridView
-            /// </summary>
-            public static void HideLoading(Control parentControl)
+            // Clicks, keys and wheel turns aimed at anything on a covered page are swallowed
+            // here, before the control they were meant for sees them. This used to be done by
+            // disabling the page's controls and switching them all back on when the screen
+            // cleared - which restored the state from when the screen went UP, so a save that
+            // settles the form read-only (spec 2.1) while the screen is up would have had its
+            // locked panels switched straight back on. Holding the input back instead leaves
+            // every control's Enabled state to the page's own code. The cover itself still takes
+            // the mouse: there is nothing on it to press, and a wheel turn over it scrolls the page.
+            private class InputBlocker : IMessageFilter
             {
-                if (overlayPanel != null)
+                private const int FirstKeyMessage = 0x0100;   // WM_KEYDOWN
+                private const int LastKeyMessage = 0x0109;    // WM_UNICHAR
+                private const int FirstMouseMessage = 0x0201; // WM_LBUTTONDOWN - movement passes
+                private const int LastMouseMessage = 0x020E;  // WM_MOUSEHWHEEL
+
+                public bool PreFilterMessage(ref Message m)
                 {
-                    parentControl.Controls.Remove(overlayPanel);
-                    overlayPanel.Dispose();
-                    overlayPanel = null;
+                    if (Overlays.Count == 0) return false;
+
+                    bool input = (m.Msg >= FirstKeyMessage && m.Msg <= LastKeyMessage)
+                        || (m.Msg >= FirstMouseMessage && m.Msg <= LastMouseMessage);
+                    if (!input) return false;
+
+                    Control target = Control.FromChildHandle(m.HWnd);
+                    for (Control c = target; c != null; c = c.Parent)
+                    {
+                        PageOverlay record;
+                        if (Overlays.TryGetValue(c, out record))
+                            return target != record.Panel;
+                    }
+
+                    return false;
                 }
+            }
+
+            private static bool inputBlockerInstalled;
+
+            // Keyed per page, so two pages loading at once do not cancel each other.
+            private static readonly Dictionary<Control, PageOverlay> Overlays =
+                new Dictionary<Control, PageOverlay>();
+
+            // Resolves the PAGE a control belongs to - the UserControl sitting in the
+            // tab - and deliberately stops short of the Form.
+            //
+            // The first version of this accepted `c is UserControl || c is Form` while
+            // walking all the way up, overwriting as it went, so it always finished on
+            // the Form: the loading screen covered the entire window, sidebar, red box
+            // and tab strip included, instead of the tab's content.
+            //
+            // Outermost UserControl rather than innermost, because pages are built from
+            // nested UserControls (ItemSetUC inside a quotation, BpiBranchUC inside a
+            // partner) and covering only the inner one would leave most of the page
+            // live. The Form is used only when there is no UserControl above the
+            // control at all, which is the modal-dialog case - there the dialog IS the
+            // page.
+            private static Control ResolvePage(Control control)
+            {
+                if (control == null) return null;
+
+                Control page = null;
+                for (Control c = control; c != null; c = c.Parent)
+                {
+                    if (c is UserControl) page = c;
+                }
+
+                // A dialog, or a control not parented yet - a load kicked off from a
+                // constructor, where walking up finds nothing.
+                return page ?? control.FindForm() ?? control;
+            }
+
+            public static void ShowLoading(Control host, string message = StandardMessage)
+            {
+                Control page = ResolvePage(host);
+                if (page == null || page.IsDisposed) return;
+
+                PageOverlay existing;
+                if (Overlays.TryGetValue(page, out existing))
+                {
+                    // Another fetch on the same page. Count it and leave the screen up.
+                    existing.Depth++;
+                    return;
+                }
+
+                // Deliberately NOT Dock = Fill. A Fill-docked child is added at the end
+                // of the Controls collection, which makes it dock FIRST and lays every
+                // other docked sibling out in what is left - nothing. The siblings then
+                // reflow again when it is removed, and any page whose layout is not
+                // perfectly reversible comes back subtly rearranged.
+                //
+                // Explicit bounds keep the overlay out of dock layout entirely.
+                // ClientRectangle rather than DisplayRectangle on purpose - on a
+                // scrollable page DisplayRectangle can be larger than the visible area,
+                // and a child that big extends the scroll region, which is its own
+                // phantom-space bug.
+                //
+                // No anchors either. Sales Quotation starts loading from its Load event,
+                // before its tab has given it its final size, and it scrolls (AutoScroll):
+                // an anchored overlay stayed at the size it started with - a grey block over
+                // one corner, the message out of sight (user-reported 2026-09-15). The overlay
+                // is instead put back over the visible area whenever the page lays out,
+                // resizes or scrolls, for as long as it is up (keepOverPage, below).
+                var overlay = new Panel
+                {
+                    // Darker than a plain grey wash so the white box stands out against it.
+                    BackColor = Color.FromArgb(150, 40, 40, 40),
+                    Name = "pnl_page_loading",
+                    Bounds = page.ClientRectangle,
+                };
+
+                // Everything is painted by the cover itself, in one pass into an off-screen buffer,
+                // and redrawn in full whenever it resizes. The box used to be a child panel of its
+                // own and the cover was drawn straight to the screen in two passes - the page behind
+                // it, then the grey - with Windows filling the box in as a separate, later step. At
+                // the start of every load that showed as a flicker: grey with a hole in it, then the
+                // box (user-reported 2026-09-15). Cover, box, ring and message now reach the screen
+                // in the same frame.
+                typeof(Control).GetMethod("SetStyle", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
+                    ?.Invoke(overlay, new object[] { ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.ResizeRedraw, true });
+
+                // A plain box in the middle of the covered page (the page stays covered, spec 2.1):
+                // a turning ring above the standard message, moved by a UI-thread timer so it keeps
+                // turning while the page awaits the API and stops only if the UI thread itself is
+                // busy. Square corners like the rest of the app; the message in the default C# font,
+                // bold as a modal's header is (1.4); neutral greys, since red is the attention colour
+                // and there is no blue convention. The spec names only the message and the full-page
+                // cover, so the ring and the box are a provisional standard, chosen 2026-09-15 - the
+                // sliding bar, rounded corners and Segoe UI first tried with them were taken out the
+                // same day at the user's request.
+                var messageFont = new Font(Control.DefaultFont, FontStyle.Bold);
+                var boxSize = new Size(Math.Max(240, TextRenderer.MeasureText(message, messageFont).Width + 64), 108);
+                var ink = Color.FromArgb(70, 70, 70);
+                var faint = Color.FromArgb(225, 225, 225);
+                int angle = 0;
+
+                // Worked out at paint time, so the box stays in the middle as the cover follows the page.
+                Func<Rectangle> boxBounds = () => new Rectangle(
+                    Math.Max(0, (overlay.ClientSize.Width - boxSize.Width) / 2),
+                    Math.Max(0, (overlay.ClientSize.Height - boxSize.Height) / 2),
+                    boxSize.Width, boxSize.Height);
+                Func<Rectangle> ringBounds = () =>
+                {
+                    var b = boxBounds();
+                    return new Rectangle(b.X + b.Width / 2 - 20, b.Y + 18, 40, 40);
+                };
+
+                overlay.Paint += (s, e) =>
+                {
+                    var g = e.Graphics;
+
+                    var b = boxBounds();
+                    using (var fill = new SolidBrush(Color.White))
+                        g.FillRectangle(fill, b);
+
+                    // Anti-aliased for the ring only; the box edges are straight.
+                    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                    var ring = ringBounds();
+                    using (var track = new Pen(faint, 5))
+                    using (var arc = new Pen(ink, 5))
+                    {
+                        arc.StartCap = System.Drawing.Drawing2D.LineCap.Round;
+                        arc.EndCap = System.Drawing.Drawing2D.LineCap.Round;
+                        g.DrawEllipse(track, ring);
+                        g.DrawArc(arc, ring, angle, 100);
+                    }
+
+                    TextRenderer.DrawText(g, message, messageFont, new Rectangle(b.X, b.Y + 68, b.Width, 24), ink,
+                        TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+                };
+
+                var spin = new System.Windows.Forms.Timer { Interval = 40 };
+                spin.Tick += (s, e) =>
+                {
+                    angle = (angle + 12) % 360;
+                    // Only the ring changes from one frame to the next.
+                    var ring = ringBounds();
+                    ring.Inflate(6, 6);
+                    overlay.Invalidate(ring);
+                };
+                overlay.Disposed += (s, e) =>
+                {
+                    spin.Dispose();
+                    messageFont.Dispose();
+                };
+                spin.Start();
+
+                var record = new PageOverlay { Panel = overlay, Depth = 1 };
+
+                // Suspended around the add so the overlay never triggers a layout pass
+                // of its own over the page's real controls.
+                page.SuspendLayout();
+                page.Controls.Add(overlay);
+                overlay.BringToFront();
+                page.ResumeLayout(false);
+
+                // Painted now rather than whenever the message loop next gets to it. The caller
+                // usually carries straight on with work of its own - binding, the first request -
+                // and until the cover has painted the page shows through where it should be.
+                overlay.Update();
+
+                // Input to the page is held back until the screen clears (InputBlocker). A
+                // Cancel pressed during a long save would otherwise throw the save away.
+                if (!inputBlockerInstalled)
+                {
+                    Application.AddMessageFilter(new InputBlocker());
+                    inputBlockerInstalled = true;
+                }
+
+                // Bounds are written only when they differ, and the overlay is brought forward
+                // only when something has been put above it, so the Layout this answers never
+                // sets itself off again. Unhooked when HideLoading disposes the overlay.
+                EventHandler keepOverPage = (s, e) =>
+                {
+                    if (overlay.IsDisposed || page.IsDisposed || overlay.Parent != page) return;
+                    if (overlay.Bounds != page.ClientRectangle) overlay.Bounds = page.ClientRectangle;
+                    if (page.Controls.GetChildIndex(overlay) != 0) overlay.BringToFront();
+                };
+                LayoutEventHandler keepOnLayout = (s, e) => keepOverPage(s, e);
+                ScrollEventHandler keepOnScroll = (s, e) => keepOverPage(s, e);
+                var scrollable = page as ScrollableControl;
+
+                page.Layout += keepOnLayout;
+                page.ClientSizeChanged += keepOverPage;
+                if (scrollable != null) scrollable.Scroll += keepOnScroll;
+                // The mouse wheel scrolls a page without raising Scroll, and every kind of scroll
+                // carries the overlay along with the content - so it also snaps back when moved.
+                overlay.LocationChanged += keepOverPage;
+                overlay.Disposed += (s, e) =>
+                {
+                    page.Layout -= keepOnLayout;
+                    page.ClientSizeChanged -= keepOverPage;
+                    if (scrollable != null) scrollable.Scroll -= keepOnScroll;
+                };
+
+                Overlays[page] = record;
+            }
+
+            public static void HideLoading(Control host)
+            {
+                Control page = ResolvePage(host);
+                if (page == null) return;
+
+                PageOverlay record;
+                if (!Overlays.TryGetValue(page, out record)) return;
+
+                // Only the last outstanding load clears the screen (spec 2.1).
+                record.Depth--;
+                if (record.Depth > 0) return;
+
+                Overlays.Remove(page);
+
+                if (!page.IsDisposed)
+                {
+                    page.SuspendLayout();
+                    page.Controls.Remove(record.Panel);
+                    page.ResumeLayout(true);
+                }
+
+                record.Panel.Dispose();
+            }
+
+            // Clears a page's loading screen no matter how many shows are outstanding.
+            // For a failure path that has to bail out of several fetches at once - a
+            // dropped connection - where matching every Show with a Hide is not
+            // practical. Never call it to "make sure" the screen is gone: that is the
+            // early-clear bug this class was rewritten to remove.
+            public static void ForceHide(Control host)
+            {
+                Control page = ResolvePage(host);
+                if (page == null) return;
+
+                PageOverlay record;
+                if (!Overlays.TryGetValue(page, out record)) return;
+
+                record.Depth = 1;
+                HideLoading(page);
             }
         }
 

@@ -28,8 +28,16 @@ namespace smpc_dispatching.UI.Shared
 
         private async void SetupModal_Load(object sender, EventArgs e)
         {
-            BtnToogle(false);
-            await LoadSetup();
+            Helpers.Loading.ShowLoading(this);
+            try
+            {
+                BtnToogle(false);
+                await LoadSetup();
+            }
+            finally
+            {
+                Helpers.Loading.HideLoading(this);
+            }
         }
 
         private async Task LoadSetup()
@@ -123,29 +131,37 @@ namespace smpc_dispatching.UI.Shared
                     name = txt_name.Text.Trim(),
                 };
 
-                bool isNew = string.IsNullOrWhiteSpace(txt_id.Text);
-                HttpResponseModel<SetupModel> response;
-
-                if (isNew)
+                Helpers.Loading.ShowLoading(this);
+                try
                 {
-                    response = await _httpService.Post<HttpResponseModel<SetupModel>>($"/api/{_apiUrl}/", model);
-                }
-                else
-                {
-                    model.id = int.Parse(txt_id.Text);
-                    response = await _httpService.Put<HttpResponseModel<SetupModel>>($"/api/{_apiUrl}/{model.id}", model);
-                }
+                    bool isNew = string.IsNullOrWhiteSpace(txt_id.Text);
+                    HttpResponseModel<SetupModel> response;
 
-                if (response == null || !response.Success)
-                {
-                    Helpers.ShowDialogMessage("error", $"Failed to save {lbl_setup_title.Text}.\n{response?.Message}");
-                    return;
-                }
+                    if (isNew)
+                    {
+                        response = await _httpService.Post<HttpResponseModel<SetupModel>>($"/api/{_apiUrl}/", model);
+                    }
+                    else
+                    {
+                        model.id = int.Parse(txt_id.Text);
+                        response = await _httpService.Put<HttpResponseModel<SetupModel>>($"/api/{_apiUrl}/{model.id}", model);
+                    }
 
-                Helpers.ShowDialogMessage("success", $"{lbl_setup_title.Text} saved successfully.");
-                ClearRecordFields();
-                BtnToogle(false);
-                await LoadSetup();
+                    if (response == null || !response.Success)
+                    {
+                        Helpers.ShowDialogMessage("error", $"Failed to save {lbl_setup_title.Text}.\n{response?.Message}");
+                        return;
+                    }
+
+                    Helpers.ShowDialogMessage("success", $"{lbl_setup_title.Text} saved successfully.");
+                    ClearRecordFields();
+                    BtnToogle(false);
+                    await LoadSetup();
+                }
+                finally
+                {
+                    Helpers.Loading.HideLoading(this);
+                }
             }
             finally
             {

@@ -66,6 +66,9 @@ namespace smpc_dispatching.Core.Models {
     {
         public uint item_release_details_id { get; set; }
         public uint bin_id { get; set; }
+        // Only on a vehicle zone with no stock row for this item yet (bin_id 0); the API
+        // creates that row when the release is saved (§10.5).
+        public uint warehouse_area_id { get; set; }
         public int selected_qty { get; set; }
     }
 

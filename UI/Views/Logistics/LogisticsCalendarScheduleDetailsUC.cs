@@ -566,19 +566,27 @@ namespace smpc_dispatching.UI.Views.Logistics
             var confirm = MessageBox.Show("Delete this schedule?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (confirm != DialogResult.Yes) return;
 
-            var res = await _logisticsScheduleService.RemoveAsync(_currentSchedule.Id);
-            if (res == null || !res.Success)
+            Helpers.Loading.ShowLoading(this);
+            try
             {
-                MessageBox.Show("Failed to delete schedule.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                var res = await _logisticsScheduleService.RemoveAsync(_currentSchedule.Id);
+                if (res == null || !res.Success)
+                {
+                    MessageBox.Show("Failed to delete schedule.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                _currentSchedule = null;
+                ClearForm();
+                BtnToggle(false);
+
+                if (OnSaved != null)
+                    await OnSaved.Invoke();
             }
-
-            _currentSchedule = null;
-            ClearForm();
-            BtnToggle(false);
-
-            if (OnSaved != null)
-                await OnSaved.Invoke();
+            finally
+            {
+                Helpers.Loading.HideLoading(this);
+            }
         }
 
         private async void btn_save_Click(object sender, EventArgs e)
@@ -631,30 +639,38 @@ namespace smpc_dispatching.UI.Views.Logistics
                     .ToList();
             }
 
-            HttpResponseModel<LogisticsScheduleModel> res;
-            if (_currentSchedule != null)
+            Helpers.Loading.ShowLoading(this);
+            try
             {
-                schedule.Id = _currentSchedule.Id;
-                res = await _logisticsScheduleService.UpdateAsync(schedule);
+                HttpResponseModel<LogisticsScheduleModel> res;
+                if (_currentSchedule != null)
+                {
+                    schedule.Id = _currentSchedule.Id;
+                    res = await _logisticsScheduleService.UpdateAsync(schedule);
+                }
+                else
+                {
+                    res = await _logisticsScheduleService.CreateAsync(schedule);
+                }
+
+                if (res == null || !res.Success)
+                {
+                    MessageBox.Show("Saving failed");
+                    return;
+                }
+
+                MessageBox.Show("Success!");
+                _currentSchedule = null;
+                ClearForm();
+                BtnToggle(false);
+
+                if (OnSaved != null)
+                    await OnSaved.Invoke();
             }
-            else
+            finally
             {
-                res = await _logisticsScheduleService.CreateAsync(schedule);
+                Helpers.Loading.HideLoading(this);
             }
-
-            if (res == null || !res.Success)
-            {
-                MessageBox.Show("Saving failed");
-                return;
-            }
-
-            MessageBox.Show("Success!");
-            _currentSchedule = null;
-            ClearForm();
-            BtnToggle(false);
-
-            if (OnSaved != null)
-                await OnSaved.Invoke();
         }
 
         // Fetches the full schedule (with routes/costs) and populates the form.

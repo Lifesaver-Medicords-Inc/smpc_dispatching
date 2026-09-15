@@ -21,7 +21,9 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
         // Same allocation as IssuedPerBin, keyed by the stock row's own id instead of its
         // bin location string - this is what actually goes to the API, since
         // DeductStockWithTx needs a specific tbl_inv_item_stocks row, not a display label.
-        public List<(int BinId, decimal Qty)> IssuedPerBinId { get; private set; } = new List<(int, decimal)>();
+        // WarehouseAreaId is set only for a vehicle zone with no stock row for this item yet
+        // (BinId 0); the API creates the row when the release is saved (§10.5).
+        public List<(int BinId, decimal Qty, int WarehouseAreaId)> IssuedPerBinId { get; private set; } = new List<(int, decimal, int)>();
 
         private readonly int _itemId;
         private readonly IItemStockAndLocationService<ItemStockAndLocationModel> _service;
@@ -69,7 +71,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
         {
             try
             {
-                Helpers.Loading.ShowLoading(dgv_item, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_item);
 
                 var response = await _itemBinLocation.GetAsync(_itemId);
 
@@ -252,7 +254,11 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
                 decimal stockQty = Convert.ToDecimal(row.Cells["StockQty"].Value ?? 0);
                 decimal releaseQty = Convert.ToDecimal(row.Cells["ReleaseQty"].Value ?? 0);
 
-                if (releaseQty > stockQty)
+                // A vehicle zone is the one place Item Release may take stock below zero
+                // (§10.5): the WH manager "may take qty from stocked bins or go fully negative
+                // against a vehicle" (§5.10). Only the availability ceiling is lifted there -
+                // the allocation still has to add up to the released qty (§14.109).
+                if (releaseQty > stockQty && !IsVehicleRow(row))
                 {
                     MessageBox.Show($"Release qty ({releaseQty}) cannot exceed available stock ({stockQty}).",
                                      "Invalid Quantity", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -261,6 +267,23 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
                     row.Cells["ReleaseQty"].Value = stockQty;
                 }
             }
+        }
+
+        // Whether a grid row is a vehicle zone - the only rows Item Release may take below
+        // zero (§10.5). Read off the bound row: IsVehicle and WarehouseAreaId have no column.
+        private static bool IsVehicleRow(DataGridViewRow row)
+        {
+            var bound = (row?.DataBoundItem as DataRowView)?.Row;
+            return bound != null && bound.Table.Columns.Contains("IsVehicle")
+                && bound["IsVehicle"] is bool isVehicle && isVehicle;
+        }
+
+        private static int VehicleZoneId(DataGridViewRow row)
+        {
+            var bound = (row?.DataBoundItem as DataRowView)?.Row;
+            if (bound == null || !bound.Table.Columns.Contains("WarehouseAreaId") || bound["WarehouseAreaId"] == DBNull.Value)
+                return 0;
+            return Convert.ToInt32(bound["WarehouseAreaId"]);
         }
 
         private void btn_save_Click(object sender, EventArgs e)
@@ -285,7 +308,8 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
             IssuedPerBinId = issuedRows
                 .Select(r => (
                     BinId: Convert.ToInt32(r.Cells[binIdCol.Index].Value ?? 0),
-                    Qty: Convert.ToDecimal(r.Cells[issuedCol.Index].Value ?? 0)
+                    Qty: Convert.ToDecimal(r.Cells[issuedCol.Index].Value ?? 0),
+                    WarehouseAreaId: IsVehicleRow(r) ? VehicleZoneId(r) : 0
                 ))
                 .ToList();
 
@@ -296,7 +320,9 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
                 return;
             }
 
-            if (IssuedPerBinId.Any(x => x.BinId <= 0))
+            // A vehicle with no stock row for this item yet has no bin id; its zone id stands
+            // in for it and the API creates the row on save.
+            if (IssuedPerBinId.Any(x => x.BinId <= 0 && x.WarehouseAreaId <= 0))
             {
                 Helpers.ShowDialogMessage("error", "One or more rows are missing a bin reference - cannot release from an unidentified location.");
                 return;

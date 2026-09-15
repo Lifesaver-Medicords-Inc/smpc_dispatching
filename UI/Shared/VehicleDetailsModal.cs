@@ -52,16 +52,24 @@ namespace smpc_dispatching.UI.Shared
 
         private async void VehicleDetailsModal_Load(object sender, EventArgs e)
         {
-            var response = await _warehouseService.GetAllAsync(null);
-            var warehouses = response?.Data?.ToList() ?? new List<WarehouseModel>();
-
-            cmb_warehouse.DataSource = warehouses;
-            cmb_warehouse.DisplayMember = nameof(WarehouseModel.Name);
-            cmb_warehouse.ValueMember = nameof(WarehouseModel.id);
-
-            if (_existing != null)
+            Helpers.Loading.ShowLoading(this);
+            try
             {
-                cmb_warehouse.SelectedValue = (uint)_existing.WarehouseId;
+                var response = await _warehouseService.GetAllAsync(null);
+                var warehouses = response?.Data?.ToList() ?? new List<WarehouseModel>();
+
+                cmb_warehouse.DataSource = warehouses;
+                cmb_warehouse.DisplayMember = nameof(WarehouseModel.Name);
+                cmb_warehouse.ValueMember = nameof(WarehouseModel.id);
+
+                if (_existing != null)
+                {
+                    cmb_warehouse.SelectedValue = (uint)_existing.WarehouseId;
+                }
+            }
+            finally
+            {
+                Helpers.Loading.HideLoading(this);
             }
         }
 

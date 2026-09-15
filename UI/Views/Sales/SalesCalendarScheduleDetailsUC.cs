@@ -158,35 +158,43 @@ namespace smpc_dispatching.UI.Views.Sales
                 }
 
                 // Perform save operation
-                var response = isNewRecord
-                    ? await _calendarScheduleService.CreateAsync(calendarSchedule)
-                    : await _calendarScheduleService.UpdateAsync(calendarSchedule);
-
-                if (response?.Success == true)
+                Helpers.Loading.ShowLoading(this);
+                try
                 {
-                    string successMessage = isNewRecord
-                        ? "Schedule saved successfully."
-                        : "Schedule updated successfully.";
+                    var response = isNewRecord
+                        ? await _calendarScheduleService.CreateAsync(calendarSchedule)
+                        : await _calendarScheduleService.UpdateAsync(calendarSchedule);
 
-                    Helpers.ShowDialogMessage("success", successMessage);
-
-                    // Clear form for new records, keep data for updates
-                    if (isNewRecord)
+                    if (response?.Success == true)
                     {
-                        Helpers.ResetControls(flowLayoutPanel3);
-                        Helpers.ResetControls(panel2);
+                        string successMessage = isNewRecord
+                            ? "Schedule saved successfully."
+                            : "Schedule updated successfully.";
+
+                        Helpers.ShowDialogMessage("success", successMessage);
+
+                        // Clear form for new records, keep data for updates
+                        if (isNewRecord)
+                        {
+                            Helpers.ResetControls(flowLayoutPanel3);
+                            Helpers.ResetControls(panel2);
+                        }
+
+                        BtnToggle(false);
                     }
+                    else
+                    {
+                        string errorMessage = isNewRecord
+                            ? $"Failed to save schedule.\n{response?.Message ?? "Unknown error occurred."}"
+                            : $"Failed to update schedule.\n{response?.Message ?? "Unknown error occurred."}";
 
-                    BtnToggle(false);
+                        Helpers.ShowDialogMessage("error", errorMessage);
+                        Log.Warning("Failed to save calendar schedule. Response: {@Response}", response);
+                    }
                 }
-                else
+                finally
                 {
-                    string errorMessage = isNewRecord
-                        ? $"Failed to save schedule.\n{response?.Message ?? "Unknown error occurred."}"
-                        : $"Failed to update schedule.\n{response?.Message ?? "Unknown error occurred."}";
-
-                    Helpers.ShowDialogMessage("error", errorMessage);
-                    Log.Warning("Failed to save calendar schedule. Response: {@Response}", response);
+                    Helpers.Loading.HideLoading(this);
                 }
             }
             catch (FormatException ex)
@@ -338,24 +346,32 @@ namespace smpc_dispatching.UI.Views.Sales
             try
             {
                 btn_delete.Enabled = false;
-                var response = await _calendarScheduleService.RemoveAsync(department, recordId);
-
-                if (response?.Success == true)
+                Helpers.Loading.ShowLoading(this);
+                try
                 {
-                    string successMessage = "Schedule updated successfully.";
+                    var response = await _calendarScheduleService.RemoveAsync(department, recordId);
 
-                    Helpers.ShowDialogMessage("success", successMessage);
+                    if (response?.Success == true)
+                    {
+                        string successMessage = "Schedule updated successfully.";
 
-                    // Clear form for new records, keep data for updates
-                    // LOAD EXISTING SCHEDULES
-                    BtnToggle(false);
+                        Helpers.ShowDialogMessage("success", successMessage);
+
+                        // Clear form for new records, keep data for updates
+                        // LOAD EXISTING SCHEDULES
+                        BtnToggle(false);
+                    }
+                    else
+                    {
+                        string errorMessage = $"Failed to delete schedule.\n{response?.Message ?? "Unknown error occurred."}";
+
+                        Helpers.ShowDialogMessage("error", errorMessage);
+                        Log.Warning("Failed to delete calendar schedule. Response: {@Response}", response);
+                    }
                 }
-                else
+                finally
                 {
-                    string errorMessage = $"Failed to delete schedule.\n{response?.Message ?? "Unknown error occurred."}";
-
-                    Helpers.ShowDialogMessage("error", errorMessage);
-                    Log.Warning("Failed to delete calendar schedule. Response: {@Response}", response);
+                    Helpers.Loading.HideLoading(this);
                 }
             }
             catch (Exception ex)

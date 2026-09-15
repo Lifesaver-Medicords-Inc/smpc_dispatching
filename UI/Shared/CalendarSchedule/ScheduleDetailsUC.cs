@@ -231,30 +231,38 @@ namespace smpc_dispatching.UI.Shared.CalendarEvent {
                 }
             };
 
-            HttpResponseModel<CalendarScheduleModel<SalesCalendarScheduleContent>> res;
-
-            if (_currentSchedule != null)
+            Helpers.Loading.ShowLoading(this);
+            try
             {
-                calendarSchedule.Id = _currentSchedule.Id;
-                res = await _calendarScheduleService.UpdateAsync(calendarSchedule);
+                HttpResponseModel<CalendarScheduleModel<SalesCalendarScheduleContent>> res;
+
+                if (_currentSchedule != null)
+                {
+                    calendarSchedule.Id = _currentSchedule.Id;
+                    res = await _calendarScheduleService.UpdateAsync(calendarSchedule);
+                }
+                else
+                {
+                    res = await _calendarScheduleService.CreateAsync(calendarSchedule);
+                }
+
+                if (res == null || !res.Success)
+                {
+                    MessageBox.Show("Saving failed");
+                    return;
+                }
+
+                MessageBox.Show("Success!");
+                _currentSchedule = null;
+                BtnToggle(false);
+
+                if (OnSaved != null)
+                    await OnSaved.Invoke();
             }
-            else
+            finally
             {
-                res = await _calendarScheduleService.CreateAsync(calendarSchedule);
+                Helpers.Loading.HideLoading(this);
             }
-
-            if (res == null || !res.Success)
-            {
-                MessageBox.Show("Saving failed");
-                return;
-            }
-
-            MessageBox.Show("Success!");
-            _currentSchedule = null;
-            BtnToggle(false);
-
-            if (OnSaved != null)
-                await OnSaved.Invoke();
         }
 
         private void btn_new_Click(object sender, EventArgs e)

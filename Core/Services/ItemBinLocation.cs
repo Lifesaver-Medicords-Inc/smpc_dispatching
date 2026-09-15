@@ -23,7 +23,10 @@ namespace smpc_dispatching.Core.Services
 
         public async Task<HttpResponseModel<List<ItemBinLocationModel>>> GetAsync(int itemId)
         {
-            var res = await _httpService.Get<HttpResponseModel<List<ItemBinLocationModel>>>($"/api/engineering/bin_location/{itemId}");
+            // Item Release's own list: every stocked bin plus every vehicle zone, stocked or not
+            // (§5.10 - the Actual Pick Qty modal "includes vehicles by default"). The engineering
+            // bin_location list used before returns only bins that currently hold stock.
+            var res = await _httpService.Get<HttpResponseModel<List<ItemBinLocationModel>>>($"/api/item-releases/pick-locations/{itemId}");
             return res;
         }
     } 

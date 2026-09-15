@@ -55,5 +55,10 @@ namespace smpc_dispatching.Core.Models {
 
         [JsonProperty("status")]
         public string Status { get; set; }
+
+        // Set once the reservation has reached its quotation's VALID UNTIL and is waiting
+        // for a keep-on-hold or let-go answer (§10.4.5).
+        [JsonProperty("limit_reached_at")]
+        public DateTime? LimitReachedAt { get; set; }
     }
 }

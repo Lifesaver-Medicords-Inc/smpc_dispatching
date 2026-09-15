@@ -228,7 +228,7 @@ namespace smpc_dispatching.Core.Services
                     Name = uniqueName,
                 };
 
-                newView.Dock = DockStyle.Fill;
+                DockFillWithoutSqueezing(newView);
                 newTab.Controls.Add(newView);
                 tabControl.TabPages.Add(newTab);
                 tabControl.SelectedTab = newTab;
@@ -237,9 +237,22 @@ namespace smpc_dispatching.Core.Services
             {
                 // fallback if using panel layout
                 panel.Controls.Clear();
-                newView.Dock = DockStyle.Fill;
+                DockFillWithoutSqueezing(newView);
                 panel.Controls.Add(newView);
             }
+        }
+
+        // The view fills the space it is given, but one larger than that keeps its size and scrolls
+        // instead of being squeezed and clipped (spec 1.3). Its docked children lay out in its
+        // DisplayRectangle, which AutoScrollMinSize keeps at least the view's own size.
+        private static void DockFillWithoutSqueezing(Control view)
+        {
+            if (view is ScrollableControl scrollable && !scrollable.AutoScroll && scrollable.AutoScrollMinSize.IsEmpty)
+            {
+                scrollable.AutoScrollMinSize = view.Size;
+                scrollable.AutoScroll = true;
+            }
+            view.Dock = DockStyle.Fill;
         }
 
         private bool TabExists(TabControl tabControl, string title)

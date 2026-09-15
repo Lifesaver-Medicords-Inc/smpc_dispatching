@@ -50,7 +50,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease.ItemReleaseModals
         private async void ItemReleaseItems_Load(object sender, EventArgs e)        {
             try
             {
-                Helpers.Loading.ShowLoading(dgv_all_item, "Fetching data...");
+                Helpers.Loading.ShowLoading(dgv_all_item);
                 await LoadItemLists();
             }
             catch (Exception ex)

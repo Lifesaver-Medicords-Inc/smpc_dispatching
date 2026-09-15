@@ -351,35 +351,43 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
                 deliveryReceipt.delivery_receipt_costs = deliveryReceiptCosts;
 
 
-                bool isNew = string.IsNullOrWhiteSpace(txt_id.Text);
-                int savedId;
-
-                if (isNew)
+                Helpers.Loading.ShowLoading(this);
+                try
                 {
-                    var response = await _deliveryReceiptService.CreateAsync(deliveryReceipt);
-                    if (!response.Success)
+                    bool isNew = string.IsNullOrWhiteSpace(txt_id.Text);
+                    int savedId;
+
+                    if (isNew)
                     {
-                        Helpers.ShowDialogMessage("error", "Delivery Receipt saving failed.");
-                        return;
+                        var response = await _deliveryReceiptService.CreateAsync(deliveryReceipt);
+                        if (!response.Success)
+                        {
+                            Helpers.ShowDialogMessage("error", "Delivery Receipt saving failed.");
+                            return;
+                        }
+                        savedId = response.Data.id;
                     }
-                    savedId = response.Data.id;
+                    else
+                    {
+                        deliveryReceipt.id = int.Parse(txt_id.Text);
+                        // ✅ explicitly set is_forward
+
+                        var response = await _deliveryReceiptService.UpdateAsync(deliveryReceipt);
+                        if (!response.Success)
+                        {
+                            Helpers.ShowDialogMessage("error", "Item Release saving failed.");
+                            return;
+                        }
+                        savedId = deliveryReceipt.id;
+                    }
+                    Helpers.ShowDialogMessage("success", "Delivery Receipt saved successfully.");
+
+                    await LoadDeliveryReceipts(savedId);
                 }
-                else
+                finally
                 {
-                    deliveryReceipt.id = int.Parse(txt_id.Text);
-                    // ✅ explicitly set is_forward
-
-                    var response = await _deliveryReceiptService.UpdateAsync(deliveryReceipt);
-                    if (!response.Success)
-                    {
-                        Helpers.ShowDialogMessage("error", "Item Release saving failed.");
-                        return;
-                    }
-                    savedId = deliveryReceipt.id;
+                    Helpers.Loading.HideLoading(this);
                 }
-                Helpers.ShowDialogMessage("success", "Delivery Receipt saved successfully.");
-
-                await LoadDeliveryReceipts(savedId);
 
             }
             catch (Exception ex)
@@ -394,28 +402,36 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
         }
         private async void btn_close_Click(object sender, EventArgs e)
         {
-            SetMode(DRMode.View);
-
-            cmb_sales_order_id.DropDownStyle = ComboBoxStyle.DropDown;
-
-            if (_previousIRIndex >= 0 && _deliveryReceipts != null && _deliveryReceipts.Count > 0)
+            Helpers.Loading.ShowLoading(this);
+            try
             {
-                // Was viewing an existing record before New/Edit - restore it.
-                await LoadDeliveryReceipts();
+                SetMode(DRMode.View);
+
+                cmb_sales_order_id.DropDownStyle = ComboBoxStyle.DropDown;
+
+                if (_previousIRIndex >= 0 && _deliveryReceipts != null && _deliveryReceipts.Count > 0)
+                {
+                    // Was viewing an existing record before New/Edit - restore it.
+                    await LoadDeliveryReceipts();
+                }
+                else
+                {
+                    // Nothing existed to go back to (this is what a brand new, never-saved
+                    // record hits every time right now) - SetMode(View) above only toggles
+                    // read-only/button state, it never clears data, so whatever New +
+                    // picking a reference doc populated was otherwise left on screen,
+                    // looking like an already-saved record. Discard it the same way
+                    // btn_new_Click composes a fresh one.
+                    Helpers.ResetControls(_pnls);
+                    _bindingListItem = new BindingList<DeliveryReceiptItemModel>();
+                    dg_items.DataSource = _bindingListItem;
+                    _costRows.Clear();
+                    ComputeGrandTotal();
+                }
             }
-            else
+            finally
             {
-                // Nothing existed to go back to (this is what a brand new, never-saved
-                // record hits every time right now) - SetMode(View) above only toggles
-                // read-only/button state, it never clears data, so whatever New +
-                // picking a reference doc populated was otherwise left on screen,
-                // looking like an already-saved record. Discard it the same way
-                // btn_new_Click composes a fresh one.
-                Helpers.ResetControls(_pnls);
-                _bindingListItem = new BindingList<DeliveryReceiptItemModel>();
-                dg_items.DataSource = _bindingListItem;
-                _costRows.Clear();
-                ComputeGrandTotal();
+                Helpers.Loading.HideLoading(this);
             }
         }
         // btn_delete existed on the toolstrip - drawn, labelled, and enabled/disabled by
@@ -448,20 +464,28 @@ namespace smpc_dispatching.UI.Views.Delivery_Receipt
             btn_delete.Enabled = false;
             try
             {
-                var response = await _deliveryReceiptService.RemoveAsync(current.id);
-                if (!response.Success)
+                Helpers.Loading.ShowLoading(this);
+                try
                 {
-                    Helpers.ShowDialogMessage("error", "Deleting this delivery receipt failed. Please try again.");
-                    return;
+                    var response = await _deliveryReceiptService.RemoveAsync(current.id);
+                    if (!response.Success)
+                    {
+                        Helpers.ShowDialogMessage("error", "Deleting this delivery receipt failed. Please try again.");
+                        return;
+                    }
+
+                    Helpers.ShowDialogMessage("success", "Delivery Receipt deleted.");
+
+                    // Land on a real record again - the deleted index is gone, so let
+                    // LoadDeliveryReceipts fall back to the last one (or clear the form
+                    // when nothing is left).
+                    _currentIndex = -1;
+                    await LoadDeliveryReceipts();
                 }
-
-                Helpers.ShowDialogMessage("success", "Delivery Receipt deleted.");
-
-                // Land on a real record again - the deleted index is gone, so let
-                // LoadDeliveryReceipts fall back to the last one (or clear the form
-                // when nothing is left).
-                _currentIndex = -1;
-                await LoadDeliveryReceipts();
+                finally
+                {
+                    Helpers.Loading.HideLoading(this);
+                }
             }
             catch (Exception ex)
             {

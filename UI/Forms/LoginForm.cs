@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using smpc_dispatching.Core.Enum;
 using smpc_dispatching.Core.Helpers;
@@ -54,6 +54,9 @@ namespace smpc_dispatching.UI.Forms {
                 return;
             }
 
+            // The standard loading screen (spec 2.1) stays over the login until signing in
+            // finishes. It also blocks a second click from signing in twice.
+            Helpers.Loading.ShowLoading(this);
             try {
                 var credentials = new Dictionary<string, dynamic>{
                         { "employee_id", employeeId},
@@ -75,6 +78,8 @@ namespace smpc_dispatching.UI.Forms {
             } catch (Exception ex) {
                 Log.Error($"LOGIN ERROR: {ex.Message}");
                 Helpers.ShowDialogMessage("error", "Something went wrong. Please try again.");
+            } finally {
+                Helpers.Loading.HideLoading(this);
             }
         }
 

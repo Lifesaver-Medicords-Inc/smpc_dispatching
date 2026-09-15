@@ -52,7 +52,7 @@ namespace smpc_dispatching.UI.Shared
         {
             try
             {
-                Helpers.Loading.ShowLoading(dg_people, "Loading people...");
+                Helpers.Loading.ShowLoading(dg_people);
 
                 // No query: Setup shows inactive people too, since they are deactivated
                 // rather than deleted. The "Show inactive" checkbox filters client-side.

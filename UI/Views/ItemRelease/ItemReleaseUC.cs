@@ -458,6 +458,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
                         {
                             item_release_details_id = line.id,
                             bin_id = (uint)x.BinId,
+                            warehouse_area_id = (uint)x.WarehouseAreaId,
                             selected_qty = (int)x.Qty
                         })
                         .ToList();
@@ -557,57 +558,72 @@ namespace smpc_dispatching.UI.Views.ItemRelease
                     return;
                 }
 
+                // 10.7: the intent was a serial for every unit, but in practice not all
+                // items have one, so the system PROMPTS rather than blocks and the user
+                // may always proceed. Asked once, here, immediately before the post -
+                // after the grid has been committed, so what is counted is what will be
+                // saved.
+                if (!ConfirmIncompleteSerials(childData)) return;
+
                 // One saved row per serialised unit - see ExpandSerialisedLines. Done here, at
                 // the last moment before the post, so the grid and the picker stay untouched.
                 parentData.item_release_details = ExpandSerialisedLines(childData);
 
-                uint? savedId;
+                Helpers.Loading.ShowLoading(this);
+                try
+                {
+                    uint? savedId;
 
-                if (isNew)
-                {
-                    parentData.is_forward = false;
-                    var response = await _itemReleaseService.CreateAsync(parentData);
-                    if (!response.Success)
+                    if (isNew)
                     {
-                        // Surface the API's actual reason (e.g. insufficient stock, or a
-                        // released_qty/bin-allocation mismatch) instead of a fixed generic
-                        // string - both failure modes are now reachable from this save.
-                        Helpers.ShowDialogMessage("error", string.IsNullOrWhiteSpace(response.Message)
-                            ? "Item Release saving failed."
-                            : response.Message);
-                        return;
-                    }
-                    savedId = response.Data?.id;
-                }
-                else
-                {
-                    if (_isWarehouseUser)
-                    {
-                        if (string.IsNullOrWhiteSpace(cmb_received_by.Text))
+                        parentData.is_forward = false;
+                        var response = await _itemReleaseService.CreateAsync(parentData);
+                        if (!response.Success)
                         {
-                            Helpers.ShowDialogMessage("error", "Receiver name required.");
+                            // Surface the API's actual reason (e.g. insufficient stock, or a
+                            // released_qty/bin-allocation mismatch) instead of a fixed generic
+                            // string - both failure modes are now reachable from this save.
+                            Helpers.ShowDialogMessage("error", string.IsNullOrWhiteSpace(response.Message)
+                                ? "Item Release saving failed."
+                                : response.Message);
                             return;
                         }
+                        savedId = response.Data?.id;
                     }
-
-                    parentData.id = uint.Parse(txt_id.Text);
-                    parentData.is_forward = chk_is_forward.Checked;
-
-                    var response = await _itemReleaseService.UpdateAsync(parentData);
-                    if (!response.Success)
+                    else
                     {
-                        Helpers.ShowDialogMessage("error", string.IsNullOrWhiteSpace(response.Message)
-                            ? "Item Release saving failed."
-                            : response.Message);
-                        return;
+                        if (_isWarehouseUser)
+                        {
+                            if (string.IsNullOrWhiteSpace(cmb_received_by.Text))
+                            {
+                                Helpers.ShowDialogMessage("error", "Receiver name required.");
+                                return;
+                            }
+                        }
+
+                        parentData.id = uint.Parse(txt_id.Text);
+                        parentData.is_forward = chk_is_forward.Checked;
+
+                        var response = await _itemReleaseService.UpdateAsync(parentData);
+                        if (!response.Success)
+                        {
+                            Helpers.ShowDialogMessage("error", string.IsNullOrWhiteSpace(response.Message)
+                                ? "Item Release saving failed."
+                                : response.Message);
+                            return;
+                        }
+                        savedId = parentData.id;
                     }
-                    savedId = parentData.id;
+
+                    Helpers.ShowDialogMessage("success", "Item Release saved successfully.");
+
+                    SetMode(IRMode.View);
+                    await LoadItemReleases(savedId);
                 }
-
-                Helpers.ShowDialogMessage("success", "Item Release saved successfully.");
-
-                SetMode(IRMode.View);
-                await LoadItemReleases(savedId);
+                finally
+                {
+                    Helpers.Loading.HideLoading(this);
+                }
 
             }
             catch (Exception ex)
@@ -702,6 +718,37 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             );
         }
 
+        // 10.7's prompt. True means carry on with the save.
+        //
+        // The column counts as incomplete when any line about to be released carries
+        // fewer serials than units. That includes a line with no serials at all -
+        // 10.7 is explicit that there is no per-item "serialised" flag and that every
+        // item behaves the same way, so an empty column is exactly the case the prompt
+        // exists to catch.
+        //
+        // Deliberately one question for the whole document rather than one per line:
+        // a release of twenty unserialised couplings should cost the warehouse one
+        // keystroke, not twenty. Nothing here blocks - "No" simply returns to the form
+        // so the serials can be filled in.
+        private static bool ConfirmIncompleteSerials(List<ItemReleaseDetailsModel> lines)
+        {
+            if (lines == null || lines.Count == 0) return true;
+
+            bool incomplete = lines.Any(line =>
+                line.released_qty > 0 &&
+                SerialNumberEntryModal.SplitSerials(line.serial_no)
+                    .Count(serial => !string.IsNullOrWhiteSpace(serial)) < (int)line.released_qty);
+
+            if (!incomplete) return true;
+
+            return MessageBox.Show(
+                "Serial number column incomplete. Proceed?",
+                "Item Release",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question,
+                MessageBoxDefaultButton.Button1) == DialogResult.Yes;
+        }
+
         // Expands each serialised line into one saved row per unit (client decision,
         // 2026-09-05 - "option A": a 10-unit line with 10 serials becomes 10 rows carrying a
         // serial each, so the saved document, the Delivery Receipt and the printed IREL show
@@ -751,6 +798,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
                         {
                             item_release_details_id = l.item_release_details_id,
                             bin_id = l.bin_id,
+                            warehouse_area_id = l.warehouse_area_id,
                             selected_qty = l.selected_qty
                         }));
 
@@ -817,6 +865,7 @@ namespace smpc_dispatching.UI.Views.ItemRelease
                 {
                     item_release_details_id = detailsId,
                     bin_id = head.bin_id,
+                    warehouse_area_id = head.warehouse_area_id,
                     selected_qty = take
                 });
 
@@ -902,12 +951,20 @@ namespace smpc_dispatching.UI.Views.ItemRelease
 
         private async void btn_close_Click(object sender, EventArgs e)
         {
-            SetMode(IRMode.View);
-            cmb_reference_doc_no.DropDownStyle = ComboBoxStyle.DropDown;
-
-            if (_previousIRIndex >= 0 && _itemReleases != null && _itemReleases.Count > 0)
+            Helpers.Loading.ShowLoading(this);
+            try
             {
-                await LoadItemReleases();
+                SetMode(IRMode.View);
+                cmb_reference_doc_no.DropDownStyle = ComboBoxStyle.DropDown;
+
+                if (_previousIRIndex >= 0 && _itemReleases != null && _itemReleases.Count > 0)
+                {
+                    await LoadItemReleases();
+                }
+            }
+            finally
+            {
+                Helpers.Loading.HideLoading(this);
             }
         }
 
@@ -944,18 +1001,26 @@ namespace smpc_dispatching.UI.Views.ItemRelease
             parentData.is_forward = isForward;
             parentData.id = uint.Parse(txt_id.Text);
 
-            var response = await _itemReleaseService.UpdateAsync(parentData);
-
-            if (!response.Success)
+            Helpers.Loading.ShowLoading(this);
+            try
             {
-                Helpers.ShowDialogMessage("error", failureMessage);
-                return false;
+                var response = await _itemReleaseService.UpdateAsync(parentData);
+
+                if (!response.Success)
+                {
+                    Helpers.ShowDialogMessage("error", failureMessage);
+                    return false;
+                }
+
+                Helpers.ShowDialogMessage("success", successMessage);
+
+                SetMode(IRMode.View);
+                await LoadItemReleases(parentData.id);
             }
-
-            Helpers.ShowDialogMessage("success", successMessage);
-
-            SetMode(IRMode.View);
-            await LoadItemReleases(parentData.id);
+            finally
+            {
+                Helpers.Loading.HideLoading(this);
+            }
             return true;
         }
 
