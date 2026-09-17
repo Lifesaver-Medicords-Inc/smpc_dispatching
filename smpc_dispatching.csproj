@@ -318,6 +318,7 @@
     <Compile Include="Core\Services\ItemListService.cs" />
     <Compile Include="Core\Services\ItemStockAndLocationService.cs" />
     <Compile Include="Core\Services\PrintService.cs" />
+    <Compile Include="Printing\HouseTemplateReport.cs" />
     <Compile Include="Core\Services\SalesOrderIRViewService.cs" />
     <Compile Include="Core\Services\SalesOrderWithApprovedIRDetailsService.cs" />
     <Compile Include="Core\Services\SalesOrderWithApprovedIRService.cs" />
@@ -585,6 +586,9 @@
       <DependentUpon>SalesViewUserControl.cs</DependentUpon>
     </Compile>
     <Content Include="download.ico" />
+    <Content Include="Printing\HouseTemplate.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Printing\DeliveryReceiptReport.rdlc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
