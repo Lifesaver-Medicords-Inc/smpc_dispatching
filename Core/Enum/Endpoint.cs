@@ -43,6 +43,10 @@ namespace smpc_dispatching.Core.Enum
         public const string RESERVATION_PENDING = "inventory/item_stocks/reservations/pending";
         public const string RESERVATION_APPROVE = "inventory/item_stocks/reservations/{0}/approve";
         public const string RESERVATION_REJECT = "inventory/item_stocks/reservations/{0}/reject";
+        public const string RESERVATION_QUEUE = "inventory/item_stocks/reservations/queue";
+        public const string RESERVATION_KEEP = "inventory/item_stocks/reservations/{0}/keep";
+        public const string RESERVATION_LET_GO = "inventory/item_stocks/reservations/{0}/let-go";
+        public const string RESERVATION_REMOVE = "inventory/item_stocks/reservations/{0}";
 
     }
 }
